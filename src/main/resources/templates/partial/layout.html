@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="keywords" content="个人博客,谭超个人博客,springboot个人博客" />
+<meta name="description" content="谭超个人博客,springboot个人博客,thymeleaf,vue" />
+<meta name="baidu-site-verification" content="HG8KlgoyKh" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="_csrf" th:content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN spring security 避免ajax请求403-->
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<title>暖暖动听</title>
+<link th:href="@{/css/blog/base.css}" rel="stylesheet" />
+<link th:href="@{/css/blog/index.css}" rel="stylesheet" />
+<link th:href="@{/css/blog/m.css}" rel="stylesheet" />
+<!-- import css -->
+<link href="https://cdn.bootcss.com/element-ui/2.4.0/theme-chalk/index.css" rel="stylesheet">
+<!--[if lt IE 9]>
+		<script th:src="@{/js/modernizr.js}"></script>
+	<![endif]-->
+<style type="text/css">
+[v-cloak] {
+	display: none !important;
+}
+
+.search_input {
+	width: 150px;
+	padding: 2px 3px 1px 3px;
+	float: left;
+	font-size: 14px;
+	font-family: "t", "microsoft yahei";
+	height: 24px;
+	line-height: 14px;
+	text-indent: 10px;
+	border: 0;
+	border-radius: 15px;
+	outline: 0;
+    margin-top: 18px;
+	-webkit-transition: all .5s;
+	-moz-transition: all .5s;
+	-o-transition: all .5s;
+	transition: all .5s;
+	margin-bottom: 2px;
+}
+</style>
+
+</head>
+<body>
+	<div>
+		<header id="appheader" v-cloak>
+			<div th:include="partial/header::header"></div>
+		</header>
+		<article id="app" v-cloak>
+			<div layout:fragment="main"></div>
+		</article>
+		<footer>
+			<div th:include="partial/footer::footer"></div>
+		</footer>
+		<div id="appbackTop">
+			<a :click="backToTop" href="#" v-bind:class="[scrollTop>offset ? 'cd-is-visible' : '', 'cd-top']">Top</a>
+		</div>
+	</div>
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+	<script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
+	<script src="https://cdn.bootcss.com/scrollReveal.js/4.0.0-beta.31/scrollreveal.min.js"></script>
+	<script type="text/javascript">
+	    var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+    </script>
+	<script th:inline="javascript" type="text/javascript">
+     var appheader=  new Vue({
+		    el: '#appheader',
+		    data:{
+		    	currentUrl:[[${#request.getRequestURI()}]],//当前路由
+		    	navList:[
+		    		{
+		    			title:'首页',icon:'glyphicon glyphicon-cog',linkUrl:'/',active:false,childrens:[]
+		    		},
+		    		{
+		    			title:'关于我',icon:'glyphicon glyphicon-cog',linkUrl:'/about',active:false,childrens:[]
+		    		},
+		    		{
+		    			title:'分享',icon:'glyphicon glyphicon-th-list',linkUrl:'javascript:void(0);',active:false,childrens:[
+		    				{title:'杨青博客',icon:'',linkUrl:'http://www.yangqq.com/',active:false,childrens:[]},
+		    				{title:'程序猿DD',icon:'',linkUrl:'http://blog.didispace.com/',active:false,childrens:[]},
+		    				{title:'hAdmin',icon:'',linkUrl:'http://demo.mycodes.net/houtai/hAdmin',active:false,childrens:[]},
+		    			]
+		    		}
+		    	],
+		    	isOpen:false,
+		    	search_active:false,
+		    	searchkeyword:'',
+		      },
+		    methods: {
+		    	selectStyle(nav){
+		    		var _this=this;
+		            this.$nextTick(function () {
+		            	_this.navList.forEach(function (item) {
+		            		item.active=false;
+		              });
+		            	nav.active=true;
+		            });
+		    	},
+		    	outStyle(nav) {
+		    		nav.active=false;
+	            },
+	            changeIcon(){
+	        	  this.isOpen=!this.isOpen;
+	            },
+	            searchActive() {
+	            	 this.search_active=!this.search_active;
+	            },
+	            clickNav(nav){
+		          nav.active=!nav.active;
+		    	},
+		    	searchResult(){
+		    		app.queryForm.pageIndex=1;
+		    		app.queryForm.title=this.searchkeyword;
+		    		app.initData();
+		    		app.articleList=[];
+		    	}
+	        }
+		 })
+     var appbackTop=  new Vue({
+		    el: '#appbackTop',
+		    data:{
+		    	offset:300,
+	    	    offset_opacity:1200,
+	    	    scroll_top_duration:700,
+	    	    scrollTop:0,
+		    },
+		    mounted() {
+		    	 window.addEventListener('scroll', ()=> {
+		        		var scrollTop = document.documentElement.scrollTop;
+		                this.scrollTop=scrollTop;
+				      })
+		    },
+	   	 	  methods:{
+	   	 	    backToTop(){
+	   	 	      document.body.scrollTop = 0;
+	   	 	      document.documentElement.scrollTop = 0;
+	   	 	    }
+	   	 	  }
+     })
+     </script>
+	<!-- js内容 -->
+	<div layout:fragment="js"></div>
+</body>
+</html>

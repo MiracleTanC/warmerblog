@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.ArticleMapper">
+    <cache eviction="LRU" flushInterval="60000" readOnly="true"/>
+    <resultMap id="article" type="warmer.star.blog.dto.ArticleItem">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <id column="categoryId" property="categoryId" jdbcType="INTEGER"></id>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="author" property="author" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="abstractContent" property="abstractContent" jdbcType="VARCHAR"/>
+        <result column="publishTime" property="publishTime" jdbcType="VARCHAR"/>
+        <result column="coverImage" property="coverImage" jdbcType="VARCHAR"/>
+        <result column="articleTags" property="articleTags" jdbcType="VARCHAR"/>
+        <result column="openComment" property="openComment" jdbcType="INTEGER"/>
+        <result column="isRecommend" property="isRecommend" jdbcType="INTEGER"/>
+        <result column="showCount" property="showCount" jdbcType="INTEGER"/>
+        <result column="showStyle" property="showStyle" jdbcType="INTEGER"/>
+        <result column="articleType" property="articleType" jdbcType="INTEGER"/>
+        <association property="category" column="categoryId" jdbcType="INTEGER" resultMap="category"/>
+    </resultMap>
+    <resultMap id="category" type="warmer.star.blog.model.Category">
+         <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="categoryName" property="categoryName" jdbcType="VARCHAR"/>
+        <result column="categoryCode" property="categoryCode" jdbcType="VARCHAR"/>
+        <result column="fullName" property="fullName" jdbcType="VARCHAR"/>
+        <result column="parentId" property="parentId" jdbcType="INTEGER"/>
+        <result column="isParent" property="isParent" jdbcType="INTEGER"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="articleTag" type="warmer.star.blog.model.ArticleTag">
+        <id column="articleId" property="articleId" jdbcType="INTEGER"></id>
+        <result column="tagId" property="tagId" jdbcType="INTEGER"/>
+        <result column="tagName" property="tagName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.content,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.openComment,a.articleType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+	</sql>
+	<sql id="Abstract_Column_List">
+		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.articleType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+	</sql>
+	<sql id="article_Column_List">
+		a.id,a.categoryId,a.title,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.articleType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+	</sql>
+	<sql id="Where_Clause" >
+	    <where >
+	        isRecommend=0	 
+	     	<if test="title!= null">
+	      		and a.title like concat('%',#{title},'%')
+	      	</if>
+	      	<if test="categoryId != null and categoryId != ''">
+           		and a.categoryId = #{categoryId,jdbcType=INTEGER}
+        	</if>
+        	 <choose>
+	           <when test="status != null and status != '' or 0 == status">
+	       	      and a.status = #{status,jdbcType=INTEGER}
+	       	   </when>
+	       	   <otherwise>  
+	              and a.status !=-1 
+	           </otherwise>  
+	       	</choose>
+	    </where>
+	 </sql>
+    <!--分页获取文章-->
+    <select id="getArticleList" resultMap="article">
+        select 
+        <include refid="Abstract_Column_List" />
+        from article a left join category c on a.categoryId=c.id 
+       <include refid="Where_Clause" />
+       <choose>
+           <when test="sort ==0" >
+             order by a.updateTime asc 
+           </when>
+           <when test="sort == 1" >
+             order by a.updateTime desc 
+           </when>
+           <otherwise>  
+             order by a.updateTime desc  
+            </otherwise>  
+        </choose>
+    </select>
+    <select id="getById" resultMap="article">
+        select 
+        <include refid="Base_Column_List" />
+        from article a left join category c on a.categoryId=c.id 
+        where a.status !=-1 and a.id= #{articleId}  
+    </select>
+    <select id="getRecommendArticleList" resultMap="article">
+        select 
+        <include refid="article_Column_List" />
+        from article a 
+        where a.status !=-1 and a.isRecommend= 1 order by a.updateTime desc  limit 3
+    </select>
+    <select id="getTopReadArticleList" resultMap="article">
+        select 
+        <include refid="article_Column_List" />
+        from article a where a.status !=-1
+        order by a.showCount desc  limit 5
+    </select>
+     <insert id="saveArticle">
+		  insert into article (title,content,abstractContent,categoryId,author,publishTime,coverImage,articleTags,openComment,articleType,isRecommend,status,showStyle,createTime,updateTime)
+		  values (#{title},#{content},#{abstractContent},#{categoryId},#{author},#{publishTime},#{coverImage},#{articleTags},#{openComment},#{articleType},#{isRecommend},#{status},#{showStyle},#{createTime},#{updateTime})
+	</insert>
+	<update id="updateArticle">
+		  update article
+		  <set>
+		      coverImage=#{coverImage},articleTags=#{articleTags},
+			  <if test="title!= null and title !=''">
+			      	title = #{title},
+			  </if>
+			  <if test="content!= null and content !=''">
+			  		content = #{content},
+			  </if>
+			  <if test="abstractContent!= null and abstractContent !=''">
+		  			abstractContent=#{abstractContent},
+			  </if>
+			   <if test="categoryId!= null and categoryId !='' ">
+		  			categoryId=#{categoryId},
+			  </if>
+			  <if test="showStyle!= null and showStyle !='' or 0 == showStyle">
+		  			showStyle=#{showStyle},
+			  </if>
+			  <if test="articleType!= null and articleType !='' or 0 == articleType">
+		  			articleType=#{articleType},
+			  </if>
+			  <if test="author!= null and author !=''">
+			  		author=#{author},
+			  </if>
+			  <if test="publishTime!= null and publishTime !=''">
+			  		 publishTime=#{publishTime},
+			  </if>
+			  
+				<if test="openComment!= null and openComment !='' or 0 == openComment">
+			  		openComment=#{openComment},
+			  </if>
+			  <if test="isRecommend!= null and isRecommend !='' or 0 == isRecommend">
+			  		isRecommend=#{isRecommend},
+			  </if>
+			  <if test="status!= null and status !='' or 0 == status ">
+			  		 status=#{status},
+			  </if>
+			  <if test="updateTime!= null">
+			  		updateTime=#{updateTime},
+			  </if>  
+		  </set>
+			where id = #{id}
+	</update>
+	<update id="deleteArticle">
+		  update article set  status=-1,updateTime=NOW() where id = #{articleId}
+	</update>
+</mapper>

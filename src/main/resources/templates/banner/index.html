@@ -1,0 +1,179 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="partial/layoutAdmin">
+
+<head>
+<title>轮播图管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="app-container calendar-list-container">
+			<div class="filter-container">
+				<el-input @keyup.enter.native="handleFilter" style="width: 200px;"
+					class="filter-item" placeholder="请输入标题"
+					v-model="listQuery.title"> </el-input>
+				<el-select @change='handleFilter' style="width: 140px"
+					class="filter-item" v-model="listQuery.sort"> <el-option
+					v-for="item in sortOptions" :key="item.key" :label="item.name"
+					:value="item.value"> </el-option> </el-select>
+				<el-button class="filter-item" type="primary" 
+					icon="el-icon-search" @click="handleFilter">搜索</el-button>
+				<el-button class="filter-item" style="margin-left: 10px;"
+					@click="linktoEdit(0)" type="primary" icon="el-icon-edit">新增</el-button>
+					<el-button class="filter-item" style="margin-left: 10px;"
+					@click="reviewBanner" type="primary" icon="el-icon-view">预览</el-button>
+			</div>
+
+			<el-table height="678" :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%"> 
+				<el-table-column align="center" label="编号" width="120"> 
+					<template slot-scope="scope"> 
+						<span>{{scope.row.serialNumber}}</span> 
+					</template> 
+				</el-table-column> 				
+				<el-table-column min-width="250px" label="标题"> 
+					<template slot-scope="scope"> 
+						<span class="link-type">{{scope.row.title}}</span> 	
+					</template> 
+				</el-table-column> 
+				<el-table-column class-name="status-col" label="排序码" width="100"> 
+					<template slot-scope="scope"> 
+						<span>{{scope.row.sortCode}}</span>
+					</template> 
+				</el-table-column> 
+				<el-table-column class-name="status-col" label="最后更新" width="100"> 
+					<template slot-scope="scope"> 
+						<span>{{scope.row.updateOn}}</span>
+					</template> 
+				</el-table-column> 
+				<el-table-column align="center" label="操作" width="230" class-name="small-padding fixed-width">
+					<template slot-scope="scope"> 
+						<el-button type="primary" size="mini" @click="linktoEdit(scope.row.id)">编辑</el-button>
+						<el-button  size="mini" type="danger" @click="deleteBanner(scope.row.id)">删除</el-button> 
+					</template> 
+				</el-table-column> 
+			</el-table>
+				<!-- 弹窗, 新增 / 修改 -->
+				<el-dialog title="预览" :visible.sync="dialogFormVisible">
+				      <el-carousel :interval="3000" arrow="always" height="400px">
+					    <el-carousel-item v-for="banner in bannerList" :key="banner.id">
+				     		<a :href="banner.linkUrl">
+							  <img :src="banner.imgSrc" alt="个人博客" data-bd-imgshare-binded="1"> 
+							</a>
+							<span class="imginfo">{{banner.title}}</span>
+					    </el-carousel-item>
+		  			</el-carousel>
+				</el-dialog>
+			<div class="pagination-container">
+				<el-pagination background @size-change="handleSizeChange" class="txtCenter"
+					@current-change="handleCurrentChange"
+					:current-page="listQuery.pageIndex" :page-sizes="[10,20,30, 50]"
+					:page-size="listQuery.pageSize"
+					layout="total, sizes, prev, pager, next, jumper" :total="total">
+				</el-pagination>
+			</div>
+		</div>
+	</div>
+	<div layout:fragment="jscontent">
+		<script type="text/javascript">
+		var getList=function(){
+			var param=this.listQuery;
+			axios.post('/getBannerlist', param)
+				.then(function (response) {
+					var result=response.data;
+					if(result.code==0){
+						app.list = result.data.rows;
+						app.total = result.data.totalCount;
+						app.listLoading = false;
+					}
+				})
+				.catch(function (error) {
+				 	console.log(error);
+				});
+		}
+	 var app = new Vue({
+         el: '#app',
+         data:{
+   	      tableKey: 0,
+   	      list: null,
+   	      total: null,
+   	      listLoading: true,
+   	      dialogFormVisible: false,
+   	      bannerList:[],
+   	      listQuery: {
+   	        pageIndex: 1,
+   	        pageSize: 10,
+   	        title: '',
+   	        sortCode: '1'
+   	      },
+   	      sortOptions: [{ name: '最后更新 升序', key: '+updateOn',value:'0' }, { name: '最后更新 降序', key: '-updateOn',value:'1' }]
+   	    },
+ 	  created() {
+ 	    this.getList();
+ 	  },
+ 	 methods: {
+ 		linktoEdit(bannerId){
+ 			window.open("/banner/edit/"+bannerId);
+ 		},
+ 		reviewBanner(){
+ 			var _this=this;
+ 			_this.dialogFormVisible=true;
+ 	    	 $.ajax({
+ 	             type: "POST",
+ 	             url: "/getBannerlist",
+ 	             data: {},
+ 	             success: function (result) {
+ 	                 if (result.code==0) {
+ 	                 	var resultCount=result.data.rows.length;
+ 	                 	if(resultCount>0){
+ 	                 		_this.bannerList=result.data.rows;
+ 	                 	}
+ 	                 }
+ 	             }
+ 	         });
+ 		},
+ 		getList:getList,
+ 	    handleFilter() {
+ 	      this.listQuery.page = 1
+ 	      this.getList()
+ 	    },
+ 	    handleSizeChange(val) {
+ 	      this.listQuery.limit = val
+ 	      this.getList()
+ 	    },
+ 	    handleCurrentChange(val) {
+ 	      this.listQuery.page = val
+ 	      this.getList()
+ 	    }, 
+ 	   deleteBanner(rowId) {
+ 	    	app.$confirm('确定要[删除]该条记录吗?', '提示', {
+		          confirmButtonText: '确定',
+		          cancelButtonText: '取消',
+		          type: 'warning'
+		        }).then(() => {
+	    	$.ajax({
+		        data: {bannerId:rowId},
+		        type: "POST",
+		        url: '/banner/deleteBanner',
+		        success: function (result) {
+					if(result.code==0){
+						app.getList();
+						app.$message({
+				 	        message: result.msg,
+				 	        type: 'success'
+				 	      })
+					}else{
+						app.$message.error(result.msg);
+					}
+		        },
+		        error: function (data) {}
+		    });
+		        }).catch(() => {})
+ 	    }
+ 	  }});
+	 </script>
+	</div>
+</body>
+
+</html>

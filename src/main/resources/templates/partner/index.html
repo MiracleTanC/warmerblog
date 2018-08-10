@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="partial/layoutAdmin">
+  <head>
+    <title>partner</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+    .el-Partner{
+        padding: 0 10px;
+    height: 32px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(64, 158, 255, .2);
+    }
+    .el-Partner .el-icon-close{
+    color: #fff;
+    }
+    </style>
+  </head>
+  <body>
+  <div layout:fragment="content" style="padding:0 30px">
+      		<el-row>
+			  <el-col :span="12">
+				  <el-card style="min-height:520px" class="box-card">
+				  <div slot="header" class="clearfix">
+				    <span>当前友链</span>
+				  </div>
+				  <el-table
+				      :data="Partners"
+				      style="width: 100%">
+				      <el-table-column
+				        prop="siteName"
+				        label="名称"
+				        width="180">
+				      </el-table-column>
+				      <el-table-column
+				        prop="siteUrl"
+				        label="链接">
+				      </el-table-column>
+				      <el-table-column
+				        prop="sort"
+				        label="排序码" align="center"
+				        width="80">
+				      </el-table-column>
+				      <el-table-column
+					      fixed="right"
+					      label="操作" align="center"
+					      width="180">
+					      <template slot-scope="scope">
+					        <el-button  type="primary" @click="editPartner(scope.row)" size="mini">编辑</el-button>
+					        <el-button type="danger" @click="removePartner(scope.row)" size="mini">删除</el-button>
+					      </template>
+					    </el-table-column>
+				    </el-table>
+				</el-card>
+			  </el-col>
+			  <el-col :span="12">
+				  <el-card style="min-height:520px" class="box-card" >
+					  <div slot="header" class="clearfix">
+					    <span>添加选项</span>
+					  </div>
+					  <el-form label-width="60px">
+						  <el-form-item label="名称">
+						     <el-input placeholder="请输入新名称" v-model="defaultPartner" clearable> </el-input>
+						  </el-form-item>
+						  <el-form-item label="链接">
+						      <el-input placeholder="请输入新链接" v-model="defaultLink"  clearable> </el-input>
+						  </el-form-item>
+						   <el-form-item label="描述">
+						      <el-input type="textarea" class="article-textarea" :rows="1"   placeholder="请输入 描述" v-model="defaultDesc" required  :maxlength="100" clearable> </el-input>
+						   </el-form-item>
+							<el-form-item label="排序">
+						       <el-input-number v-model="defaultSort" :min="0" :max="20" label="描述文字"></el-input-number>
+						   </el-form-item>
+						    <el-form-item>
+							    <el-button v-loading="loading" style="margin-left:10px" type="primary" @click="addPartner" >{{defaultAction}} </el-button> 
+							    <el-button @click="clearForm">清空</el-button> 
+							  </el-form-item>
+						  
+					  </el-form>
+				  </el-card>
+			  </el-col>
+			</el-row>
+		</div>
+		<div layout:fragment="jscontent">
+		<script type="text/javascript">
+		var loadAllPartnerList=function(){
+			axios.post('/getPartnerlist', {})
+			.then(function (response) {
+				var result=response.data;
+				if(result.code==0){
+					app.Partners=result.data;
+				}
+			})
+			.catch(function (error) {
+			 	console.log(error);
+			});
+			
+		}
+		 var app = new Vue({
+	         el: '#app',
+	         data:{
+	        	 loading:false,
+	        	 defaultId:0,
+	        	 defaultSort:0,
+	        	 defaultLink:'',
+	        	 defaultDesc:'',
+	        	 defaultPartner:'',
+	        	 Partners: [],
+	        	 defaultAction:'添加'
+	         },
+	         created() {
+	        	 this.loadAllPartnerList();
+	         },
+	         methods: {
+	          loadAllPartnerList:loadAllPartnerList,
+	   	      removePartner(Partner) {
+	        	  app.$confirm('确定要[删除]该条记录吗?', '提示', {
+			          confirmButtonText: '确定',
+			          cancelButtonText: '取消',
+			          type: 'warning'
+			        }).then(() => {
+			        	 $.ajax({
+			   			        data: {PartnerId:Partner.id},
+			   			        type: "POST",
+			   			        url: '/partner/deletePartner',
+			   			        traditional:true, 
+			   			        success: function (result) {
+			   			        	app.Partners.splice(app.Partners.indexOf(Partner), 1);
+			   						app.$message({
+					   			          showClose: true,
+					   			          message: result.msg,
+					   			          type: 'success'
+				   			        	});
+			   			        },
+			   			        error: function (data) {
+			   			        	
+			   			        }
+			   			    });});
+	   	      },
+	   	      clearForm(){
+	   	    	this.defaultAction='添加';
+	   	    	this.defaultId=0;
+	   	    	this.defaultPartner='';
+	   	    	this.defaultLink='';
+	   	    	this.defaultDesc='';
+	   	    	this.defaultSort=0;  
+	   	      },
+	   	      addPartner(){
+	   	    	  debugger;
+	   	    	  var value=this.defaultPartner.trim();
+	   	    	var param={};
+ 	    		  param.id=this.defaultId;
+ 	    		  param.siteName=this.defaultPartner;
+ 	    		  param.siteDesc=this.defaultDesc;
+ 	    		  param.siteUrl=this.defaultLink;
+ 	    		  param.sort=this.defaultSort;
+	   	    	  $.ajax({
+	   			        data: param,
+	   			        type: "POST",
+	   			        url: '/partner/savePartner',
+	   			        traditional:true, 
+	   			        success: function (result) {
+	   			        	console.log(result)
+		   					if(result.code==0){
+		   					   app.Partners.push({ id: result.id, siteName: app.defaultPartner,siteDesc:app.defaultDesc,siteUrl:app.defaultLink,sort:app.defaultSort});
+		   					   app.clearForm();
+		   					   app.$message({
+			   			          showClose: true,
+			   			          message: result.msg,
+			   			          type: 'success'
+		   			        	});
+		   					}else{
+		   						app.$message({
+				   			          showClose: true,
+				   			          message: result.msg,
+				   			          type: 'error'
+				   			        });
+		   					}
+	   			        },
+	   			        error: function (data) {
+	   			        	
+	   			        }
+	   			    });
+	   	    	 
+	   	      },
+	   	      editPartner(row){
+	   	    	  this.defaultAction='编辑';
+	   	    	  this.defaultId=row.id;
+ 	    		  this.defaultPartner=row.siteName;
+ 	    		  this.defaultDesc=row.siteDesc;
+ 	    		  this.defaultLink=row.siteUrl;
+ 	    		  this.defaultSort=row.sort;
+	   	      }
+	         }})
+		</script>
+		</div>
+  </body>
+</html>

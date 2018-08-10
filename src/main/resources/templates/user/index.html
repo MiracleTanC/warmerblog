@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="partial/layoutAdmin">
+  <head>
+    <title>partner</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+    .el-Partner{
+        padding: 0 10px;
+    height: 32px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(64, 158, 255, .2);
+    }
+    .el-Partner .el-icon-close{
+    color: #fff;
+    }
+    .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+    </style>
+  </head>
+  <body>
+  <div layout:fragment="content" style="padding:0 30px">
+      		<el-row>
+			  <el-col :span="24">
+				  <el-card style="min-height:520px" class="box-card" >
+					  <div slot="header" class="clearfix">
+					    <span>个人信息</span>
+					  </div>
+					  <el-form label-width="120px">
+						  <el-form-item label="用户名">
+						     <el-input placeholder="请输入用户名" v-model="userItem.username" :disabled="true"> </el-input>
+						  </el-form-item>
+						  <el-form-item label="昵称">
+						      <el-input placeholder="请输入新昵称" v-model="userItem.nickname"  clearable> </el-input>
+						  </el-form-item>
+						  <el-form-item label="手机号">
+						      <el-input placeholder="请输入手机号" v-model="userItem.phone"  clearable> </el-input>
+						  </el-form-item>
+						  <el-form-item label="邮箱">
+						      <el-input placeholder="请输入邮箱" v-model="userItem.email"  clearable> </el-input>
+						  </el-form-item>
+						  <el-form-item label="QQ">
+						      <el-input placeholder="请输入QQ" v-model="userItem.qq"  clearable> </el-input>
+						  </el-form-item>
+						  <el-form-item label="微信">
+						      <el-input placeholder="请输入微信" v-model="userItem.wechat"  clearable> </el-input>
+						  </el-form-item>
+						  <el-form-item label="地址">
+						      <el-input placeholder="请输入地址" v-model="userItem.address"  clearable> </el-input>
+						  </el-form-item>
+						   
+							<el-form-item label="头像">
+								    <el-upload
+									  class="avatar-uploader"
+									  :headers="headers"
+									  action="/qiniu/upload"
+									  :show-file-list="false"
+									  :on-success="uploadAvatar"
+									  :before-upload="validAvatar">
+									  <img v-if="userItem.avatar" :src="userItem.avatar" class="avatar">
+									  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+									</el-upload>
+							</el-form-item>
+							<el-form-item label="微信二维码">
+								    <el-upload
+									  class="avatar-uploader"
+									  :headers="headers"
+									  action="/qiniu/upload"
+									  :show-file-list="false"
+									  :on-success="uploadQr"
+									  :before-upload="validQr">
+									  <img v-if="userItem.wechatQrCode" :src="userItem.wechatQrCode" class="avatar">
+									  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+									</el-upload>
+							</el-form-item>
+							<el-form-item label="自我介绍">
+						      <el-input type="textarea" class="article-textarea" :rows="1"   placeholder="请输入 自我介绍" v-model="userItem.signature" required  :maxlength="100" clearable> </el-input>
+						   </el-form-item>
+						   <el-form-item label="工作经历">
+						      <el-input type="textarea" class="article-textarea" :rows="1"   placeholder="请输入 自我介绍" v-model="userItem.workExperience" required  :maxlength="100" clearable> </el-input>
+						   </el-form-item>
+						    <el-form-item>
+							    <el-button v-loading="loading" style="margin-left:10px" type="primary" @click="updateUser" >{{defaultAction}} </el-button> 
+							  </el-form-item>
+						  
+					  </el-form>
+				  </el-card>
+			  </el-col>
+			</el-row>
+		</div>
+		<div layout:fragment="jscontent">
+		<script th:inline="javascript" type="text/javascript">
+		var initUserModel=function(){
+			var userModel=[[${userModel}]];
+			if(userModel!=null){
+				this.userItem.id=userModel.id;
+				this.userItem.userId=userModel.userId;
+				this.userItem.username=userModel.username;
+				this.userItem.avatar=userModel.avatar;
+				this.userItem.nickname=userModel.nickname;
+				this.userItem.phone=userModel.phone;
+				this.userItem.email=userModel.email;
+				this.userItem.signature=userModel.signature;
+				this.userItem.address=userModel.address;
+				this.userItem.wechatQrCode=userModel.wechatQrCode;
+				this.userItem.qq=userModel.qq;
+				this.userItem.wechat=userModel.wechat;
+				this.userItem.workExperience=userModel.workExperience;
+			}
+			
+		}
+		 var app = new Vue({
+	         el: '#app',
+	         data:{
+	        	 loading:false,
+	        	 defaultAction:'更新',
+	        	 userItem:{
+	        		 id:0,
+	        		 userId:0,
+	        		 username:'',
+	        		 avatar:'',
+	        		 nickname:'',
+	        		 phone:'',
+	        		 email:'',
+	        		 signature:'',
+	        		 address:'',
+	        		 wechatQrCode:'',
+	        		 qq:'',
+	        		 wechat:'',
+	        		 workExperience: ''
+	        	 },
+	        	 headers:{}
+	         },
+	         mounted() {
+	       		 var token = $("meta[name='_csrf']").attr("content");
+	    		 var header = $("meta[name='_csrf_header']").attr("content");
+	    		 var str= '{ "'+header+'": "'+token+'"}'; 
+	    		 this.headers = eval('(' + str + ')');
+	         },
+	         created() {
+	        	 this.initUserModel();
+	         },
+	         methods: {
+	        	  initUserModel:initUserModel,
+	        	  uploadAvatar(res, file) {
+	    	    	  if(res.success==1){
+	    	    		  this.userItem.avatar=res.results[0].url
+	    				}else{
+	    					this.$message.error(res.msg);
+	    				}
+	    	        },
+	    	        validAvatar(file) {
+	    	          const isLt2M = file.size / 1024 / 1024 < 2;
+	    	          if (file.type !== 'image/jpeg'&&file.type !== 'image/jpg'&&file.type !== 'image/gif'&&file.type !== 'image/png') {
+	    	            this.$message.error('上传头像图片只能是 JPG/gif/png 格式!');
+	    	          }
+	    	          if (!isLt2M) {
+	    	            this.$message.error('上传头像图片大小不能超过 2MB!');
+	    	          }
+	    	          return isLt2M;
+	    	        },
+	    	        uploadQr(res, file) {
+		    	    	  if(res.success==1){
+		    	    		  this.userItem.wechatQrCode=res.results[0].url
+		    				}else{
+		    					this.$message.error(res.msg);
+		    				}
+		    	        },
+		    	        validQr(file) {
+		    	          const isLt2M = file.size / 1024 / 1024 < 2;
+		    	          if (file.type !== 'image/jpeg'&&file.type !== 'image/jpg'&&file.type !== 'image/gif'&&file.type !== 'image/png') {
+		    	            this.$message.error('二维码图片只能是 JPG/gif/png 格式!');
+		    	          }
+		    	          if (!isLt2M) {
+		    	            this.$message.error('二维码图片大小不能超过 2MB!');
+		    	          }
+		    	          return isLt2M;
+		    	        },
+		   	      updateUser(){
+    	        	var _this=this;
+    	        	$.ajax({
+    			        data: _this.userItem,
+    			        type: "POST",
+    			        url: '/user/saveUserInfo',
+    			        traditional:true, 
+    			        success: function (result) {
+    						if(result.code==0){
+    							_this.$message({
+    			   			          showClose: true,
+    			   			          message: result.msg,
+    			   			          type: 'success'
+    		   			        	});
+    						}else{
+    							_this.$message.error(result.msg);
+    						}
+    			        },
+    			        error: function (data) {
+    			        	_this.$message({
+    		   			          showClose: true,
+    		   			          message: error,
+    		   			          type: 'error'
+    		   			        });
+    			        }
+    			    });
+	   	      	}
+	         }})
+		</script>
+		</div>
+  </body>
+</html>

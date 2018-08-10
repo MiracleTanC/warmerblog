@@ -1,0 +1,198 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="partial/layoutAdmin">
+
+<head>
+<title>文章管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="app-container calendar-list-container">
+			<div class="filter-container">
+				<el-input @keyup.enter.native="handleFilter" style="width: 200px;"
+					class="filter-item" placeholder="请输入标题" v-model="listQuery.title">
+				</el-input>
+				<el-select clearable style="width: 110px" class="filter-item"
+					v-model="listQuery.status" placeholder="状态"> <el-option
+					v-for="item in status" :key="item.code" :label="item.name"
+					:value="item.value"> </el-option> </el-select>
+				<el-select filterable class="filter-item"
+					v-model="listQuery.categoryId" style="width: 130px"
+					placeholder="分类"> <el-option
+					v-for="item in categoryoptions" :key="item.id" :label="item.name"
+					:value="item.id"> </el-option> </el-select>
+				<el-select @change='handleFilter' style="width: 140px"
+					class="filter-item" v-model="listQuery.sort"> <el-option
+					v-for="item in sortOptions" :key="item.key" :label="item.name"
+					:value="item.value"> </el-option> </el-select>
+				<el-button class="filter-item" type="primary" icon="el-icon-search"
+					@click="handleFilter">搜索</el-button>
+				<el-button class="filter-item" style="margin-left: 10px;"
+					@click="linktoEdit(0)" type="primary" icon="el-icon-edit">新增</el-button>
+				<el-button class="filter-item" type="primary"
+					:loading="downloadLoading" icon="el-icon-download"
+					@click="handleDownload">导出</el-button>
+			</div>
+
+			<el-table height="678" :key='tableKey' :data="list"
+				v-loading="listLoading" element-loading-text="给我一点时间" border fit
+				highlight-current-row style="width: 100%"> <el-table-column
+				align="center" label="序号" width="120"> <template
+				slot-scope="scope"> <span>{{scope.row.serialNumber}}</span> </template> </el-table-column> <el-table-column
+				min-width="150px" label="标题"> <template
+				slot-scope="scope"> <span class="link-type"
+				@click="handleUpdate(scope.row)">{{scope.row.title}}</span> </template> </el-table-column> <el-table-column
+				width="150px" align="center" label="分类"> <template
+				slot-scope="scope"> <el-tag>{{scope.row.category.categoryName
+			}}</el-tag> </template> </el-table-column> <el-table-column width="110px" align="center" label="作者">
+			<template slot-scope="scope"> <span>{{scope.row.author}}</span>
+			</template> </el-table-column> <el-table-column align="center" label="状态" width="95">
+			<template slot-scope="scope"> <el-tag
+				v-if="scope.row.status==0" type="info">{{scope.row.statusAliaName}}</el-tag>
+			<el-tag v-else-if="scope.row.status==1" type="success">{{scope.row.statusAliaName}}</el-tag>
+			<el-tag v-else-if="scope.row.status==2" type="warning">{{scope.row.statusAliaName}}</el-tag>
+			<el-tag v-else-if="scope.row.status==3" type="danger">{{scope.row.statusAliaName}}</el-tag>
+			<el-tag v-else>未知</span></template> </el-table-column> <el-table-column class-name="status-col"
+				label="阅读量" width="100"> <template
+				slot-scope="scope"> <span>{{scope.row.showCount}}</span>
+			</template> </el-table-column> <el-table-column class-name="status-col" label="最后更新" width="100">
+			<template slot-scope="scope"> <span>{{scope.row.updateTime}}</span>
+			</template> </el-table-column> <el-table-column align="center" label="操作" width="230"
+				class-name="small-padding fixed-width"> <template
+				slot-scope="scope"> <el-button type="primary" size="mini"
+				@click="linktoEdit(scope.row.id)">编辑</el-button> <el-button
+				v-if="scope.row.status.code!='deleted'" size="mini" type="danger"
+				@click="deleteArticle(scope.row.id)">删除</el-button> </template> </el-table-column> </el-table>
+
+			<div class="pagination-container">
+				<el-pagination background @size-change="handleSizeChange"
+					class="txtCenter" @current-change="handleCurrentChange"
+					:current-page="listQuery.pageIndex" :page-sizes="[10,20,30, 50]"
+					:page-size="listQuery.pageSize"
+					layout="total, sizes, prev, pager, next, jumper" :total="total">
+				</el-pagination>
+			</div>
+		</div>
+	</div>
+	<div layout:fragment="jscontent">
+		<script type="text/javascript">
+		var getList=function(){
+			var params = new URLSearchParams();
+	    	params.append('pageIndex', this.listQuery.pageIndex);
+	    	params.append('pageSize', this.listQuery.pageSize);
+	    	params.append('status', this.listQuery.status);
+	    	params.append('title', this.listQuery.title);
+	    	params.append('categoryId', this.listQuery.categoryId);
+	    	params.append('sort', this.listQuery.sort);
+			axios.post('/getArticlelist', params)
+				.then(function (response) {
+					console.log(response);
+					var result=response.data;
+					if(result.code==0){
+						app.list = result.data.rows;
+						app.total = result.data.totalCount;
+						app.listLoading = false;
+					}
+				})
+				.catch(function (error) {
+				 	console.log(error);
+				});
+		}
+		var loadCategoryOptions=function(){
+			$.ajax({
+		        data: {parentId:0},
+		        type: "POST",
+		        url: '/getCategoryDropdownlist',
+		        /* async: false, */
+		        success: function (result) {
+		        	//debugger;
+					if(result.code==0){
+						 app.categoryoptions=result.data;
+					}else{
+						app.$message.error(result.msg);
+					}
+		        },
+		        error: function (data) {
+		        	
+		        }
+		    });
+		} 
+	 var app = new Vue({
+         el: '#app',
+         data:{
+   	      tableKey: 0,
+   	      list: null,
+   	      total: null,
+   	      listLoading: true,
+   	      listQuery: {
+   	        pageIndex: 1,
+   	        pageSize: 10,
+   	        status: '',
+   	        title: '',
+   	        categoryId:'',
+   	        sort: '1'
+   	      },
+   	      status: [{name:'草稿',code:'draft',value:'0'},{name:'已发布',code:'published',value:'1'}, {name:'定时发布',code:'timer',value:'2'},{name:'删除',value:'-1',code:'deleted'} ],
+   	      categoryoptions:[],
+   	      sortOptions: [{ name: '最后更新 升序', key: '+updateTime',value:'0' }, { name: '最后更新 降序', key: '-updateTime',value:'1' }],
+   	      downloadLoading: false
+   	    },
+ 	  created() {
+ 	    this.getList();
+ 	    this.loadCategoryOptions();
+ 	  },
+ 	 methods: {
+ 		linktoEdit(articleId){
+ 			//window.open("/article/edit/"+articleId);
+ 			window.location.href="/article/edit/"+articleId;
+ 		},
+ 		loadCategoryOptions:loadCategoryOptions,
+ 		getList:getList,
+ 	    handleFilter() {
+ 	      this.listQuery.pageIndex = 1
+ 	      this.getList()
+ 	    },
+ 	    handleSizeChange(val) {
+ 	      this.listQuery.pageSize = val
+ 	      this.getList()
+ 	    },
+ 	    handleCurrentChange(val) {
+ 	      this.listQuery.pageIndex = val
+ 	      this.getList()
+ 	    }, 
+ 	   deleteArticle(rowId) {
+			app.$confirm('确定要[删除]该条记录吗?', '提示', {
+		          confirmButtonText: '确定',
+		          cancelButtonText: '取消',
+		          type: 'warning'
+		        }).then(() => {
+ 	    	$.ajax({
+		        data: {articleId:rowId},
+		        type: "POST",
+		        url: '/article/deleteArticle',
+		        success: function (result) {
+					if(result.code==0){
+						app.getList();
+						app.$message({
+				 	        message: result.msg,
+				 	        type: 'success'
+				 	      })
+					}else{
+						app.$message.error(result.msg);
+					}
+		        },
+		        error: function (data) {}
+		    });
+		        }).catch(() => {})
+ 	    },
+ 	    handleDownload() {
+ 	      this.downloadLoading = true;
+ 	    }
+ 	  }});
+	 </script>
+	</div>
+</body>
+
+</html>

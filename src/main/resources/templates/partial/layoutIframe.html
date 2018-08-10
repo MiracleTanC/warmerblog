@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8" />
+    <title>首页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--<meta name="_csrf" th:content="${_csrf.token}" />-->
+    <!-- default header name is X-CSRF-TOKEN spring security 避免ajax请求403-->
+    <!-- <meta name="_csrf_header" th:content="${_csrf.headerName}" />-->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <!-- import css -->
+    <link rel="stylesheet" th:href="@{/css/bootcss/index.css}" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link th:href="@{/css/element-style.css}" rel="stylesheet">
+    <style type="text/css">
+    .txtCenter {
+		text-align: center;
+	}
+	#a{
+	  padding-left: 20px; 
+	}
+</style>
+</head>
+
+<body class="fixed-sidebar full-height-layout"> <!--  style="overflow:hidden" -->
+    <div id="mainApp">
+        <div id="wrapper">
+            <!-- 侧边栏导航 -->
+            <nav  class="navbar-default navbar-static-side" role="navigation">
+            <div class="nav-close"><i class="fa fa-times-circle"></i></div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                       <img style="width: 60px;margin-left: 15px;" alt="" th:src="@{/images/logo/logo_o.png}">
+                                    </span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="logo-element">喵
+                        </div>
+                    </li>
+                    <li v-if="menuList" v-for="item in menuList">
+                        <a href="javascript:void(0);"><i :class="item.icon"></i> 
+                            <span class="nav-label">{{item.title}} </span>
+                        </a>
+                        <ul class="nav nav-second-level" v-if="item.childrens" >
+                            <li v-for="subitem in item.childrens">
+                            	<a class="J_menuItem" href="javascript:void(0);" @click="linkTo(subitem)" :title="subitem.linkUrl">{{subitem.title}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+            <!--右侧部分开始-->
+            <div id="page-wrapper" class="white-bg dashbard-1">
+                <!-- 头部工具栏 -->
+                <div class="row border-bottom">
+		            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+		                <div class="navbar-header" style="">
+		                    <a class="navbar-minimalize minimalize-styl-2 " href="#">
+		                        <i id="sideIcon" class="glyphicon glyphicon-chevron-left"></i>
+		                    </a>
+		                </div>
+		                <ul class="nav navbar-top-links navbar-right">
+		                    <li class="dropdown">
+		                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+		                            <i class="fa fa-envelope"></i>
+		                            <span class="label label-warning">16</span>
+		                        </a>
+		                        <ul class="dropdown-menu dropdown-messages">
+		                            <li class="m-t-xs">
+		                                <div class="dropdown-messages-box">
+		                                    <div class="media-body">
+		                                        <small class="pull-right">2小时前</small>
+		                                        <strong>套马杆的汉子</strong> 评论了你的文章
+		                                        <br>
+		                                        <a href="#" title="点击查看"><small class="text-muted">Java依赖注入(DI)实例详解</small></a>
+		                                    </div>
+		                                </div>
+		                            </li>
+		                            <li class="divider"></li>
+		                            
+		                        </ul>
+		                    </li>
+		                    <li class="dropdown">
+		                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+		                             <img :alt="userInfo.username" style="width: 30px;" class="img-circle" :src="userInfo.avatar">
+		                        </a>
+		                        <ul class="dropdown-menu dropdown-alerts" style="max-width:110px;padding:10px,0px;">
+		                            <li>
+		                                <a style="padding: 0px 0px;" href="/user" target="J_iframe">
+		                                    <div>
+		                                        <i class="glyphicon glyphicon-edit"></i> 修改信息
+		                                    </div>
+		                                </a>
+		                            </li>
+		                            <li class="divider"></li>
+		                            <li>
+		                                <a style="padding: 0px 0px;" href="/logout" >
+		                                    <div>
+		                                        <i class="glyphicon glyphicon-log-out"></i> 退出登录
+		                                    </div>
+		                                </a>
+		                            </li>
+		                        </ul>
+		                    </li>
+		                </ul>
+		            </nav>
+		        </div>
+                <!-- 正文内容 -->
+                  <div class="row J_mainContent" id="content-main" >
+	                <iframe id="J_iframe" name="J_iframe" width="100%" height="100%" src="" frameborder="0" seamless></iframe>
+	            </div>
+            </div>
+            <!-- 页脚 -->
+            <!-- <div th:include="/partial/footer::footer"></div> -->
+            <!--右侧部分结束-->
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/moment.js}"></script>
+    <script th:src="@{/js/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/slimscroll/jquery.slimscroll.min.js}"></script>   
+    <script th:src="@{/js/iconfont.js}"></script>
+    <script th:src="@{/js/vue.js}" src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script th:src="@{/js/element-index.js}" src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script  src="https://unpkg.com/vue-router@3.0.1/dist/vue-router.js"></script>
+    <!-- 自定义js -->
+    <script th:src="@{/js/hAdmin.js}"></script>
+   <script th:inline="javascript" type="text/javascript">
+      var currentUrl=[[${#request.getRequestURI()}]];
+      var changeFrameHeight= function changeFrameHeight(){
+    	    var ifm= document.getElementById("J_iframe"); 
+    	    ifm.style.height=document.documentElement.clientHeight + 'px';
+    	}
+      var initUserModel=function(){
+			var userModel=[[${userModel}]];
+			debugger
+			if(userModel!=null){
+				this.userInfo.userId=userModel.userId;
+				this.userInfo.username=userModel.username;
+				this.userInfo.avatar=userModel.avatar;
+				}
+			}
+		var main=  new Vue({
+		    el: '#mainApp',
+		    data:{
+		    	linkUrl:'/article',
+		    	defaultRouter:true,
+		    	userInfo:{
+		    		userId:0,
+		    		username:'',
+		    		avatar:''
+		    	},
+		    	menuList:[
+		    		{
+		    			title:'系统管理',icon:'glyphicon glyphicon-cog',linkUrl:'',childrens:[
+		    				{title:'菜单管理',icon:'',linkUrl:'javascript:void(0);'},
+		    				{title:'资源管理',icon:'',linkUrl:'javascript:void(0);'}
+		    			]
+		    		},
+		    		{
+		    			title:'文章管理',icon:'glyphicon glyphicon-th-list',linkUrl:'javascript:void(0);',childrens:[
+		    				{title:'文章列表',icon:'',linkUrl:'/article'},
+		    				{title:'分类管理',icon:'',linkUrl:'/category'},
+		    				{title:'标签管理',icon:'',linkUrl:'/tag'},
+		    				{title:'轮播图',icon:'',linkUrl:'/banner'},
+		    				{title:'友情链接',icon:'',linkUrl:'/partner'},
+		    				{title:'评论管理',icon:'',linkUrl:'javascript:void(0);'},
+		    			]
+		    		},
+		    		{
+		    			title:'任务计划',icon:'glyphicon glyphicon-pushpin',linkUrl:'javascript:void(0);',childrens:[
+		    				{title:'定时任务',icon:'',linkUrl:'javascript:void(0);'},
+		    				{title:'项目计划',icon:'',linkUrl:'javascript:void(0);'}
+		    			]
+		    		},
+		    		{
+		    			title:'用户管理',icon:'glyphicon glyphicon-user',linkUrl:'javascript:void(0);',childrens:[
+		    				{title:'个人信息',icon:'',linkUrl:'/user'},
+		    			]
+		    		}
+		    	]
+		      },
+		      created(){
+		    	  this.initUserModel();
+		      },
+		      mounted(){
+		    	    var ifm= document.getElementById("J_iframe"); 
+		    	    ifm.style.height=document.documentElement.clientHeight + 'px';
+		    	    ifm.src=this.linkUrl;
+		      },
+		      methods: {
+		    	  changeFrameHeight:changeFrameHeight,
+		          linkTo(item){
+					this.linkUrl=item.linkUrl;
+					 const oIframe = document.getElementById('J_iframe');
+					 oIframe.src=this.linkUrl;
+		          },
+		          initUserModel:initUserModel
+		        }
+		    })
+		window.onresize=function(){  
+	   	     changeFrameHeight();  
+	   	} 
+  </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<!-- magenta:洋红 -->
+<!-- boldMagenta:粗红-->
+<!-- cyan:青色 -->
+<!-- white:白色 -->
+<!-- magenta:洋红 -->
+  <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger -%msg%n"/> 
+  <property name="CONSOLE_LOG_PATTERN" value="%yellow(%date{yyyy-MM-dd HH:mm:ss}) |%highlight(%-5level) |%blue(%thread) |%blue(%file:%line) |%green(%logger) |%cyan(%msg%n)"/>
+  <property name="FILE_PATH" value="/blogLog"/>
+    <!--==================写入文件==================-->
+    <appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${FILE_PATH}/log/warmer-info.log</File>
+        <encoder>
+          <!--<pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern> -->
+           <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${FILE_PATH}/log/blog-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>512MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+    <!--==================写入文件==================-->
+    <!--==================异常日志==================-->
+   <appender name="error_file" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+    <file>${FILE_PATH}/log/warmer-error.log</file>
+        <!-- 只打印错误日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <level>ERROR</level>  
+        <onMatch>ACCEPT</onMatch>  
+        <onMismatch>DENY</onMismatch>  
+      </filter>  
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+           <fileNamePattern>
+            ${FILE_PATH}/log/warmer-error-%d{yyyy-MM-dd}.%i.log
+       </fileNamePattern>
+          <maxHistory>30</maxHistory>
+         <TimeBasedFileNamingAndTriggeringPolicy
+            class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>512MB</maxFileSize>
+         </TimeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>  
+    <encoder>  
+        <pattern>${FILE_LOG_PATTERN}</pattern>
+    </encoder>  
+   </appender>
+    <!--==================异常日志==================-->
+    <!--==================控制台==================-->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    	<withJansi>true</withJansi>  
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>  
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+    <!--==================控制台==================-->
+    <logger name="warmer.star.blog.mapper" level="debug" />
+    <logger name="jdbc.sqltiming" level="debug"/>
+    <logger name="com.ibatis" level="debug" />
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="debug" />
+    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="debug" />
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate"
+            level="debug" />
+    <logger name="java.sql.Connection" level="debug" />
+    <logger name="java.sql.Statement" level="debug" />
+    <logger name="java.sql.PreparedStatement" level="debug" />
+    <logger name="java.sql.ResultSet" level="debug" />
+    <root level="${logging.level.root}">
+        <appender-ref ref="logfile"/>
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="error_file" />
+    </root>
+</configuration>

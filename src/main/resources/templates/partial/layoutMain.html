@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head>
+<meta charset="utf-8" />
+<title>首页</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <!-- import css -->
+    <link rel="stylesheet" th:href="@{/css/bootcss/index.css}" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link th:href="@{/css/element-style.css}" rel="stylesheet">
+<style type="text/css">
+[v-cloak] {
+    	display: none !important;
+	}
+.txtCenter {
+	text-align: center;
+}
+.app-container{
+  margin:20px;
+}
+</style>
+</head>
+
+<body class="fixed-sidebar full-height-layout white-bg ">
+	<!--  style="overflow:hidden" -->
+	<div>
+		<div class="row J_mainContent" id="content-main">
+			<div id="app" style="height: 100%;" v-cloak>
+				<div layout:fragment="content"></div>
+			</div>
+		</div>
+	</div>
+	<!-- 全局js -->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/moment.js}"></script>
+    <script th:src="@{/js/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/slimscroll/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/js/layer/layer.min.js}"></script>
+    <script th:src="@{/js/axios.js}" src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+    <script th:src="@{/js/iconfont.js}"></script>
+    <!-- <script th:src="@{/js/lodash.js}" src="https://cdn.bootcss.com/lodash.js/4.17.10/lodash.js"></script> -->
+    <!-- <script th:src="@{/js/lodash.core.min.js}" src="https://cdn.bootcss.com/lodash.js/4.17.10/lodash.core.min.js"></script> -->
+    <script th:src="@{/js/vue.js}" src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script th:src="@{/js/element-index.js}" src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script  src="https://unpkg.com/vue-router@3.0.1/dist/vue-router.js"></script>
+    <!-- 自定义js -->
+    <script th:src="@{/js/hAdmin.js}"></script>
+    <script type="text/javascript">
+	    axios.defaults.baseURL = 'http://localhost';
+	    axios.defaults.headers.common['Authorization'] = "warmer";
+	    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    </script>
+	<!-- js内容 -->
+	<div layout:fragment="jscontent"></div>
+</body>
+</html>

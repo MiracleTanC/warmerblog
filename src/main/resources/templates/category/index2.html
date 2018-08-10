@@ -1,0 +1,132 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layoutAdmin"
+	layout:decorator="partial/layout">
+
+<head>
+<title>分类</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style type="text/css">
+	.el-tree-node__content{
+		height:40px;
+	}
+	.w-500{
+		width:500px;
+		display:inline-block;
+	}
+	</style>
+</head>
+<body>
+	<div layout:fragment="content">
+	
+		<div class="app-container calendar-list-container">
+			<div class="filter-container">
+				<el-button class="filter-item" style="margin-left: 10px;float:right" @click="alert('新增')" type="primary" icon="el-icon-edit">新增</el-button>
+			</div>
+			<div class="block" style="margin-top:35px;">
+			    <el-tree ref="tree" :load="loadNode" :props="props" lazy :expand-on-click-node="expandonclicknode">
+				     <div class="custom-tree-node" slot-scope="{ node, data }">
+				        <span class="w-500">{{ node.label }}</span>
+				        <span >
+				          <el-button  type="primary" size="mini" @click="() => openDialog(node,data,'create')"> 新增 </el-button>
+				          <el-button type="success" size="mini" @click="() => openDialog(node,data,'update')"> 编辑 </el-button>
+				          <el-button type="danger" size="mini" @click="() => removeNode(node, data)"> 刪除 </el-button>
+				        </span>
+				      </div>
+			     </el-tree>
+			  </div>
+			      <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+				      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="120px" style='width: 400px; margin-left:50px;'> 
+				        <el-form-item label="分类名称" prop="name">
+				          <el-input v-model="temp.name"></el-input>
+				        </el-form-item>
+				        <el-form-item label="分类编码" prop="code">
+				          <el-input v-model="temp.code"></el-input>
+				        </el-form-item>
+				      </el-form>
+				      <div slot="footer" class="dialog-footer">
+				        <el-button @click="dialogFormVisible = false">取消</el-button>
+				        <el-button v-if="dialogStatus=='create'" type="primary" @click="updateNode">确定</el-button>
+				        <el-button v-else type="primary" @click="updateNode">更新</el-button>
+				      </div>
+				    </el-dialog>
+
+		</div>
+	</div>
+	<div layout:fragment="jscontent">
+		<script type="text/javascript">
+		var loadNode=function(node, resolve){
+			this.parentId=node.id;
+			axios.post('/admin/getCategorylist', {parentId:this.parentId})
+				.then(function (response) {
+					console.log(response);
+					var result=response.data;
+					if(result.code==0){
+						 resolve(result.data);
+						 this.parentId=0;
+					}
+				})
+				.catch(function (error) {
+				 	console.log(error);
+				});
+		} 
+		var removeNode=function(node,resolve)
+		{
+			
+		}
+		var openDialog=function(node,resolve,status)
+		{
+			this.dialogFormVisible=true;
+			this.dialogStatus=status;
+			//updateNode(node,resolve);
+			debugger;
+			this.selectedNode=node;
+			//var node=getCheckedNodes();
+		}
+		var updateNode=function(node,resolve)
+		{
+			
+			
+		}
+		var getCheckedNodes=function() {
+ 	        console.log(app.$refs.tree.getCurrentNode());
+	      }
+	 var app = new Vue({
+         el: '#app',
+         data:{
+        	 parentId:0,
+        	 cateList:[],
+        	 props:{
+        		 label:'name'
+        	 },
+        	 selectedNode:'',
+        	 temp: {
+        	        id: undefined,
+        	        name: '',
+        	        code: ''
+        	      },
+        	      expandonclicknode:false,
+        	      dialogFormVisible: false,
+        	      dialogStatus: '',
+        	      textMap: {
+        	        update: '编辑',
+        	        create: '新增'
+        	      },
+        	      dialogPvVisible: false,
+        	      rules: {
+        	          name: [{ required: true, message: '分类名称必填', trigger: 'blur' }],
+        	          code: [{ required: true, message: '分类编码必填', trigger: 'blur' }]
+        	        },
+         },
+	 	 methods: {
+	 		loadNode:loadNode,
+	 		updateNode:updateNode,
+	 		openDialog:openDialog,
+	 		removeNode:removeNode,
+	 		getCheckedNodes:getCheckedNodes
+	 	  }});
+	 </script>
+	</div>
+</body>
+
+</html>

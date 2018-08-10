@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.PartnerMapper">
+	<resultMap id="partnermodel" type="warmer.star.blog.model.Partner">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="siteName" property="siteName" jdbcType="VARCHAR"/>
+        <result column="siteUrl" property="siteUrl" jdbcType="VARCHAR"/>
+        <result column="siteDesc" property="siteDesc" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="getAll" resultMap="partnermodel">
+        select * from partner order by sort asc
+    </select>
+     <insert id="savePartner" parameterType="warmer.star.blog.model.Partner">
+		  insert into partner (siteName,siteUrl,siteDesc,sort)
+		  values (#{siteName},#{siteUrl},#{siteDesc},#{sort})
+		  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	          SELECT LAST_INSERT_ID()
+	      </selectKey>
+	</insert>
+	<update id="updatePartner">
+		  update partner
+		  <set>
+		      sort=#{sort},
+			  <if test="siteName!= null and siteName !=''">
+			      	siteName = #{siteName},
+			  </if>
+			  <if test="siteUrl!= null and siteUrl !=''">
+			  		siteUrl = #{siteUrl},
+			  </if>
+			  <if test="siteDesc!= null and siteDesc !=''">
+		  			siteDesc=#{siteDesc},
+			  </if>
+			  
+		  </set>
+			where id = #{id}
+	</update>
+	<update id="deletePartner">
+		  delete from partner  where id = #{partnerId}
+	</update>
+</mapper>

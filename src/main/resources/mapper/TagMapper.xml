@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.TagMapper">
+	<resultMap id="tagmodel" type="warmer.star.blog.model.Tag">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="tagName" property="tagName" jdbcType="VARCHAR"/>
+        <result column="aliasName" property="aliasName" jdbcType="VARCHAR"/>
+        <result column="color" property="color" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getAll" resultMap="tagmodel">
+        select * from tag
+    </select>
+     <insert id="saveTag" parameterType="warmer.star.blog.dto.TagItem">
+		  insert into tag (tagName,aliasName,color)
+		  values (#{name},#{name},#{color})
+		  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	          SELECT LAST_INSERT_ID()
+	      </selectKey>
+	</insert>
+	<update id="updateTag">
+		  update tag
+		  <set>
+			  <if test="name!= null and name !=''">
+			      	tagName = #{tagName},
+			  </if>
+			  <if test="name!= null and name !=''">
+			  		aliasName = #{aliasName},
+			  </if>
+			  <if test="color!= null and color !=''">
+		  			color=#{color},
+			  </if>
+		  </set>
+			where id = #{id}
+	</update>
+	<update id="deleteTag">
+		  delete from tag  where id = #{tagId}
+	</update>
+</mapper>

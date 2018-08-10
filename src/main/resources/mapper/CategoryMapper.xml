@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.CategoryMapper">
+    <cache eviction="LRU" flushInterval="60000" readOnly="true"/>
+    <resultMap id="category" type="warmer.star.blog.model.Category">
+         <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="categoryName" property="categoryName" jdbcType="VARCHAR"/>
+        <result column="categoryCode" property="categoryCode" jdbcType="VARCHAR"/>
+        <result column="fullName" property="fullName" jdbcType="VARCHAR"/>
+        <result column="parentId" property="parentId" jdbcType="INTEGER"/>
+        <result column="isParent" property="isParent" jdbcType="INTEGER"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="createOn" property="createOn" jdbcType="TIMESTAMP"/>
+        <result column="updateOn" property="updateOn" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		id,categoryCode,categoryName,fullName,parentId,isParent,path,level,sort,status,createOn,updateOn
+	</sql>
+	<sql id="Where_Clause" >
+	    <where >	
+	     status=1 
+	      	<if test="parentId!= null and parentId != '' or parentId==0 ">
+           		and parentId = #{parentId,jdbcType=INTEGER}
+        	</if>
+	    </where>
+	 </sql>
+    <select id="getCategoryList" resultMap="category">
+        select 
+        <include refid="Base_Column_List" />
+        from category 
+       <include refid="Where_Clause" />
+       order by createOn desc 
+    </select>
+    <select id="getAll" resultMap="category">
+        select 
+        <include refid="Base_Column_List" />
+        from category 
+       order by sort asc 
+    </select>
+    <select id="getById" resultMap="category">
+        select 
+        <include refid="Base_Column_List" />
+        from category 
+       order by sort asc 
+    </select>
+    <insert id="saveCategory">
+		  insert into category (CategoryName,CategoryCode,parentId,sort,createon,updateon)
+		  values (#{name},#{code},#{parentId},#{sort},#{createon},#{updateon})
+	</insert>
+	<update id="updateCategory">
+	  update category set
+	    CategoryName = #{name},
+	    CategoryCode = #{code},
+	    parentId = #{parentId},
+	    sort = #{sort},
+	    updateOn = #{updateon}
+	  where id = #{id}
+	</update>
+	<delete id="deleteCategoryById">
+	  delete from category where id = #{cateId}
+	</delete>
+</mapper>

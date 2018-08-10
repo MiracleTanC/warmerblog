@@ -1,0 +1,262 @@
+blockquote, body, button, caption, dd, div, dl, dt, fieldset, figure, form, h1, h2, h3, h4, h5, h6, hr, html, input, legend, li, menu, ol, p, pre, table, td, textarea, th, ul {
+	margin: 0;
+	padding: 0;
+}
+
+html, body, .y-wrap {
+	width: 100%;
+	height: 100%;
+}
+
+input {
+	border: 0;
+	outline: 0;
+	font: 12px/1 'Microsoft YaHei' arial,sans-serif;
+}
+
+.y-wrap {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: left;
+	z-index: 1;
+}
+.y-wrap .y-right {
+	float: right;
+}
+
+.y-wrap .y-box {
+	display: block;
+}
+.content {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #eee;
+	background: url(/images/login_bgx.gif);
+}
+
+a, a:visited {
+	color: #406599;
+}
+
+a:visited {
+	color: #999;
+}
+
+a, button {
+	cursor: pointer;
+}
+
+.logo-wrap {
+	display: inline-block;
+	position: absolute;
+	top: 16px;
+	left: 16px;
+	width: 110px;
+	height: 27px;
+}
+
+.logo-wrap > img {
+	width: 100%;
+	height: 100%;
+}
+
+.slogan-wrap {
+	position: absolute;
+	left: 50%;
+	margin-left: -275px;
+	top: 10px;
+	width: 550px;
+	height: 385px;
+}
+
+.slogan-wrap > img {
+	width: 100%;
+	height: 100%;
+}
+
+.loginBox {
+	position: absolute;
+	top: 240px;
+	left: 50%;
+	margin-left: -200px;
+	border-radius: 5px;
+	width: 300px;
+	padding: 28px 50px 38px;
+	background-color: #fff;
+	background-color: rgba(255,255,255,.9);
+}
+
+.baseLogin {
+	position: relative;
+	margin-top: 20px;
+}
+
+.input-field {
+	position: relative;
+	font-size: 16px;
+	margin-bottom: 30px;
+	color: #666;
+}
+
+.input-field > input {
+	width: 282px;
+	font-size: 16px;
+	line-height: 32px;
+	height: 32px;
+	padding: 4px 8px;
+	border: 1px solid #ddd;
+	z-index: 1;
+}
+
+.baseLogin .verification > input {
+	width: 170px;
+	padding-right: 120px;
+	position: relative;
+}
+
+.baseLogin .verification .captcha-wrap {
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	width: 102px;
+	height: 40px;
+}
+
+.baseLogin .verification .captcha-wrap .captcha {
+	display: block;
+	width: 102px;
+	height: 40px;
+	cursor: pointer;
+}
+.baseLogin .verification .captcha-wrap .tips-bubble {
+	display: none;
+	position: absolute;
+	top: -35px;
+	right: -9px;
+	background-color: #444;
+	width: 115px;
+	text-align: center;
+	font-size: 13px;
+	color: #fff;
+	line-height: 26px;
+	padding: 0 2px;
+}
+
+.baseLogin .phone-code > input {
+	width: 170px;
+	padding-right: 120px;
+}
+
+.baseLogin .phone-code .code-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: #406599;
+	cursor: pointer;
+	font-size: 16px;
+	width: 122px;
+	height: 42px;
+	line-height: 42px;
+	padding: 0 16px;
+	text-align: center;
+}
+
+.baseLogin .action {
+	font-size: 13px;
+	color: #222;
+	margin-top: 4px;
+	margin-bottom: 24px;
+}
+
+.baseLogin .action > input, .baseLogin .action > label {
+	vertical-align: middle;
+	line-height: 18px;
+}
+
+label {
+	cursor: pointer;
+}
+
+.action-btn {
+	color: #fff;
+	font-size: 18px;
+	line-height: 42px;
+	width: 300px;
+	text-align: center;
+	background-color: #f85959;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.baseLogin .sns-login {
+	font-size: 0;
+	text-align: center;
+}
+
+.baseLogin .sns-login .sns:first-child {
+	margin-left: 0;
+}
+
+.baseLogin .sns-login .sns {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	margin-left: 24px;
+	cursor: pointer;
+	background-repeat: no-repeat;
+}
+
+li {
+	list-style: none;
+}
+
+.logo-l {
+	font-size: 30px;
+	line-height: 40px;
+	color: #292929;
+	float: left;
+	height: 45px;
+}
+
+.register {
+	font-size: 18px;
+	color: #707070;
+	float: right;
+}
+
+.reg-a-a {
+	margin-bottom: 20px;
+}
+
+.register a {
+	font-size: 18px;
+	line-height: 50px;
+	color: #FF4200;
+	margin-left: 5px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.login-type {
+	margin-top: 66px;
+}
+
+.geetest_fullpage_click_box {
+	margin-left: -38px !important;
+	margin-top: 0 !important;
+}
+
+.show {
+	display: block;
+}
+
+.hide {
+	display: none;
+}
+
+.gray-disable {
+	color: #fff;
+	cursor: auto;
+}

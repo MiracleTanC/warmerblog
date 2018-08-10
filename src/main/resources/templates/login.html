@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>暖暖动听 | 后台</title>
+<link th:href="@{/css/login.css}" rel="stylesheet" />
+<style type="text/css">
+</style>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+</head>
+
+<body>
+	<div id="app" class="y-wrap">
+		<div class="content">
+			<a class="logo-wrap" href="/"> <img src="/images/logo/logo-0.png" />
+			</a>
+			<div class="slogan-wrap">
+				<img src="/images/logo/login_bg.png" alt="">
+			</div>
+			<div style="margin-bottom: 12px; color: red;" th:if="${param.error}"
+				th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message == 'Bad credentials' ? '用户名或密码错误' : session.SPRING_SECURITY_LAST_EXCEPTION.message}"></div>
+			<div class="loginBox">
+				<img class="logo-l" src="/images/logo/logo-3.jpg" />
+				<div class="login-type">
+					<div captcha="" hidesns="">
+						<div class="baseLogin">
+							<form th:action="@{/login}" th:method="post">
+								<input type='hidden' name='_csrf' v-model="form._csrf" /> <input
+									type='hidden' name='return' v-model="form.returnurl" />
+								<div class="input-field">
+									<input type="text" name="username" v-model="form.username"
+										autocomplete="off" spellcheck="false" placeholder="用户名">
+								</div>
+								<div class="input-field verification">
+									<div id="embed-captcha"></div>
+
+								</div>
+								<div class="input-field phone-code">
+									<input type="password" name="password" v-model="form.password"
+										autocomplete="off" spellcheck="false" placeholder="密码">
+								</div>
+								<input type="submit" name="submitBtn" class="action-btn"
+									value="登录">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:inline="javascript">
+		var vm = new Vue({
+			el : '#app',
+			data : {
+				form:{
+					username:'',
+					password:'',
+					_csrf:[[${_csrf.token}]],
+					returnurl:[[${returnurl}]]
+				}
+			},
+			methods : {
+				
+			}
+		})
+	</script>
+</body>
+</html>
