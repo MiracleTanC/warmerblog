@@ -1,9 +1,9 @@
 server:
-  port: 8080
+  port: 80
 spring:
   datasource:
-    url: jdbc:mysql://#######/warmerblog?useSSL=false
-    #url: jdbc:mysql://localhost/warmerblog?useSSL=false
+    url: jdbc:mysql://118.31.43.234:3306/warmerblog?useSSL=false
+    #url: jdbc:mysql://localhost:3306/warmerblog?useSSL=false
     username: tan
     #username: root
     password: 123456
@@ -45,9 +45,9 @@ spring:
     #协议
     protocol: smtp
     #发送者的邮箱账号
-    username: #####
+    username: warmercloud@126.com
     #发送者的邮箱授权码,非登录密码
-    password: ####%
+    password: miracletan2018
   # mail
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
@@ -59,21 +59,21 @@ logging:
 #--------七牛云配置
 qiniu:
   access:
-    key: ####################
+    key: 2J5BOKpbxDlzkYVYZ5dwGS3jAevVmOJwcL3fIdpw
   secret:
-    key: ####################
+    key: 2LXAQbFFbFR_I76bseNEmu-Sjnh4RRaSRsazX5Dj
   bucket:
-    name: ###
+    name: nndt
     host:
-      name: ####映射的二级域名
+      name: file.miaoleyan.com
   prefixName: /nndt
 #--------七牛云配置
 img:  #//如果是Windows情况下，格式是 D:\\blog\\image   linx 格式"/home/blog/image";
    location : D:\\blog\\image
 #--------极验验证码配置
 geetest:
-  geetest_id: ####
-  geetest_key: ####
+  geetest_id: 86cc24901b72dce49d347561a548a84e
+  geetest_key: 08c31f60e8eed5e48a9ebd12d0ba1027
   newfailback: true
 #--------极验验证码配置
 # Elasticsearch 6.3版本
