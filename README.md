@@ -1,7 +1,8 @@
 Welcome to the warmerblog wiki!
 本项目使用springboot2.0 + vue + element-ui开发,前后端不分离
 ## 演示站点
-* http://www.miaoleyan.com
+* 前台:http://www.miaoleyan.com
+* 后台:http://www.miaoleyan.com/admin
 * 用户名:sa 密码:miracle
 * 演示站的服务器配置有点渣,暂时不开启Elasticsearch功能,若使用请在配置内开启
 ## 使用
