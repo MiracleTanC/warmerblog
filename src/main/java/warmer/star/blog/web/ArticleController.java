@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -80,7 +81,9 @@ public class ArticleController extends BaseController {
 		EsPageRecord record = ElasticsearchUtils.mutilSearchDataPage(index, type, query.getPageIndex(), query.getPageSize(), 0,0, null, query.getSortfield(), false, highLightFields, marchStrs);
 		return R.success().put("data", record);
 	}
+	
 	@RequestMapping("/article/edit/{articleId}")
+	@PreAuthorize("hasPermission('/article/edit','create')")
 	public String edit(@PathVariable("articleId") int articleId, Model model) {
 		ArticleItem articleItem = new ArticleItem();
 		if (articleId != 0) {
@@ -92,6 +95,7 @@ public class ArticleController extends BaseController {
 
 	@RequestMapping("/article/deleteArticle")
 	@ResponseBody
+	@PreAuthorize("hasPermission('/article/deleteArticle','delete')")
 	public R deleteArticle(int articleId) {
 		boolean result = false;
 		try {
@@ -109,8 +113,8 @@ public class ArticleController extends BaseController {
 
 	@RequestMapping("/article/saveArticle")
 	@ResponseBody
+	@PreAuthorize("hasPermission('/article/edit','create')")
 	public R saveArticle(ArticleSubmitItem submitItem) {
-
 		boolean result = false;
 		try {
 			if (submitItem.getId() == 0) {

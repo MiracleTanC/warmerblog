@@ -16,7 +16,7 @@ public class User implements Serializable {
 	*/  
 	private static final long serialVersionUID = 1L;
 
-	private long id;
+	private Integer id;
 
     private String username;    //用户名
 
@@ -32,11 +32,11 @@ public class User implements Serializable {
 
     private Date createTime;    //创建时间
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -121,11 +121,4 @@ public class User implements Serializable {
                 ", createTime=" + createTime +
                 '}';
     }
-
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        return authorities;
-    }
-
 }

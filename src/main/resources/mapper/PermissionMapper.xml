@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.PermissionMapper">
+	<resultMap id="permissionmodel" type="warmer.star.blog.model.Permission">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="rolecode" property="rolecode" jdbcType="VARCHAR"/>
+        <result column="rolename" property="rolename" jdbcType="VARCHAR"/>
+        <result column="createuser" property="createuser" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+   
+    <select id="getPermission" parameterType="Integer" resultMap="permissionmodel">
+        SELECT * from sys_role where id = #{permissionId}
+    </select>
+</mapper>

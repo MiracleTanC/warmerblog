@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.RolePermissionMapper">
+	<resultMap id="RolePermissionmodel" type="warmer.star.blog.model.RolePermission">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="roleid" property="roleid" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="permissionid" property="permissionid" jdbcType="INTEGER"/>
+        <association property="permission" column="permissionid" jdbcType="INTEGER" resultMap="permission"/>
+    </resultMap>
+   <resultMap id="permission" type="warmer.star.blog.model.Permission">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="permissioncode" property="permissioncode" jdbcType="VARCHAR"/>
+        <result column="permissionname" property="permissionname" jdbcType="VARCHAR"/>
+        <result column="createuser" property="createuser" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="getRolePermission" parameterType="Integer" resultMap="RolePermissionmodel">
+        SELECT *,p.permissioncode,p.permissionname from sys_role_permission rp
+        left join  sys_permission p on rp.permissionid=p.id  where roleid = #{roleId}
+    </select>
+</mapper>

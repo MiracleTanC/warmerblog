@@ -1,11 +1,4 @@
-/**    
-* @Title: AppUserUtil.java  
-* @Package warmer.star.blog.util  
-* @Description: TODO(用一句话描述该文件做什么)  
-* @author tc    
-* @date 2018年6月1日 下午2:49:29  
-* @version V1.0    
-*/
+
 package warmer.star.blog.util;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
