@@ -1,14 +1,21 @@
 $(function (){
-  var songs;
+  var songs=[];
   $.ajax({
       data: {},
       type: "GET",
       url: '/getmusiclist',
       success: function (result) {
 			if(result.code==0){
-				songs=result.data;
+				var ms=result.data.rows;
+				for (var i = 0; i < ms.length; i++) {
+					var m=ms[i];
+					var item={src:m.url,time:'',name:m.title,singer:'',album:''};
+					  songs.push(item);
+				}
 				if(songs.length>0){
 					songsUi();
+					index=0;
+					 changMusic();
 				}
 			    
 			}
@@ -33,6 +40,7 @@ var initMusic=function(){
   }
   //点击播放
   var changMusic=function () {
+	  if(index<0) index=1;
     audio.src=songs[index].src;
     audio.play();
     $('.single_list li').removeClass('play_current');
@@ -120,9 +128,14 @@ var initMusic=function(){
   })
   $(audio).on('play',function () {
     $('.play_bt').addClass('pause_bt');
+    $("#audio_btn").addClass("rotate"); //控制音乐图标 自转或暂停
   })
   $(audio).on('pause',function () {
     $('.play_bt').removeClass('pause_bt');
+    if ($("#audio_btn").hasClass("rotate")) {
+		  $("#audio_btn").toggleClass("rotate"); //控制音乐图标 自转或暂停
+    }
+    //音乐图标暂停旋转
   })
   //静音
   $('.volume_icon').on('click',function(e){
@@ -246,6 +259,18 @@ var initMusic=function(){
   $('.play_bar').on('mouseleave',function () {
     $('.time_show').css('display','none');
   })
+  
+  $('#audio_btn').on('click',function () {
+	    //$('.play_list_frame').toggle();
+	  var ishidden=$(".m_player").is(":hidden");
+	  $('.play_list_frame').hide();
+	  if(ishidden){
+		  $(".m_player").show();
+	  }else{
+		  $(".m_player").hide(); 
+	  }
+	 
+	  })
   //其它点击打开关闭
   $('.close_list').on('click',function () {
     $('.play_list_frame').toggle();
@@ -259,15 +284,21 @@ var initMusic=function(){
   $('.folded_bt').on('click',function () {
     $('.play_list_frame').hide();
     $('.y_player_lyrics').hide();
-    if(!$('.m_player').hasClass('m_player_folded')){
+/*    if(!$('.m_player').hasClass('m_player_folded')){
       $('.m_player').css('left',-540)
     }else{
       $('.m_player').css('left',0)
-    }
-    $('.m_player')
+    }*/
+    var ishidden=$(".m_player").is(":hidden");
+	  if(ishidden){
+		  $(".m_player").show();
+	  }else{
+		  $(".m_player").hide();
+	  }
+  /*  $('.m_player')
     .delay(400)
     .queue(function () {
       $(this).toggleClass('m_player_folded').dequeue();
-    })
+    })*/
   })
 })

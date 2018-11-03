@@ -43,7 +43,7 @@ public class ElasticsearchConfig  {
      * Bean name default  函数名字
      * @return
      */
-    @Bean(name = "transportClient")
+    //@Bean(name = "transportClient")
     public TransportClient transportClient() {
         LOGGER.info("Elasticsearch初始化开始。。。。。");
         TransportClient transportClient = null;

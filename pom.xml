@@ -207,8 +207,8 @@
 					<excludeDevtools>false</excludeDevtools>
 					<fork>true</fork>
 				</configuration>
-			</plugin>
-			<plugin>
+			</plugin> 
+			<plugin>  
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>

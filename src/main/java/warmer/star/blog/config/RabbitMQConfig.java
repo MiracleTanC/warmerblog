@@ -46,7 +46,7 @@ public class RabbitMQConfig {
 	final static String ROUTING_KEY = "helloQuence";
 
  
-	@Bean
+	//@Bean
 	public ConnectionFactory connectionFactory() {
  
 		CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
@@ -59,31 +59,31 @@ public class RabbitMQConfig {
 		return connectionFactory;
 	}
  
-	@Bean
+	//@Bean
 	/** 因为要设置回调类，所以应是prototype类型，如果是singleton类型，则回调类为最后一次设置 */
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public RabbitTemplate rabbitTemplate() {
 		RabbitTemplate template = new RabbitTemplate(connectionFactory());
 		return template;
 	}
  
-	@Bean
+	//@Bean
 	TopicExchange exchange() {
 		return new TopicExchange(EXCHANGE_NAME);
 	}
  
-	@Bean
+	//@Bean
 	public Queue queue() {
 		return new Queue(QUEUE_NAME, true);
 	}
  
-	@Bean
+	//@Bean
 	public Binding binding() {
 		return BindingBuilder.bind(queue()).to(exchange()).with(ROUTING_KEY);
 	}
 	
  
-	@Bean
+	//@Bean
 	public SimpleMessageListenerContainer messageContainer() {
 		String[] queueArray=queues.split(",");
 		Queue[] q = new Queue[queueArray.length];
