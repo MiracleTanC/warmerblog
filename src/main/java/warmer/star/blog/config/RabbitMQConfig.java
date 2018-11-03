@@ -1,4 +1,4 @@
-package warmer.star.blog.config;
+/*package warmer.star.blog.config;
 
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Binding;
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-@Configuration
+//@Configuration
 public class RabbitMQConfig {
 
 	@Value("${spring.rabbitmq.host}")
@@ -54,13 +54,13 @@ public class RabbitMQConfig {
 		connectionFactory.setUsername(username);
 		connectionFactory.setPassword(password);
 		connectionFactory.setVirtualHost(virtualHost);
-		/** 如果要进行消息回调，则这里必须要设置为true */
+		*//** 如果要进行消息回调，则这里必须要设置为true *//*
 		connectionFactory.setPublisherConfirms(publisherConfirms);
 		return connectionFactory;
 	}
  
 	//@Bean
-	/** 因为要设置回调类，所以应是prototype类型，如果是singleton类型，则回调类为最后一次设置 */
+	*//** 因为要设置回调类，所以应是prototype类型，如果是singleton类型，则回调类为最后一次设置 *//*
 	//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public RabbitTemplate rabbitTemplate() {
 		RabbitTemplate template = new RabbitTemplate(connectionFactory());
@@ -105,10 +105,10 @@ public class RabbitMQConfig {
 							"消费端接收到消息:" + message.getMessageProperties() + ":" + new String(message.getBody()));
 					System.out.println("topic:"+message.getMessageProperties().getReceivedRoutingKey());
 					// deliveryTag是消息传送的次数，我这里是为了让消息队列的第一个消息到达的时候抛出异常，处理异常让消息重新回到队列，然后再次抛出异常，处理异常拒绝让消息重回队列
-					/*if (message.getMessageProperties().getDeliveryTag() == 1
+					if (message.getMessageProperties().getDeliveryTag() == 1
 							|| message.getMessageProperties().getDeliveryTag() == 2) {
 						throw new Exception();
-					}*/
+					}
  
 					channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); // false只确认当前一个消息收到，true确认所有consumer获得的消息
 				} catch (Exception e) {
@@ -128,3 +128,4 @@ public class RabbitMQConfig {
 	}
 
 }
+*/

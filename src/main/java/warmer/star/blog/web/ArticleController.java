@@ -21,8 +21,6 @@ import warmer.star.blog.dto.ArticleQueryItem;
 import warmer.star.blog.dto.ArticleSubmitItem;
 import warmer.star.blog.service.ArticleService;
 import warmer.star.blog.util.DateTimeHelper;
-import warmer.star.blog.util.ElasticsearchUtils;
-import warmer.star.blog.util.EsPageRecord;
 import warmer.star.blog.util.PageRecord;
 import warmer.star.blog.util.R;
 
@@ -78,8 +76,9 @@ public class ArticleController extends BaseController {
 			query.setSortfield("createTime");
 		}
 		//如果带有检索词则按照相关性排序
-		EsPageRecord record = ElasticsearchUtils.mutilSearchDataPage(index, type, query.getPageIndex(), query.getPageSize(), 0,0, null, query.getSortfield(), false, highLightFields, marchStrs);
-		return R.success().put("data", record);
+		//EsPageRecord record = ElasticsearchUtils.mutilSearchDataPage(index, type, query.getPageIndex(), query.getPageSize(), 0,0, null, query.getSortfield(), false, highLightFields, marchStrs);
+		//return R.success().put("data", record);
+		return R.success().put("data", "");
 	}
 	
 	@RequestMapping("/article/edit/{articleId}")

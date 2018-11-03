@@ -1,29 +1,15 @@
 package warmer.star.blog;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.alibaba.fastjson.JSONObject;
-
-import warmer.star.blog.util.ElasticsearchUtils;
-import warmer.star.blog.util.EsPageRecord;
-import warmer.star.blog.util.FastJsonUtil;
-import warmer.star.blog.util.UuidUtil;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = BlogApplication.class)
 @WebAppConfiguration
 public class TestElasticSearch {
-	private static String index="tanchao_blog";
+	/*private static String index="tanchao_blog";
 	private static String type="external";
 	//@Test
 	public void createIndex() {
@@ -56,5 +42,5 @@ public class TestElasticSearch {
 	public void deleteRecord() {
 		String id="Fri, 20 Jul 2018 07:44:21 GMT";
         ElasticsearchUtils.deleteDataById(index, type, id);;
-	}
+	}*/
 }

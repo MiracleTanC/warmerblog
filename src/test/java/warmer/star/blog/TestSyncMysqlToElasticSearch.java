@@ -1,31 +1,15 @@
 package warmer.star.blog;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.util.StringUtil;
-
-import warmer.star.blog.dto.ArticleItem;
-import warmer.star.blog.dto.ArticleQueryItem;
-import warmer.star.blog.service.ArticleService;
-import warmer.star.blog.util.ElasticsearchUtils;
-import warmer.star.blog.util.EsPageRecord;
-import warmer.star.blog.util.FastJsonUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = BlogApplication.class)
 @WebAppConfiguration
 public class TestSyncMysqlToElasticSearch {
-	@Autowired
+	/*@Autowired
 	private ArticleService articleService;
 	private static String index = "warmer_blog";
 	private static String type = "article";
@@ -88,5 +72,5 @@ public class TestSyncMysqlToElasticSearch {
 		}
 		EsPageRecord record = ElasticsearchUtils.searchDataPage(index, type, 1, 100, 0, 0, null, "createTime", false, highLightFields, marchStrs);
 		System.out.println(FastJsonUtil.parseToJSON(record));
-	}
+	}*/
 }

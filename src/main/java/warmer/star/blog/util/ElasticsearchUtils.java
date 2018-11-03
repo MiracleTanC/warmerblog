@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 
-//@Component
+/*//@Component
 public class ElasticsearchUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ElasticsearchUtils.class);
 
@@ -51,12 +51,12 @@ public class ElasticsearchUtils {
 		client = this.transportClient;
 	}
 
-	/**
+	*//**
 	 * 创建索引
 	 *
 	 * @param index
 	 * @return
-	 */
+	 *//*
 	public static boolean createIndex(String index) {
 		if (!isIndexExist(index)) {
 			LOGGER.info("Index is not exits!");
@@ -66,12 +66,12 @@ public class ElasticsearchUtils {
 		return indexresponse.isAcknowledged();
 	}
 
-	/**
+	*//**
 	 * 删除索引
 	 *
 	 * @param index
 	 * @return
-	 */
+	 *//*
 	public static boolean deleteIndex(String index) {
 		if (!isIndexExist(index)) {
 			LOGGER.info("Index is not exits!");
@@ -85,12 +85,12 @@ public class ElasticsearchUtils {
 		return dResponse.isAcknowledged();
 	}
 
-	/**
+	*//**
 	 * 判断索引是否存在
 	 *
 	 * @param index
 	 * @return
-	 */
+	 *//*
 	public static boolean isIndexExist(String index) {
 		IndicesExistsResponse inExistsResponse = client.admin().indices().exists(new IndicesExistsRequest(index))
 				.actionGet();
@@ -102,7 +102,7 @@ public class ElasticsearchUtils {
 		return inExistsResponse.isExists();
 	}
 
-	/**
+	*//**
 	 * 数据添加，正定ID
 	 *
 	 * @param jsonObject
@@ -114,14 +114,14 @@ public class ElasticsearchUtils {
 	 * @param id
 	 *            数据ID
 	 * @return
-	 */
+	 *//*
 	public static String addData(JSONObject jsonObject, String index, String type, String id) {
 		IndexResponse response = client.prepareIndex(index, type, id).setSource(jsonObject).get();
 		LOGGER.info("addData response status:{},id:{}", response.status().getStatus(), response.getId());
 		return response.getId();
 	}
 
-	/**
+	*//**
 	 * 数据添加
 	 *
 	 * @param jsonObject
@@ -131,12 +131,12 @@ public class ElasticsearchUtils {
 	 * @param type
 	 *            类型，类似表
 	 * @return
-	 */
+	 *//*
 	public static String addData(JSONObject jsonObject, String index, String type) {
 		return addData(jsonObject, index, type, UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
 	}
 
-	/**
+	*//**
 	 * 通过ID删除数据
 	 *
 	 * @param index
@@ -145,13 +145,13 @@ public class ElasticsearchUtils {
 	 *            类型，类似表
 	 * @param id
 	 *            数据ID
-	 */
+	 *//*
 	public static void deleteDataById(String index, String type, String id) {
 		DeleteResponse response = client.prepareDelete(index, type, id).execute().actionGet();
 		LOGGER.info("deleteDataById response status:{},id:{}", response.status().getStatus(), response.getId());
 	}
 
-	/**
+	*//**
 	 * 通过ID 更新数据
 	 *
 	 * @param jsonObject
@@ -163,14 +163,14 @@ public class ElasticsearchUtils {
 	 * @param id
 	 *            数据ID
 	 * @return
-	 */
+	 *//*
 	public static void updateDataById(JSONObject jsonObject, String index, String type, String id) {
 		UpdateRequest updateRequest = new UpdateRequest();
 		updateRequest.index(index).type(type).id(id).doc(jsonObject);
 		client.update(updateRequest);
 	}
 
-	/**
+	*//**
 	 * 通过ID获取数据
 	 *
 	 * @param index
@@ -182,7 +182,7 @@ public class ElasticsearchUtils {
 	 * @param fields
 	 *            需要显示的字段，逗号分隔（缺省为全部字段）
 	 * @return
-	 */
+	 *//*
 	public static Map<String, Object> searchDataById(String index, String type, String id, String fields) {
 		GetRequestBuilder getRequestBuilder = client.prepareGet(index, type, id);
 		if (StringUtils.isNotEmpty(fields)) {
@@ -192,7 +192,7 @@ public class ElasticsearchUtils {
 		return getResponse.getSource();
 	}
 
-	/**
+	*//**
 	 * 使用分词查询
 	 *
 	 * @param index
@@ -204,12 +204,12 @@ public class ElasticsearchUtils {
 	 * @param matchStr
 	 *            过滤条件List<hashMap<condition,value>> 
 	 * @return
-	 */
+	 *//*
 	public static List<Map<String, Object>> searchListData(String index, String type, String fields, List<HashMap<String, String>> matchStrs) {
 		return searchListData(index, type, 0, 0, null, fields, null, false, null, matchStrs);
 	}
 
-	/**
+	*//**
 	 * 使用分词查询
 	 *
 	 * @param index
@@ -225,13 +225,13 @@ public class ElasticsearchUtils {
 	 * @param matchStr
 	 *            过滤条件List<hashMap<condition,value>>
 	 * @return
-	 */
+	 *//*
 	public static List<Map<String, Object>> searchListData(String index, String type, String fields, String sortField,
 			boolean matchPhrase,List<HashMap<String, String>> matchStrs) {
 		return searchListData(index, type, 0, 0, null, fields, sortField, matchPhrase, null, matchStrs);
 	}
 
-	/**
+	*//**
 	 * 使用分词查询
 	 *
 	 * @param index
@@ -250,14 +250,14 @@ public class ElasticsearchUtils {
 	 * @param matchStr
 	 *            过滤条件List<hashMap<condition,value>>
 	 * @return
-	 */
+	 *//*
 	public static List<Map<String, Object>> searchListData(String index, String type, Integer size, String fields,
 			String sortField, boolean matchPhrase, List<String> highlightFields,
 			List<HashMap<String, String>> matchStrs) {
 		return searchListData(index, type, 0, 0, size, fields, sortField, matchPhrase, highlightFields, matchStrs);
 	}
 
-	/**
+	*//**
 	 * 使用分词查询
 	 *
 	 * @param index
@@ -280,7 +280,7 @@ public class ElasticsearchUtils {
 	 * @param matchStr
 	 *            过滤条件List<hashMap<condition,value>>
 	 * @return
-	 */
+	 *//*
 	public static List<Map<String, Object>> searchListData(String index, String type, long startTime, long endTime,
 			Integer size, String fields, String sortField, boolean matchPhrase, List<String> highlightFields,
 			List<HashMap<String, String>> matchStrs) {
@@ -339,7 +339,7 @@ public class ElasticsearchUtils {
 
 	}
 
-	/**
+	*//**
 	 * 使用分词查询,并分页
 	 *
 	 * @param index
@@ -364,7 +364,7 @@ public class ElasticsearchUtils {
 	 * @param matchStr
 	 *            过滤条件List<hashMap<condition,value>>
 	 * @return
-	 */
+	 *//*
 	public static EsPageRecord searchDataPage(String index, String type, int currentPage, int pageSize, long startTime,
 			long endTime, String fields, String sortField, boolean matchPhrase, List<String> highlightFields,
 			List<HashMap<String, String>> matchStrs) {
@@ -493,12 +493,12 @@ public class ElasticsearchUtils {
 		return null;
 	}
 
-	/**
+	*//**
 	 * 高亮结果集 特殊处理
 	 *
 	 * @param searchResponse
 	 * @param highlightField
-	 */
+	 *//*
 	private static List<Map<String, Object>> setSearchResponse(SearchResponse searchResponse,
 			List<String> highlightFields) {
 		List<Map<String, Object>> sourceList = new ArrayList<Map<String, Object>>();
@@ -531,3 +531,4 @@ public class ElasticsearchUtils {
 		return sourceList;
 	}
 }
+*/

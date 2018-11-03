@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -71,6 +72,30 @@ public class MusicController extends BaseController {
 			else {
 				submitItem.setUpdateOn(DateTimeHelper.getNowDate());
 				result=musicService.updateMusic(submitItem);
+			}
+			
+		} catch (Exception e) {
+			log.error("操作失败:{0}", e);
+			log.error(e.getMessage());
+			result=false;
+		}
+		if(result)
+		{
+			return R.success("操作成功");
+		}
+		return R.error("操作失败");
+	}
+	@RequestMapping("/music/batchsavemusic")
+	@ResponseBody
+	public R batchsaveMusic(@RequestBody List<Music> submitItem) {
+		
+		boolean result=false; 
+		try {
+			for (Music music : submitItem) {
+				music.setCreateOn(DateTimeHelper.getNowDate());
+				music.setUpdateOn(DateTimeHelper.getNowDate());
+				music.setSortCode(0);
+				result=musicService.saveMusic(music);
 			}
 			
 		} catch (Exception e) {

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 //@Component
-public class RabbitMQSenderUtil implements RabbitTemplate.ConfirmCallback{
+/*public class RabbitMQSenderUtil implements RabbitTemplate.ConfirmCallback{
 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -30,4 +30,4 @@ public class RabbitMQSenderUtil implements RabbitTemplate.ConfirmCallback{
 		}
 	}
 
-}
+}*/

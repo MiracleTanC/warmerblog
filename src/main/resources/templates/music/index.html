@@ -26,6 +26,7 @@
 									  action="/qiniu/upload"
 									  :show-file-list="false"
 									  :on-success="uploadFile"
+									  :http-request="myupload"
 									  :before-upload="validFileUpload">
 									  <el-button   v-loading="loading" type="success"><i class="el-icon-edit"></i>上传</el-button>
 					</el-upload>
@@ -87,6 +88,31 @@
 				 	console.log(error);
 				});
 		}
+		var submitMusic=function(status){
+			var param=this.submitForm;
+			$.ajax({
+		        data: JSON.stringify(param),
+		        type: "POST",
+		        url: '/music/batchsavemusic',
+		       // traditional:true, 
+		        dataType:"json",
+		        contentType:"application/json",
+		        success: function (result) {
+					if(result.code==0){
+						app.$message({
+					          message: result.msg,
+					          type: 'success'
+					        });
+					}else{
+						app.$message.error(result.msg);
+					}
+		        },
+		        error: function (data) {
+		        	
+		        }
+		    });
+			
+		}
 	 var app = new Vue({
          el: '#app',
          data:{
@@ -117,12 +143,50 @@
 		 this.headers = eval('(' + str + ')');
  	  },
  	 methods: {
+ 		submitMusic:submitMusic,
+ 		myupload(param){
+ 			debugger;
+	    	  var form = new FormData();
+	    	  // 文件对象
+	    	  form.append("file", param.file);
+	    	  $.ajax({
+			        data: form,
+			        type: "POST",
+			        url: '/qiniu/upload',
+			        processData:false,
+			        cache: false,//上传文件无需缓存
+                  processData: false,//用于对data参数进行序列化处理 这里必须false
+                  contentType: false, //必须
+			        success: function (res) {
+			        	if(res.success==1){
+				    		  for(var i=0;i<res.results.length;i++){
+				    			  var f= res.results[i];
+				    			  var item={title:f.name,url:f.url}
+				    			  app.submitForm.push(item); 
+				    			  
+				    		  }
+				    		  app.submitMusic();
+			    			  app.getList();
+							}else{
+								app.$message.error(res.msg);
+							}
+			        },
+			        error: function (data) {
+			        	
+			        }
+			    });
+	    	   
+	      },
  			uploadFile(res, file) {
  		    	  debugger;
  		    	  if(res.success==1){
  		    		  for(var i=0;i<res.results.length;i++){
  		    			var f= res.results[i];
- 		    			  this.submitForm.push(res.results[i].url); 
+ 		    			var item={title:f.name,url:f.url}
+ 		    			  this.submitForm.push(item); 
+ 		    			this.submitMusic();
+ 		    			 this.submitForm=[];
+ 		    			this.getList();
  		    		  }
  					}else{
  						this.$message.error(res.msg);
