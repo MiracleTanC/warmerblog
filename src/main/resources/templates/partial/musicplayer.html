@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+
+<body>
+	<div th:fragment="musicplayer">
+		<div ref="musicplayer">
+		<audio></audio>
+			<div class="m_player">
+				<!-- 主体 -->
+				<div class="m_player_dock">
+					<!-- 歌曲信息 -->
+					<div class="music_icon">
+						<a href="javascript:;" class="album_pic"> <img th:src="@{/images/music/a1.png}" alt="">
+						</a>
+						<div class="music_info_main">
+							<p class="music_name">
+								<span>听我想听的歌</span> <a class="icon_radio"></a>
+							</p>
+							<p class="singer_name">网易 2:16</p>
+							
+							<p class="music_op">
+								<strong class="btn_like"></strong> <strong class="btn_share"></strong>
+							</p>
+						</div>
+					</div>
+					<!-- 暂停 上一首 下一首 -->
+					<div class="bar_op">
+						<strong class="prev_bt" title="上一首"></strong> <strong class="play_bt" title="播放"></strong> <strong
+							class="next_bt" title="下一首"></strong> <strong class="cycle_bt" id="btnplayway" title="列表循环"></strong>
+						<p class="volume" title="音量调节">
+							<span class="volume_icon" title="设置为静音"></span> <span class="volume_regulate"> <span
+								class="volume_bar"></span> <span class="volume_op"></span>
+							</span>
+						</p>
+					</div>
+					<p class="playbar_cp_select">
+						<strong class="ordered_bt" title="顺序播放"></strong> <strong class="unordered_bt" title="随机播放"></strong>
+						<strong class="cycle_single_bt" title="单曲循环"></strong> <strong class="cycle_bt" title="列表循环"></strong>
+					</p>
+					<p class="play_bar">
+						<span class="play_bg_bar"></span> <span class="download_bar"></span> <span
+							class="play_current_bar"></span> <span class="progress_op"></span>
+					</p>
+					<div class="time_show">
+						<p id="time_show">--:--</p>
+						<span class="icon_arrow_foot"> <i class="foot_border"></i> <i class="foot_arrow"></i>
+						</span>
+					</div>
+				</div>
+				<!-- 隐藏显示按钮 -->
+				<button type="button" class="folded_bt"></button>
+				<!-- 歌曲列表 -->
+				<div class="play_list_frame">
+					<div class="play_list_title">
+						<ul>
+							<li class="current"><a href="javascript:;">播放列表</a><i></i></li>
+							<!-- <li><a href="javascript:;">单曲电台列表</a></li> -->
+						</ul>
+						<!-- <span class="clear_list">清空列表</span>
+						<storng class="close_list"></storng> -->
+					</div>
+					<div class="play_list">
+						<div class="play_list_main">
+							<div class="single_list">
+								<ul></ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- 歌词 -->
+				<div class="y_player_lyrics">
+					<div class="lyrics_text">
+						<p>
+							<span class></span>
+						</p>
+						<p>
+							<span class="current">一个人 - 张艺兴</span>
+						</p>
+						<p>
+							<span>词：张艺兴</span>
+						</p>
+						<p>
+							<span class>曲：张艺兴</span>
+						</p>
+					</div>
+					<span class="close_lyrics"></span>
+				</div>
+				<!-- 打开隐藏歌曲列表-->
+				<span class="open_list"> <span>0</span>
+				</span>
+				<!-- 显示歌词 -->
+				<span class="btn_lyrics_disabled"></span>
+			</div>
+		</div>
+</body>
+
+</html>
