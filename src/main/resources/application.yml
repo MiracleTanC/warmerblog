@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   datasource:
     url: jdbc:mysql://118.31.43.234:3306/warmerblog?useSSL=false
@@ -15,6 +16,10 @@ spring:
       charset: utf-8
     converters:
       preferred-json-mapper: jackson
+  servlet:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 1000Mb
   application:
     name: warmer
   redis:

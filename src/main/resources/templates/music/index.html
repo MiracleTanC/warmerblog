@@ -20,10 +20,15 @@
 					:value="item.value"> </el-option> </el-select>
 				<el-button class="filter-item" type="primary" 
 					icon="el-icon-search" @click="handleFilter">搜索</el-button>
-				<el-button class="filter-item" style="margin-left: 10px;"
-					@click="linktoEdit(0)" type="primary" icon="el-icon-edit">新增</el-button>
-					<el-button class="filter-item" style="margin-left: 10px;"
-					@click="reviewMusic" type="primary" icon="el-icon-view">预览</el-button>
+					 <el-upload
+									  class="filter-item"
+									  :headers="headers" multiple
+									  action="/qiniu/upload"
+									  :show-file-list="false"
+									  :on-success="uploadFile"
+									  :before-upload="validFileUpload">
+									  <el-button   v-loading="loading" type="success"><i class="el-icon-edit"></i>上传</el-button>
+					</el-upload>
 			</div>
 
 			<el-table height="678" :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%"> 
@@ -54,17 +59,7 @@
 					</template> 
 				</el-table-column> 
 			</el-table>
-				<!-- 弹窗, 新增 / 修改 -->
-				<el-dialog title="预览" :visible.sync="dialogFormVisible">
-				      <el-carousel :interval="3000" arrow="always" height="400px">
-					    <el-carousel-item v-for="music in musicList" :key="music.id">
-				     		<a :href="music.linkUrl">
-							  <img :src="music.imgSrc" alt="个人博客" data-bd-imgshare-binded="1"> 
-							</a>
-							<span class="imginfo">{{music.title}}</span>
-					    </el-carousel-item>
-		  			</el-carousel>
-				</el-dialog>
+
 			<div class="pagination-container">
 				<el-pagination background @size-change="handleSizeChange" class="txtCenter"
 					@current-change="handleCurrentChange"
@@ -95,43 +90,51 @@
 	 var app = new Vue({
          el: '#app',
          data:{
+        	 loading:false,
    	      tableKey: 0,
    	      list: null,
    	      total: null,
    	      listLoading: true,
    	      dialogFormVisible: false,
    	      musicList:[],
+   	     submitForm:[],
    	      listQuery: {
    	        pageIndex: 1,
    	        pageSize: 10,
    	        title: '',
    	        sortCode: '1'
    	      },
+   	      headers:{},
    	      sortOptions: [{ name: '最后更新 升序', key: '+updateOn',value:'0' }, { name: '最后更新 降序', key: '-updateOn',value:'1' }]
    	    },
  	  created() {
  	    this.getList();
  	  },
+ 	 mounted(){
+ 		 var token = $("meta[name='_csrf']").attr("content");
+		 var header = $("meta[name='_csrf_header']").attr("content");
+		 var str= '{ "'+header+'": "'+token+'"}'; 
+		 this.headers = eval('(' + str + ')');
+ 	  },
  	 methods: {
- 		linktoEdit(musicId){
- 			window.open("/music/edit/"+musicId);
- 		},
- 		reviewMusic(){
- 			var _this=this;
- 			_this.dialogFormVisible=true;
- 	    	 $.ajax({
- 	             type: "POST",
- 	             url: "/getmusiclist",
- 	             data: {},
- 	             success: function (result) {
- 	                 if (result.code==0) {
- 	                 	var resultCount=result.data.rows.length;
- 	                 	if(resultCount>0){
- 	                 		_this.musicList=result.data.rows;
- 	                 	}
- 	                 }
- 	             }
- 	         });
+ 			uploadFile(res, file) {
+ 		    	  debugger;
+ 		    	  if(res.success==1){
+ 		    		  for(var i=0;i<res.results.length;i++){
+ 		    			var f= res.results[i];
+ 		    			  this.submitForm.push(res.results[i].url); 
+ 		    		  }
+ 					}else{
+ 						this.$message.error(res.msg);
+ 					}
+ 		        },
+ 		validFileUpload(file){
+ 		   const issync = true;
+	         const isLt5M = file.size / 1024 / 1024 < 5;
+	         if (!isLt5M) {
+	           this.$message.error('上传文件大小不能超过 5MB!');
+	         }
+	         return issync&&isLt5M;
  		},
  		getList:getList,
  	    handleFilter() {

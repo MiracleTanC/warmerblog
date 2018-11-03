@@ -30,9 +30,9 @@ public class WebAppConfig{
     public MultipartConfigElement multipartConfigElement(){
         MultipartConfigFactory factory = new MultipartConfigFactory();
         //文件最大KB,MB
-        factory.setMaxFileSize("2MB");
+        factory.setMaxFileSize("10MB");
         //设置总上传数据总大小
-        factory.setMaxRequestSize("10MB");
+        factory.setMaxRequestSize("100MB");
         return factory.createMultipartConfig();
     }
 }
