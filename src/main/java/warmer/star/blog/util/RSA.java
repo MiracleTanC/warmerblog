@@ -195,7 +195,7 @@ public final class RSA {
 			throw e;
 		}  
     }
-        public static void main(String[] args){    
+        /*public static void main(String[] args){    
     	//测试字符串    
         String encryptStr= "fd2cf5e6589a7ceccbc1cc57f6b299a4&&a43777b86615e6e3903b60c9c21f275f&&1512009697";    
         try {    
@@ -205,5 +205,5 @@ public final class RSA {
         } catch (Exception e) {    
             System.err.println(e.getMessage());    
         }   
-    }  
+    }  */
 }  

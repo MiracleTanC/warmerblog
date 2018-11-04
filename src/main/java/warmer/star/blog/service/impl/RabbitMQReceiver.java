@@ -1,4 +1,4 @@
-
+/*
 package warmer.star.blog.service.impl;
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -13,3 +13,4 @@ public class RabbitMQReceiver {
         System.out.println("Receiver : " + message);
     }
 }
+*/

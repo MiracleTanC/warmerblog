@@ -32,14 +32,14 @@ spring:
       maxWait: 100000
     timeout: 0
   # rabbitMq
-  rabbitmq:
-    host: 127.0.0.1 #默认localhost
-    port: 5672 #默认
-    virtualHost: /
-    publisher-confirms: true 
-    queues: topic.1,helloQuene.*,helloQuene
-    username: root
-    password: root
+  #rabbitmq:
+    #host: 127.0.0.1 #默认localhost
+    #port: 5672 #默认
+    #virtualHost: /
+    #publisher-confirms: true 
+    #queues: topic.1,helloQuene.*,helloQuene
+    #username: root
+    #password: root
   # rabbitMq
   # mail
   mail:
