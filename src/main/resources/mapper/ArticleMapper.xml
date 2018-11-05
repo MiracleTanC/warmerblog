@@ -22,6 +22,7 @@
         <result column="showCount" property="showCount" jdbcType="INTEGER"/>
         <result column="showStyle" property="showStyle" jdbcType="INTEGER"/>
         <result column="articleType" property="articleType" jdbcType="INTEGER"/>
+        <result column="editorType" property="editorType" jdbcType="INTEGER"/>
         <association property="category" column="categoryId" jdbcType="INTEGER" resultMap="category"/>
     </resultMap>
     <resultMap id="category" type="warmer.star.blog.model.Category">
@@ -42,13 +43,13 @@
         <result column="tagName" property="tagName" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.content,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.openComment,a.articleType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.content,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.openComment,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
 	</sql>
 	<sql id="Abstract_Column_List">
-		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.articleType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
 	</sql>
 	<sql id="article_Column_List">
-		a.id,a.categoryId,a.title,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.articleType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+		a.id,a.categoryId,a.title,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
 	</sql>
 	<sql id="Where_Clause" >
 	    <where >
@@ -106,8 +107,8 @@
         order by a.showCount desc  limit 5
     </select>
      <insert id="saveArticle">
-		  insert into article (title,content,abstractContent,categoryId,author,publishTime,coverImage,articleTags,openComment,articleType,isRecommend,status,showStyle,createTime,updateTime)
-		  values (#{title},#{content},#{abstractContent},#{categoryId},#{author},#{publishTime},#{coverImage},#{articleTags},#{openComment},#{articleType},#{isRecommend},#{status},#{showStyle},#{createTime},#{updateTime})
+		  insert into article (title,content,abstractContent,categoryId,author,publishTime,coverImage,articleTags,openComment,articleType,editorType,isRecommend,status,showStyle,createTime,updateTime)
+		  values (#{title},#{content},#{abstractContent},#{categoryId},#{author},#{publishTime},#{coverImage},#{articleTags},#{openComment},#{articleType},#{editorType},#{isRecommend},#{status},#{showStyle},#{createTime},#{updateTime})
 	</insert>
 	<update id="updateArticle">
 		  update article
@@ -130,6 +131,9 @@
 			  </if>
 			  <if test="articleType!= null and articleType !='' or 0 == articleType">
 		  			articleType=#{articleType},
+			  </if>
+			  <if test="editorType!= null and editorType !=''">
+		  			editorType=#{editorType},
 			  </if>
 			  <if test="author!= null and author !=''">
 			  		author=#{author},

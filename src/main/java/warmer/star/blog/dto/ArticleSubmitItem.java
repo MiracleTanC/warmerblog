@@ -23,6 +23,7 @@ public class ArticleSubmitItem implements Serializable {
     private Integer status;  //状态
     private Integer showStyle;  //显示样式
     private Integer articleType;
+    private Integer editorType;
     private String author; //作者
     private Date createTime;    //创建时间
     private Date updateTime;    //更新时间
@@ -204,6 +205,20 @@ public class ArticleSubmitItem implements Serializable {
 	 */
 	public void setArticleType(Integer articleType) {
 		this.articleType = articleType;
+	}
+
+	/**
+	 * @return the editorType
+	 */
+	public Integer getEditorType() {
+		return editorType;
+	}
+
+	/**
+	 * @param editorType the editorType to set
+	 */
+	public void setEditorType(Integer editorType) {
+		this.editorType = editorType;
 	}
 
    

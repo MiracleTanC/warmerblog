@@ -80,7 +80,7 @@ public class ArticleController extends BaseController {
 		//return R.success().put("data", record);
 		return R.success().put("data", "");
 	}
-	
+/*	
 	@RequestMapping("/article/edit/{articleId}")
 	@PreAuthorize("hasPermission('/article/edit','create')")
 	public String edit(@PathVariable("articleId") int articleId, Model model) {
@@ -90,8 +90,20 @@ public class ArticleController extends BaseController {
 			model.addAttribute("articleModel", articleItem);
 		}
 		return "article/edit";
+	}*/
+	@RequestMapping("/article/edit/{t}/{articleId}")
+	@PreAuthorize("hasPermission('/article/edit','create')")
+	public String edit(@PathVariable("t") Integer t,@PathVariable("articleId") Integer articleId, Model model) {
+		ArticleItem articleItem = new ArticleItem();
+		if (articleId!=null&&articleId != 0) {
+			articleItem = articleService.getById(articleId);
+			model.addAttribute("articleModel", articleItem);
+		}
+		if(t==0) {
+			return "article/markdown";
+		}
+		return "article/edit";
 	}
-
 	@RequestMapping("/article/deleteArticle")
 	@ResponseBody
 	@PreAuthorize("hasPermission('/article/deleteArticle','delete')")

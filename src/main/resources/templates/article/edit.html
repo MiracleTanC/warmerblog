@@ -330,6 +330,7 @@ div#mceu_55 {
 		var submitArticle=function(status){
 			var _this=this;
 			_this.submitForm.status=status;
+			_this.submitForm.editorType=0;
 			_this.submitForm.publishTime=moment(_this.submitForm.publishTime).format("YYYY-MM-DD HH:mm:ss")
 			_this.submitForm.content=tinymce.get('tinymceId').getContent();
 			var param=_this.submitForm;

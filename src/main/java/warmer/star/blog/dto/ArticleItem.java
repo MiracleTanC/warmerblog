@@ -22,6 +22,7 @@ public class ArticleItem implements Serializable {
     private String  articleTags; //文章标签
     private Integer showStyle;  //展示样式
     private Integer articleType;
+    private Integer editorType;//0=markedown,1=tinymce
     public String getAbstractContent() {
 		return abstractContent;
 	}
@@ -262,6 +263,20 @@ public class ArticleItem implements Serializable {
 	 */
 	public void setArticleType(Integer articleType) {
 		this.articleType = articleType;
+	}
+
+	/**
+	 * @return the editorType
+	 */
+	public Integer getEditorType() {
+		return editorType;
+	}
+
+	/**
+	 * @param editorType the editorType to set
+	 */
+	public void setEditorType(Integer editorType) {
+		this.editorType = editorType;
 	}
 
 

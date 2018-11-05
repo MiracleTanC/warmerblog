@@ -30,7 +30,9 @@
 				<el-button class="filter-item" type="primary" icon="el-icon-search"
 					@click="handleFilter">搜索</el-button>
 				<el-button class="filter-item" style="margin-left: 10px;"
-					@click="linktoEdit(0)" type="primary" icon="el-icon-edit">新增</el-button>
+					@click="linktoEdit(0,0)" type="primary" icon="el-icon-edit">markdown新增</el-button>
+				<el-button class="filter-item" style="margin-left: 10px;"
+					@click="linktoEdit(1,0)" type="primary" icon="el-icon-edit">tinymce新增</el-button>
 				<el-button class="filter-item" type="primary"
 					:loading="downloadLoading" icon="el-icon-download"
 					@click="handleDownload">导出</el-button>
@@ -62,7 +64,7 @@
 			</template> </el-table-column> <el-table-column align="center" label="操作" width="230"
 				class-name="small-padding fixed-width"> <template
 				slot-scope="scope"> <el-button type="primary" size="mini"
-				@click="linktoEdit(scope.row.id)">编辑</el-button> <el-button
+				@click="linktoEdit(scope.row.editorType,scope.row.id)">编辑</el-button> <el-button
 				v-if="scope.row.status.code!='deleted'" size="mini" type="danger"
 				@click="deleteArticle(scope.row.id)">删除</el-button> </template> </el-table-column> </el-table>
 
@@ -144,9 +146,9 @@
  	    this.loadCategoryOptions();
  	  },
  	 methods: {
- 		linktoEdit(articleId){
+ 		linktoEdit(t,articleId){
  			//window.open("/article/edit/"+articleId);
- 			window.location.href="/article/edit/"+articleId;
+ 			window.location.href="/article/edit/"+t+"/"+articleId;
  		},
  		loadCategoryOptions:loadCategoryOptions,
  		getList:getList,

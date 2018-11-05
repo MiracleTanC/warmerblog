@@ -33,7 +33,7 @@ public class WebSecurityAdapter extends WebSecurityConfigurerAdapter {
 		// http.authorizeRequests().anyRequest().permitAll().and().headers().frameOptions().disable();
 		// 允许iframe加载
 		RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-		http.authorizeRequests().antMatchers("/", "/login/**", "/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
+		http.authorizeRequests().antMatchers("/", "/login/**", "/css/**", "/js/**", "/images/**","/editor/**",  "/fonts/**").permitAll()
 				.antMatchers("/admin", "/article/**", "/banner/**", "/category/**", "/partner/**", "/tag/**").authenticated()
 				.and().rememberMe().tokenValiditySeconds(3600)
 				.and().formLogin().loginPage("/login").successHandler(new AuthenticationSuccessHandler() {//登录后返回之前页面
