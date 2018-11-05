@@ -6,6 +6,7 @@
 <style type="text/css">
 </style>
 <link href="https://cdn.bootcss.com/tinymce/4.7.13/plugins/codesample/css/prism.css" rel="stylesheet">
+<link th:href="@{/editor/css/editormd.css}" rel="stylesheet" />
 </head>
 <body>
 	<div layout:fragment="main">
@@ -69,6 +70,7 @@
 			</div>
 	</div>
 	<div layout:fragment="js">
+	<script th:src="@{/editor/js/editormd.js}"></script>
 	<script src="https://cdn.bootcss.com/tinymce/4.7.13/plugins/codesample/plugin.min.js"></script>
 	<script type="text/javascript"> 
 				(function(){ 
