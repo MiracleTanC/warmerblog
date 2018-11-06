@@ -34,6 +34,9 @@ public class HomeController extends BaseController {
 			articleItem=articleService.getById(articleId);
 			model.addAttribute("articleModel",articleItem);
 		}
+		if(articleItem.getEditorType().equals(0)) {
+			return "home/detailmarkdown";
+		}
 		return "home/detail";
 	}
 	@RequestMapping("/getRecommendArticlelist")

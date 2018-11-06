@@ -678,7 +678,7 @@ a {
         background: #282828 none repeat scroll 0 0;
         border: 1px solid #ffffff;
         border-radius: 100%;
-        top: 25px;
+        top: 14px;
         color: #ffffff;
         position: fixed;
         right: 30px;
@@ -697,7 +697,7 @@ a {
         animation: rotating 1.2s linear infinite;
     }
 
-    @@-webkit-keyframes rotating {
+    @-webkit-keyframes rotating {
         from {
             -webkit-transform: rotate(0);
         }
@@ -707,7 +707,7 @@ a {
         }
     }
 
-    @@keyframes rotating {
+    @keyframes rotating {
         from {
             transform: rotate(0);
         }
@@ -717,7 +717,7 @@ a {
         }
     }
 
-    @@-moz-keyframes rotating {
+   @-moz-keyframes rotating {
         from {
             -moz-transform: rotate(0);
         }
@@ -726,33 +726,33 @@ a {
             -moz-transform: rotate(360deg);
         }
     }
-     @@media screen and (max-width: 1024px) {
+     @media screen and (max-width: 1024px) {
         #audio_btn {
-            right: auto;
-            left: 615px;
+            top: 10px;
+            right:55px;
         }
     }
-    @@media screen and (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         #audio_btn {
-            right: auto;
-            left: 580px;
+           top: 10px !important;
+           right:55px !important;
         }
     }
-    @@media screen and (max-width: 414px) {
+    @media screen and (max-width: 414px) {
         #audio_btn {
-            right: auto;
-            left: 365px;
+             top: 10px !important;
+           right:55px !important;
         }
     }
-    @@media screen and (max-width: 375px) {
+    @media screen and (max-width: 375px) {
         #audio_btn {
-            right: auto;
-            left: 325px;
+             top: 10px !important;
+           right:55px !important;
         }
     }
-    @@media screen and (max-width: 320px) {
+    @media screen and (max-width: 320px) {
         #audio_btn {
-            right: auto;
-            left: 280px;
+             top: 10px !important;
+           right:55px !important;
         }
     }

@@ -56,7 +56,7 @@
 .bigpic:hover img { opacity: 0.8 }
 /*sidebar*/
 .sidebar { width: 32%; overflow: hidden; float: right }
-.sidebar div { padding: 35px 25px; margin-bottom: 20px; background: #FFF; -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); }
+.sidebar div { padding: 20px 25px; margin-bottom: 2px; background: #FFF; -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); }
 .hometitle { font-size: 18px; color: #282828; font-weight: 600; margin: 0; text-transform: uppercase; padding-bottom: 15px; margin-bottom: 25px; position: relative; }
 .hometitle:after { content: ""; background-color: #282828; left: 0; width: 50px; height: 2px; bottom: 0; position: absolute; -webkit-transition: 0.5s; -moz-transition: 0.5s; -ms-transition: 0.5s; -o-transition: 0.5s; transition: 0.5s; }
 .sidebar div:hover ::after { width: 70px; }
@@ -185,7 +185,7 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
 .timebox li:hover a:after { background: #3a6ab5 }
 .timebox li:hover span { color: #000 }
 /*infosbox*/
-.infosbox { float: left; width: 66%; overflow: hidden; background: #FFF; }
+.infosbox { /* float: left; */ width: 80%; overflow: hidden; background: #FFF; margin: auto;}
 .newsview { padding: 20px 30px }
 .intitle { line-height: 40px; height: 40px; font-size: 14px; ; border-bottom: #000 2px solid; }
 .intitle a { font-weight: normal; }
@@ -224,6 +224,7 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
 .bt-blue a { color: #fff }
 .gbko { padding: 10px; background: #fff; }
 .ad { overflow: hidden }
+.el-carousel img { width: 100% }
 .ad img { width: 100% }
 .leftbox { width: 70%; float: left; overflow: hidden; }
 .rightbox { width: 28%; float: right; overflow: hidden; }

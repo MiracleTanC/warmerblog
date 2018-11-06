@@ -88,7 +88,7 @@
         width                : "100%",
         height               : "100%",
         path                 : "",       // Dependents module file directory
-        pluginPath           : "../../../editor/lib/plugins/",             // If this empty, default use settings.path + "../plugins/"
+        pluginPath           : "/editor/lib/plugins/",             // If this empty, default use settings.path + "../plugins/"
         delay                : 300,            // Delay parse markdown to html, Uint : ms
         autoLoadModules      : true,           // Automatic load dependent module files
         watch                : true,
