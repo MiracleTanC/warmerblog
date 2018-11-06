@@ -27,7 +27,7 @@ header { position: fixed; top: 0; z-index: 100 }
 .nav li { float: left; position: relative; }
 .nav li a { color: #bdbdbd; padding: 0 20px; display: inline-block; }
 .nav li a:hover { color: #fff; }
-.nav li .sub-nav { position: absolute; top: 80px; width: 200px; background: #FFF; left: -20px; /* display: none;  */}
+.nav li .sub-nav { position: absolute; top: 58px; width: 140px; background: #FFF; left: -20px; /* display: none;  */}
 .nav li .sub-nav li { clear: left; height: 35px; line-height: 35px; position: relative; width: 200px; padding: 5px 20px }
 .nav li .sub-nav li a { font-size: 15px; font-weight: 400; color: #404040; line-height: 28px; }
 .nav li .sub-nav li a:hover { color: #000; border-left: 2px solid #000; }
