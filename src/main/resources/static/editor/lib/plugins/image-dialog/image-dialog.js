@@ -45,13 +45,19 @@
                 {
                     action += "&callback=" + settings.uploadCallbackURL + "&dialog_id=editormd-image-dialog-" + guid;
                 }
-
+                //解决spingsecurity csrf 问题
+                var csrfToken = $('meta[name="_csrf"]').attr('content');//已经在母版页里加在header的meta
+                var csrfField = "";
+                if (csrfToken) {
+                       csrfField = "<input type='hidden' name='_csrf' value='" + csrfToken + "' />";//画重点, 注意这里写的 name
+                }
                 var dialogContent = ( (settings.imageUpload) ? "<form action=\"" + action +"\" target=\"" + iframeName + "\" method=\"post\" enctype=\"multipart/form-data\" class=\"" + classPrefix + "form\">" : "<div class=\"" + classPrefix + "form\">" ) +
                                         ( (settings.imageUpload) ? "<iframe name=\"" + iframeName + "\" id=\"" + iframeName + "\" guid=\"" + guid + "\"></iframe>" : "" ) +
                                         "<label>" + imageLang.url + "</label>" +
                                         "<input type=\"text\" data-url />" + (function(){
                                             return (settings.imageUpload) ? "<div class=\"" + classPrefix + "file-input\">" +
                                                                                 "<input type=\"file\" name=\"" + classPrefix + "image-file\" accept=\"image/*\" />" +
+                                                                                 csrfField +
                                                                                 "<input type=\"submit\" value=\"" + imageLang.uploadButton + "\" />" +
                                                                             "</div>" : "";
                                         })() +
@@ -61,7 +67,7 @@
                                         "<br/>" +
                                         "<label>" + imageLang.link + "</label>" +
                                         "<input type=\"text\" value=\"http://\" data-link />" +
-                                        "<br/>" +
+                                        "<br/>" + csrfField +
                                     ( (settings.imageUpload) ? "</form>" : "</div>");
 
                 //var imageFooterHTML = "<button class=\"" + classPrefix + "btn " + classPrefix + "image-manager-btn\" style=\"float:left;\">" + imageLang.managerButton + "</button>";
@@ -150,7 +156,7 @@
                     var submitHandler = function() {
 
                         var uploadIframe = document.getElementById(iframeName);
-
+                       
                         uploadIframe.onload = function() {
 
                             loading(false);

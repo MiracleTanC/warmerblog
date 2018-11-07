@@ -30,9 +30,10 @@ public class WebSecurityAdapter extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// http.csrf().disable();
-		// http.authorizeRequests().anyRequest().permitAll().and().headers().frameOptions().disable();
-		// 允许iframe加载
+		
+		// 允许iframe加载 // http.authorizeRequests().anyRequest().permitAll().and().headers().frameOptions().disable();
 		RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+		http.authorizeRequests().antMatchers("/qiniu/**").permitAll().and().headers().frameOptions().disable(); // 允许iframe
 		http.authorizeRequests().antMatchers("/", "/login/**", "/css/**", "/js/**", "/images/**","/editor/**",  "/fonts/**").permitAll()
 				.antMatchers("/admin", "/article/**", "/banner/**", "/category/**", "/partner/**", "/tag/**").authenticated()
 				.and().rememberMe().tokenValiditySeconds(3600)

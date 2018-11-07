@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.alibaba.fastjson.JSONObject;
 
 import warmer.star.blog.config.QiniuUploadService;
 import warmer.star.blog.config.WebAppConfig;
@@ -137,7 +140,7 @@ public class FileController extends BaseController {
 
     @PostMapping("/qiniu/upload")
 	@ResponseBody
-	public FileResponse qiniuUploadImg(HttpServletRequest req) throws FileUploadException {
+	public FileResponse qiniuUploadImg(HttpServletRequest req,HttpServletResponse response) throws FileUploadException {
     	FileResponse res = new FileResponse();
 		List<FileResult> fre = new ArrayList<FileResult>();
 		List<MultipartFile> files = ((MultipartHttpServletRequest) req).getFiles("file");
@@ -155,6 +158,7 @@ public class FileController extends BaseController {
 					fre.add(fileResult);
 				}
 			}
+			response.setHeader("X-Frame-Options", "SAMEORIGIN");// 解决IFrame拒绝的问题
 			res.setSuccess(1);
 			res.setMessage("ok");
 			res.setResults(fre);
@@ -164,5 +168,18 @@ public class FileController extends BaseController {
 		}
 		return res;
     }
+    @RequestMapping("/qiniu/editormdupload")
+    @ResponseBody
+    public JSONObject editormdPic (@RequestParam(value = "editormd-image-file", required = true) MultipartFile file, HttpServletRequest request,HttpServletResponse response) throws Exception{ 
+            String fileName = file.getOriginalFilename();
+			String url="http://"+qiniuUploadService.uploadImage(file,fileName);
 
+            JSONObject res = new JSONObject();
+            res.put("url", url);
+            res.put("success", 1);
+            res.put("message", "upload success!");
+
+            return res;
+
+        }
 }
