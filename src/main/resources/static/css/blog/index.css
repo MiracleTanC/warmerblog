@@ -481,3 +481,72 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
  @media screen and (max-width: 560px) {
      .search-wrapper.active .input-holder {width:200px;}
  }
+ /*详情页目录导航*/
+ .BlogAnchor {
+     background: #fff;
+     padding: 10px;
+     line-height: 180%;
+     position: fixed;
+     left: 20px;
+     top: 140px;
+     border: 1px solid #aaaaaa;
+ }
+ .BlogAnchor p {
+     font-size: 18px;
+     color: #15a230;
+     margin: 0 0 0.3rem 0;
+     text-align: right;
+ }
+ .BlogAnchor .AnchorContent {
+     padding: 5px 0px;
+     overflow: auto;
+ }
+ .BlogAnchor li{
+     text-indent: 0.5rem;
+     font-size: 14px;
+     list-style: none;
+ }
+ .BlogAnchor li .nav_item{
+     padding: 3px;
+ }
+ .BlogAnchor li .item_h1{
+     margin-left: 0rem;
+ }
+ .BlogAnchor li .item_h2{
+     margin-left: 2rem;
+     font-size: 0.8rem;
+ }
+ .BlogAnchor li .nav_item.current{
+     color: white;
+     background-color: #5cc26f;
+     border-radius: 4px;
+     padding: 5px;
+ }
+ #AnchorContentToggle {
+     font-size: 13px;
+     font-weight: normal;
+     color: #FFF;
+     display: inline-block;
+     line-height: 20px;
+     border-radius: 4px;
+     background: #5cc26f;
+     font-style: normal;
+     padding: 1px 8px;
+ }
+ .BlogAnchor a:hover {
+     color: #5cc26f;
+ }
+ .BlogAnchor a {
+     text-decoration: none;
+ }
+ .s-c-i {
+     display: block;
+     width: 18px;
+     height: 18px;
+     line-height: 20px;
+     margin: 10px auto 5px;
+     text-align: center;
+     color: #fff;
+     background: #156498;
+     border-radius: 50%;
+ }

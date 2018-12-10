@@ -4,75 +4,7 @@
 	layout:decorator="partial/layout" lang="zh">
 <head>
 <style type="text/css">
- /*导航*/
-    .BlogAnchor {
-        background: #fff;
-        padding: 10px;
-        line-height: 180%;
-        position: fixed;
-        right: 0px;
-        top: 140px;
-        border: 1px solid #aaaaaa;
-    }
-    .BlogAnchor p {
-        font-size: 18px;
-        color: #15a230;
-        margin: 0 0 0.3rem 0;
-        text-align: right;
-    }
-    .BlogAnchor .AnchorContent {
-        padding: 5px 0px;
-        overflow: auto;
-    }
-    .BlogAnchor li{
-        text-indent: 0.5rem;
-        font-size: 14px;
-        list-style: none;
-    }
-    .BlogAnchor li .nav_item{
-        padding: 3px;
-    }
-    .BlogAnchor li .item_h1{
-        margin-left: 0rem;
-    }
-    .BlogAnchor li .item_h2{
-        margin-left: 2rem;
-        font-size: 0.8rem;
-    }
-    .BlogAnchor li .nav_item.current{
-        color: white;
-        background-color: #5cc26f;
-        border-radius: 4px;
-        padding: 5px;
-    }
-    #AnchorContentToggle {
-        font-size: 13px;
-        font-weight: normal;
-        color: #FFF;
-        display: inline-block;
-        line-height: 20px;
-        border-radius: 4px;
-        background: #5cc26f;
-        font-style: normal;
-        padding: 1px 8px;
-    }
-    .BlogAnchor a:hover {
-        color: #5cc26f;
-    }
-    .BlogAnchor a {
-        text-decoration: none;
-    }
-	.s-c-i {
-	    display: block;
-	    width: 18px;
-	    height: 18px;
-	    line-height: 20px;
-	    margin: 10px auto 5px;
-	    text-align: center;
-	    color: #fff;
-	    background: #156498;
-	    border-radius: 50%;
-	}
+
 </style>
 <link th:href="@{/editor/css/editormd.css}" rel="stylesheet" />
 <link th:href="@{/editor/css/editormd.preview.min.css}" rel="stylesheet" />
@@ -112,7 +44,7 @@
 				
 			</div>
 			<div class="sidebar">
-				<!-- <div class="tuijian">
+				 <div class="tuijian">
 					<h2 class="hometitle">推荐文章</h2>
 					<ul class="tjpic">
 						<i><img th:src="@{/images/blog/toppic01.jpg}"></i>
@@ -138,9 +70,9 @@
 								<a href="/">给我模板PSD源文件，我给你设计HTML！</a>
 							</p> <span>2018-05-13</span></li>
 					</ul>
-				</div> -->
-				<!-- 设置固定关注我们 -->
-				<!-- <div th:include="partial/focus::focus"></div> -->
+				</div>
+				 设置固定关注我们
+				 <div th:include="partial/focus::focus"></div>
 			</div>
 	</div>
 	<div layout:fragment="js">
