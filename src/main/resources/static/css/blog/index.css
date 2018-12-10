@@ -261,3 +261,33 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
 .shang_payselect .pay_item { display: inline-block; margin-right: 10px; float: left; }
 .shang_payselect img { float: left }
  .el-carousel__container{height: 430px !important;}
+ .action-icon{
+     font-size: 12px;
+     padding: 0 0 0 20px;
+     margin: 0 15px 0 0;
+     color: #748594;
+     line-height: 1.5;
+     display: inline-block;
+ }
+ .action-icon-view{
+     background: url(/images/blog/auicon.jpg) no-repeat top -64px left;float: left;
+ }
+ .action-icon-time{
+     background: url(/images/blog/auicon.jpg) no-repeat top -44px left;
+ }
+ .label {
+     display: inline;
+     line-height: 1;
+     color: #fff;
+     text-align: center;
+     white-space: nowrap;
+     vertical-align: baseline;
+     padding: 5px;
+     border-radius: 8px;
+ }
+ .label-success {
+     background-color: #5cb85c;
+ }
+ .label-warn {
+     background-color: rgba(255, 69, 0, 1);
+ }

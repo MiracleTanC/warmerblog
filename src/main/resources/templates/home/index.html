@@ -4,40 +4,14 @@
 	layout:decorator="partial/layout" lang="zh">
 <head>
 <style type="text/css">
-.action-icon{
-    font-size: 12px;
-    padding: 0 0 0 20px;
-    margin: 0 15px 0 0;
-    color: #748594;
-    line-height: 1.5;
-    display: inline-block;
-}
-.action-icon-view{
-   background: url(/images/blog/auicon.jpg) no-repeat top -64px left;float: left;
-}
-.action-icon-time{
-   background: url(/images/blog/auicon.jpg) no-repeat top -44px left;
-}
-.label {
-    display: inline;
-    line-height: 1;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    padding: 5px;
-    border-radius: 8px;
-}
-.label-success {
-    background-color: #5cb85c;
-}
-.label-warn {
-    background-color: rgba(255, 69, 0, 1);
-}
+
 </style>
 </head>
 <body>
 	<div layout:fragment="main">
+		<a target="_blank" href="https://github.com/MiracleTanC?tab=repositories">
+			<img style="position: absolute; top: 56px; right: 0; border: 0;z-index: 999;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
+		</a>
 		<!--banner begin-->
 		<div class="picsbox">
 			<el-carousel :interval="3000" arrow="always">

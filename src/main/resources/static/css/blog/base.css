@@ -15,7 +15,7 @@ a:hover { text-decoration: none; color: #00A7EB; }
 .f_r { float: right }
 .mt20 { margin-top: 20px }
 header { width: 100%; background: rgba(255,255,255,1); }
-article { width: 80%; margin: 65px auto 0; overflow: hidden }
+article { width: 65%; margin: 65px auto 0; overflow: hidden }
 .tophead { width: 1200px; margin: 0 auto 10px; overflow: hidden; }
 header { position: fixed; top: 0; z-index: 100 }
 .container { width: 1140px; margin: 20px auto }
@@ -43,7 +43,7 @@ header { position: fixed; top: 0; z-index: 100 }
 /*phone  nav */
 #mnav { display: none; width: 100%; position: fixed; top: 0; right: 0; }
 .mlogo { color: #00A7EB; line-height: 50px; font-size: 22px; float: left; padding-left: 20px }
-#mnav h2 { text-align: right; color: #fff; font-size: 18px; height: 50px; line-height: 40px; width: 100%; background: rgba(0,0,0,1) }
+#mnav h2 { text-align: right; color: #fff; font-size: 18px; height: 56px; line-height: 40px; width: 100%; background: rgba(0,0,0,1) }
 #mnav h2.open { text-align: right; width: 100%; }
 #mnav dl { /* display: none; */ background: #000; width: 100%; padding-bottom: 40px }
 #mnav .list_dt { line-height: 40px; vertical-align: top; font-size: 16px; display: block; /* overflow: hidden; */ text-align: center; border-bottom: 1px solid #464646; margin: 0 20% }
