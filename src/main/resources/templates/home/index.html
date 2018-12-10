@@ -40,7 +40,7 @@
 	<div layout:fragment="main">
 		<!--banner begin-->
 		<div class="picsbox">
-			<el-carousel :interval="3000" arrow="always" height="400px">
+			<el-carousel :interval="3000" arrow="always">
 			    <el-carousel-item v-for="banner in bannerList" :key="banner.id">
 		     		<a :href="banner.linkUrl">
 					  <img :src="banner.imgSrc" alt="个人博客" data-bd-imgshare-binded="1"> 

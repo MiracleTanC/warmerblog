@@ -51,8 +51,9 @@ h1.t_nav span { display: none }
 .timebox li:hover a { padding: 0 30px }
 .infosbox { width: 100% }
 .pagebg {margin-top: 50px;}
+ .el-carousel__container{height: 268px !important;}
 }
- @media only screen and (min-width: 480px) and (max-width: 767px) {
+@media only screen and (min-width: 480px) and (max-width: 767px) {
 header, .blogsbox, .banner { width: 100%; margin: auto; }
 .menu { width: 90%; display: none; }
 #mnav { display: block; z-index: 99999; }
@@ -85,7 +86,44 @@ h1.t_nav span { display: none }
 .diggit{ float:none; margin-left: auto;}
 .dasbox{ display:none}
 }
-@media only screen and (max-width: 479px) {
+@media only screen and  (min-width: 376px) and (max-width: 414px) {
+ header, .blogsbox, .banner { width: 100%; margin: auto; }
+ .menu { width: 90%; display: none; }
+ #mnav { display: block; z-index: 99999;  }
+ .search_bar, .toppic { display: none }
+ article { width: 90%; margin: 70px auto 0 }
+ .imginfo { font-size: 18px; bottom: 22%; }
+ .bloginfo { width: 100%; clear: both; }
+ .blogs .blogpic { width: 100%; height: auto; margin-bottom: 10px }
+ .fader { padding-top: 60%; width: 100% }
+ .bloginfo ul li { margin-right: 10px }
+ .bplist li img { height: 100px }
+ .bplist li { height: 100px }
+ .bigpic img { height: auto }
+ .blogs .blogtext { width: 100%; }
+ .bloginfo ul li { background-image: none }
+ .bloginfo .author, .bloginfo .lmname { display: none }
+ .bplist li:nth-child(2) { margin: 0 0 0 2px }
+ .sidebar { display: none }
+ .news_infos { width: 100% }
+ h1.t_nav span { display: none }
+ .container { width: 90%; margin: 20px auto; }
+ .share ul li { width: 50% }
+ .share ul li i { height: 150px }
+ .shareli { margin: 0 3%; }
+ .share ul li h2 { padding: 15px 15px; }
+ footer p { padding: 0 30px }
+ .timebox li { font-size: 15px }
+ .timebox li span { display: none }
+ .timebox:before { display: none }
+ .timebox li:hover a { padding: 0 30px }
+ .infosbox { width: 100% }
+ .pagebg {margin-top: 50px;}
+ .diggit{ float:none; margin-left: auto;}
+ .dasbox{ display:none}
+ .el-carousel__container{height: 138px !important;}
+}
+@media only screen and  (min-width: 361px) and (max-width: 375px) {
 header, .blogsbox, .banner { width: 100%; margin: auto; }
 .menu { width: 90%; display: none; }
 #mnav { display: block; z-index: 99999;  }
@@ -120,4 +158,42 @@ footer p { padding: 0 30px }
 .pagebg {margin-top: 50px;}
 .diggit{ float:none; margin-left: auto;}
 .dasbox{ display:none}
+.el-carousel__container{height: 138px !important;}
+}
+@media only screen and (max-width: 360px) {
+ header, .blogsbox, .banner { width: 100%; margin: auto; }
+ .menu { width: 90%; display: none; }
+ #mnav { display: block; z-index: 99999;  }
+ .search_bar, .toppic { display: none }
+ article { width: 90%; margin: 70px auto 0 }
+ .imginfo { font-size: 18px; bottom: 22%; }
+ .bloginfo { width: 100%; clear: both; }
+ .blogs .blogpic { width: 100%; height: auto; margin-bottom: 10px }
+ .fader { padding-top: 60%; width: 100% }
+ .bloginfo ul li { margin-right: 10px }
+ .bplist li img { height: 100px }
+ .bplist li { height: 100px }
+ .bigpic img { height: auto }
+ .blogs .blogtext { width: 100%; }
+ .bloginfo ul li { background-image: none }
+ .bloginfo .author, .bloginfo .lmname { display: none }
+ .bplist li:nth-child(2) { margin: 0 0 0 2px }
+ .sidebar { display: none }
+ .news_infos { width: 100% }
+ h1.t_nav span { display: none }
+ .container { width: 90%; margin: 20px auto; }
+ .share ul li { width: 50% }
+ .share ul li i { height: 150px }
+ .shareli { margin: 0 3%; }
+ .share ul li h2 { padding: 15px 15px; }
+ footer p { padding: 0 30px }
+ .timebox li { font-size: 15px }
+ .timebox li span { display: none }
+ .timebox:before { display: none }
+ .timebox li:hover a { padding: 0 30px }
+ .infosbox { width: 100% }
+ .pagebg {margin-top: 50px;}
+ .diggit{ float:none; margin-left: auto;}
+ .dasbox{ display:none}
+ .el-carousel__container{height: 120px !important;}
 }
