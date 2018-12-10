@@ -118,12 +118,12 @@
             success: function (result) {
             	//debugger;
                 if (result.code==0) {
+                    _this.loading=false;
                 	//debugger;
                 	//var resultCount=result.data.recordList.length;//启用es时用这个
                 	var resultCount=result.data.rows.length;
                 	if(resultCount>0){
                 		setTimeout(function() {
-                    		_this.loading=false;
                     		//_this.articleList = _this.articleList.concat(result.data.recordList);//启用es时用这个
                     		_this.articleList = _this.articleList.concat(result.data.rows);
                	     	}, 1000)

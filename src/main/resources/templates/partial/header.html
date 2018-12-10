@@ -19,10 +19,18 @@
 				      </template>
 		      </ul>
 		      <!--search begin-->
-			      <div :class="[search_active ? ' search_open' : '', 'search_bar']">
+			     <!-- <div :class="[search_active ? ' search_open' : '', 'search_bar']">
 			          <input class="search_input" placeholder="想搜点什么呢..." v-model="searchkeyword" type="text" @change="searchResult" @keyup.enter.native="searchResult">
 			          <span class="search_ico" @click="searchActive" ></span>
-			      </div>
+			      </div>-->
+				  <div class="search-wrapper">
+					<div class="input-holder">
+						<input type="text" v-model="searchkeyword" @keyup.enter.native="searchResult" class="search-input" placeholder="想搜点什么呢..." />
+						<button class="search-icon" @click="searchToggle($event)"><span></span></button>
+					</div>
+					<span class="close" @click="searchToggle($event)"></span>
+					<div class="result-container"></div>
+				  </div>
 			  <!--search end--> 
 		    </nav>
 		  </div>

@@ -130,9 +130,23 @@
 	            clickNav(nav){
 		          nav.active=!nav.active;
 		    	},
+                searchToggle(evt){
+		    	    var obj=evt.currentTarget;
+                    var container = $(obj).closest('.search-wrapper');
+					 if(!container.hasClass('active')){
+						 container.addClass('active');
+						 evt.preventDefault();
+					 }
+					 else if(container.hasClass('active') && $(obj).closest('.input-holder').length == 0){
+						 container.removeClass('active');
+                         this.searchkeyword="";
+					 }else{
+                         this.searchResult();
+					 }
+     			},
 		    	searchResult(){
 		    		app.queryForm.pageIndex=1;
-		    		app.queryForm.title=this.searchkeyword;
+		    		app.queryForm.title=this.searchkeyword.trim();
 		    		app.initData();
 		    		app.articleList=[];
 		    	}
