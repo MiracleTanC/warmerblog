@@ -185,7 +185,7 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
 .timebox li:hover a:after { background: #3a6ab5 }
 .timebox li:hover span { color: #000 }
 /*infosbox*/
-.infosbox { /* float: left; */ width: 80%; overflow: hidden; background: #FFF; margin: auto;}
+.infosbox {  float: left; width: 65%; overflow: hidden; background: #FFF; margin: auto;}
 .newsview { padding: 20px 30px }
 .intitle { line-height: 40px; height: 40px; font-size: 14px; ; border-bottom: #000 2px solid; }
 .intitle a { font-weight: normal; }

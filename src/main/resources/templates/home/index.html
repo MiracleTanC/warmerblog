@@ -255,8 +255,7 @@
     	  },
     	  mounted() {
     		   // 缓存指针  
-              let _this = this;  
-              _this.initScrollRevealOption();
+              var _this = this;
               _this.defaultfollowUsPosition=this.$refs.followUs.offsetTop;
               // 注册scroll事件并监听  
 		      window.addEventListener('scroll', ()=> {
@@ -272,7 +271,7 @@
   	                 }
                 	}
 		        }
-        		 console.log(_this.queryForm.pageIndex);
+        		 //console.log(_this.queryForm.pageIndex);
         		 var followUsPosition = this.$refs.followUs.offsetTop;
         		 _this.defaultfollowUsPosition=followUsPosition;
         		
