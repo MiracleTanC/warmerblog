@@ -65,14 +65,14 @@
 			<div th:include="partial/musicplayer::musicplayer"></div>
 		</div>
 		<div id="appbackTop">
-			<a :click="backToTop" href="#" v-bind:class="[scrollTop>offset ? 'cd-is-visible' : '', 'cd-top']">Top</a>
+			<a :click="backToTop" href="#" :class="[scrollTop>offset ? 'cd-is-visible' : '', 'cd-top']">Top</a>
 		</div>
 	</div>
 	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
 	<script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
 	<script th:src="@{/js/music.js}"></script>
-	<script src="https://cdn.bootcss.com/scrollReveal.js/4.0.0-beta.31/scrollreveal.min.js"></script>
+	<script src="https://cdn.bootcss.com/scrollReveal.js/4.0.5/scrollreveal.min.js"></script>
 	<script type="text/javascript">
 	    var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");

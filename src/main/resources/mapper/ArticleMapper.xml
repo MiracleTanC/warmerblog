@@ -8,14 +8,12 @@
         <id column="id" property="id" jdbcType="INTEGER"></id>
         <id column="categoryId" property="categoryId" jdbcType="INTEGER"></id>
         <result column="title" property="title" jdbcType="VARCHAR"/>
-        <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="author" property="author" jdbcType="VARCHAR"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="abstractContent" property="abstractContent" jdbcType="VARCHAR"/>
         <result column="publishTime" property="publishTime" jdbcType="VARCHAR"/>
-        <result column="coverImage" property="coverImage" jdbcType="VARCHAR"/>
         <result column="articleTags" property="articleTags" jdbcType="VARCHAR"/>
         <result column="openComment" property="openComment" jdbcType="INTEGER"/>
         <result column="isRecommend" property="isRecommend" jdbcType="INTEGER"/>
@@ -24,6 +22,7 @@
         <result column="articleType" property="articleType" jdbcType="INTEGER"/>
         <result column="editorType" property="editorType" jdbcType="INTEGER"/>
         <association property="category" column="categoryId" jdbcType="INTEGER" resultMap="category"/>
+		<collection property="coverImageList" column="id" javaType="ArrayList" ofType="warmer.star.blog.model.ArticleFile" select="getImageById"></collection>
     </resultMap>
     <resultMap id="category" type="warmer.star.blog.model.Category">
          <id column="id" property="id" jdbcType="INTEGER"></id>
@@ -42,14 +41,26 @@
         <result column="tagId" property="tagId" jdbcType="INTEGER"/>
         <result column="tagName" property="tagName" jdbcType="VARCHAR"/>
     </resultMap>
+	<resultMap id="articleDetail" type="warmer.star.blog.model.ArticleDetail">
+		<id column="articleId" property="articleId" jdbcType="INTEGER"></id>
+		<result column="content" property="content" jdbcType="VARCHAR"/>
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="articleFile" type="warmer.star.blog.model.ArticleFile">
+		<id column="articleId" property="articleId" jdbcType="INTEGER"></id>
+		<result column="coverImage" property="coverImage" jdbcType="VARCHAR"/>
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
     <sql id="Base_Column_List">
-		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.content,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.openComment,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.openComment,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
 	</sql>
 	<sql id="Abstract_Column_List">
-		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
 	</sql>
 	<sql id="article_Column_List">
-		a.id,a.categoryId,a.title,a.abstractContent,a.publishTime,a.coverImage,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+		a.id,a.categoryId,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
 	</sql>
 	<sql id="Where_Clause" >
 	    <where >
@@ -88,10 +99,16 @@
             </otherwise>  
         </choose>
     </select>
+	<select id="getContentById" resultMap="articleDetail">
+		select articleId,content,createTime,updateTime  from articledetail where articleId=#{articleId}
+	</select>
+	<select id="getImageById" resultMap="articleFile">
+		select articleId,coverImage,createTime,updateTime  from articlefile where articleId=#{articleId}
+	</select>
     <select id="getById" resultMap="article">
         select 
         <include refid="Base_Column_List" />
-        from article a left join category c on a.categoryId=c.id 
+        from article a left join category c on a.categoryId=c.id
         where a.status !=-1 and a.id= #{articleId}  
     </select>
     <select id="getRecommendArticleList" resultMap="article">
@@ -106,19 +123,30 @@
         from article a where a.status !=-1
         order by a.showCount desc  limit 5
     </select>
-     <insert id="saveArticle">
-		  insert into article (title,content,abstractContent,categoryId,author,publishTime,coverImage,articleTags,openComment,articleType,editorType,isRecommend,status,showStyle,createTime,updateTime)
-		  values (#{title},#{content},#{abstractContent},#{categoryId},#{author},#{publishTime},#{coverImage},#{articleTags},#{openComment},#{articleType},#{editorType},#{isRecommend},#{status},#{showStyle},#{createTime},#{updateTime})
+     <insert id="saveArticle"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		 <selectKey resultType="int" order="AFTER" keyProperty="id">
+			 SELECT LAST_INSERT_ID()  as id
+		 </selectKey>
+		  insert into article (title,abstractContent,categoryId,author,publishTime,articleTags,openComment,articleType,editorType,isRecommend,status,showStyle,createTime,updateTime)
+		  values (#{title},#{abstractContent},#{categoryId},#{author},#{publishTime},#{articleTags},#{openComment},#{articleType},#{editorType},#{isRecommend},#{status},#{showStyle},#{createTime},#{updateTime})
+	</insert>
+	<insert id="saveContent">
+		  insert into articledetail (articleId,content,createTime,updateTime)
+		  values (#{articleId},#{content},#{createTime},#{updateTime})
+	</insert>
+	<insert id="saveImage" parameterType="java.util.List" >
+		insert into articlefile (articleId,coverImage,createTime,updateTime)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.articleId},#{item.coverImage},#{item.createTime},#{item.updateTime})
+		</foreach>
 	</insert>
 	<update id="updateArticle">
 		  update article
 		  <set>
-		      coverImage=#{coverImage},articleTags=#{articleTags},
+		      articleTags=#{articleTags},
 			  <if test="title!= null and title !=''">
 			      	title = #{title},
-			  </if>
-			  <if test="content!= null and content !=''">
-			  		content = #{content},
 			  </if>
 			  <if test="abstractContent!= null and abstractContent !=''">
 		  			abstractContent=#{abstractContent},
@@ -160,4 +188,10 @@
 	<update id="deleteArticle">
 		  update article set  status=-1,updateTime=NOW() where id = #{articleId}
 	</update>
+	<delete id="deleteContent">
+		delete from articledetail  where articleId = #{articleId}
+	</delete>
+	<delete id="deleteImage">
+		delete from articlefile  where articleId = #{articleId}
+	</delete>
 </mapper>

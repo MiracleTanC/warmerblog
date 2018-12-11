@@ -269,29 +269,44 @@ div#mceu_55 {
 								<i class="el-icon-upload"></i><span>添加封面</span>
 							</div>
 							<div>
-								<el-radio-group v-model="submitForm.showStyle"> <el-radio :label="0">无图</el-radio>
-								<el-radio :label="1">单图</el-radio> <el-radio :label="2">多图</el-radio> <el-radio :label="3">大图</el-radio>
+								<el-radio-group v-model="submitForm.showStyle">
+									<el-radio :label="0">无图</el-radio>
+									<el-radio :label="1">单图</el-radio>
+									<el-radio :label="2">多图</el-radio>
+									<el-radio :label="3">大图</el-radio>
 								</el-radio-group>
 							</div>
-							<el-upload :headers="headers" action="/qiniu/upload" multiple :show-file-list="showfileList"
-								:on-success="uploadCoverImage" :before-upload="validCoverImageUpload" :limit="limit"
-								list-type="picture-card"><!-- :http-request="myupload"   multiple :on-preview="handlePictureCardPreview" :on-remove="handleRemove"-->
-							<i class="el-icon-plus"></i> </el-upload>
+							<el-upload :headers="headers"
+									   action="/qiniu/upload"
+									   multiple
+									   :show-file-list="showfileList"
+									   :on-success="uploadCoverImage"
+									   :before-upload="validCoverImageUpload"
+									   :limit="limit"
+									   list-type="picture-card">
+								<i class="el-icon-plus"></i>
+							</el-upload>
 							<ul class="el-upload-list el-upload-list--picture-card">
-								<li v-for="item in submitForm.coverImageList" class="el-upload-list__item is-success"><img
-									:src="item" alt="" class="el-upload-list__item-thumbnail"> <label
-									class="el-upload-list__item-status-label"> <i
-										class="el-icon-upload-success el-icon-check"></i>
-								</label> <i class="el-icon-close" @click="handleRemove"></i> <span class="el-upload-list__item-actions">
-										<span class="el-upload-list__item-preview"> <i class="el-icon-zoom-in"
-											@click="handlePictureCardPreview(item)"></i>
-									</span> <span class="el-upload-list__item-delete"> <i class="el-icon-delete"
-											@click="handleRemove(item)"></i>
+								<li v-for="item in submitForm.coverImageList" class="el-upload-list__item is-success">
+									<img :src="item" alt="" class="el-upload-list__item-thumbnail">
+									<label class="el-upload-list__item-status-label">
+										<i class="el-icon-upload-success el-icon-check"></i>
+									</label>
+									<i class="el-icon-close" @click="handleRemove"></i>
+									<span class="el-upload-list__item-actions">
+										<span class="el-upload-list__item-preview">
+											<i class="el-icon-zoom-in" @click="handlePictureCardPreview(item.coverImage)"></i>
+										</span>
+										<span class="el-upload-list__item-delete">
+											<i class="el-icon-delete" @click="handleRemove(item.coverImage)"></i>
+										</span>
 									</span>
-								</span></li>
+								</li>
 							</ul>
-						   <el-dialog :visible.sync="dialogVisible"> <img width="100%" :src="dialogImageUrl"></el-dialog> 
-						 </el-card>
+						   <el-dialog :visible.sync="dialogVisible">
+							   <img width="100%" :src="dialogImageUrl">
+						   </el-dialog>
+						</el-card>
 					<div class="toolbars" v-show="saveoptionshow">
 					<ul>
 						<li>
@@ -328,7 +343,9 @@ div#mceu_55 {
 				this.submitForm.content=articleModel.content;
 				this.submitForm.abstractContent=articleModel.abstractContent;
 				if(articleModel.coverImageList){
-					this.submitForm.coverImageList=articleModel.coverImageList;
+				    for(var i=0;i<articleModel.coverImageList.length;i++){
+                        this.submitForm.coverImageList.push(articleModel.coverImageList[i].coverImage);
+					}
 				}
 				this.submitForm.publishTime=articleModel.publishTime;
 				this.submitForm.id=articleModel.id;
@@ -366,7 +383,6 @@ div#mceu_55 {
 		        traditional:true, 
 		        success: function (result) {
 					if(result.code==0){
-						debugger;
 						_this.$message({
 							  showClose: true,
 							  duration:0,
@@ -376,6 +392,7 @@ div#mceu_55 {
 					          message: result.msg,
 					          type: 'success'
 					        });
+                        _this.returnArticle();
 					}else{
 						_this.$message.error(result.msg);
 					}
@@ -433,7 +450,7 @@ div#mceu_55 {
 			
 		}
 		var initMarkdowm=function(){
-			const _this = this
+			var _this = this
 			testEditor = editormd("test-editormd", {
                 width: "100%",
                 height: document.body.clientHeight-60,
@@ -452,7 +469,7 @@ div#mceu_55 {
                 //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
                 emoji : true,
                 taskList : true,
-                tocm            : true,         // Using [TOCM]
+                tocm  : true,         // Using [TOCM]
                 tex : true,                   // 开启科学公式TeX语言支持，默认关闭
                 flowChart : true,             // 开启流程图支持，默认关闭
                 sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
@@ -583,7 +600,7 @@ div#mceu_55 {
  		initMarkdowm:initMarkdowm,
 	    handleScroll() {
 	      this.width = this.$el.getBoundingClientRect().width;
-	      const offsetTop = this.$el.getBoundingClientRect().top;
+	      var offsetTop = this.$el.getBoundingClientRect().top;
 	      if (offsetTop <= this.stickyTop) {
 	        this.sticky()
 	        return

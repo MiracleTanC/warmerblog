@@ -1,62 +1,27 @@
 package warmer.star.blog.dto;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import com.github.pagehelper.util.StringUtil;
-
 import warmer.star.blog.enums.ArticleStatus;
+import warmer.star.blog.model.ArticleFile;
 import warmer.star.blog.model.Category;
 import warmer.star.blog.util.DateTimeHelper;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 
 public class ArticleItem implements Serializable {
-	private static final long serialVersionUID = 1L;
 	private Integer serialNumber;
 	private Integer id;
     private Integer categoryId; //分类id 
     private String title;   //标题
-    private String content;  //内容
     private String abstractContent; //摘要内容
     private String publishTime; //显示时间
     private String  articleTags; //文章标签
     private Integer showStyle;  //展示样式
     private Integer articleType;
     private Integer editorType;//0=markedown,1=tinymce
-    public String getAbstractContent() {
-		return abstractContent;
-	}
-
-	public void setAbstractContent(String abstractContent) {
-		this.abstractContent = abstractContent;
-	}
-
-	public String getPublishTime() {
-		return publishTime;
-	}
-
-	public void setPublishTime(String publishTime) {
-		this.publishTime = publishTime;
-	}
-
-	public String getCoverImage() {
-		return coverImage;
-	}
-
-	public void setCoverImage(String coverImage) {
-		this.coverImage = coverImage;
-	}
-
-	public Integer getOpenComment() {
-		return openComment;
-	}
-
-	public void setOpenComment(Integer openComment) {
-		this.openComment = openComment;
-	}
-
-	private String coverImage; //封面图片
-	private String[] coverImageList; //封面图片
+	private List<ArticleFile> coverImageList; //封面图片
     private Integer openComment; //打开评论
     private Integer isRecommend; //是否推荐
     private Integer status;  //状态
@@ -66,8 +31,17 @@ public class ArticleItem implements Serializable {
     private Date updateTime;    //更新时间
     private Integer showCount;  //浏览数
     private Category category;
+	private String content;
 
-    public Integer getId() {
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -89,14 +63,6 @@ public class ArticleItem implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getDisPlayStatus() {
@@ -144,6 +110,29 @@ public class ArticleItem implements Serializable {
     public void setShowCount(Integer showCount) {
         this.showCount = showCount;
     }
+	public String getAbstractContent() {
+		return abstractContent;
+	}
+
+	public void setAbstractContent(String abstractContent) {
+		this.abstractContent = abstractContent;
+	}
+
+	public String getPublishTime() {
+		return publishTime;
+	}
+
+	public void setPublishTime(String publishTime) {
+		this.publishTime = publishTime;
+	}
+
+	public Integer getOpenComment() {
+		return openComment;
+	}
+
+	public void setOpenComment(Integer openComment) {
+		this.openComment = openComment;
+	}
 
 
 	/**
@@ -211,21 +200,14 @@ public class ArticleItem implements Serializable {
 	/**
 	 * @return the coverImageList
 	 */
-	public String[] getCoverImageList() {
-		if(StringUtil.isNotEmpty(this.coverImage)) {
-			String[] images=this.coverImage.split(";");
-			if(images.length>0)
-			{
-				return images;
-			}
-		}
+	public List<ArticleFile> getCoverImageList() {
 		return coverImageList;
 	}
 
 	/**
 	 * @param coverImageList the coverImageList to set
 	 */
-	public void setCoverImageList(String[] coverImageList) {
+	public void setCoverImageList(List<ArticleFile> coverImageList) {
 		this.coverImageList = coverImageList;
 	}
 

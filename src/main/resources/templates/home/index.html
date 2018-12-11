@@ -4,13 +4,13 @@
 	layout:decorator="partial/layout" lang="zh">
 <head>
 <style type="text/css">
-
+0
 </style>
 </head>
 <body>
 	<div layout:fragment="main">
 		<a target="_blank" href="https://github.com/MiracleTanC?tab=repositories">
-			<img style="position: absolute; top: 56px; right: 0; border: 0;z-index: 999;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
+			<img style="position: absolute; top: 56px; right: 0; border: 0;z-index: 999;" src="http://file.miaoleyan.com/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
 		</a>
 		<!--banner begin-->
 		<div class="picsbox">
@@ -26,31 +26,50 @@
 		<div class="blank"></div>
 		<!--blogsbox begin-->
 		<div class="blogsbox">
+			<template>
 			<div class="blogs" v-for="item in articleList">
-				<h3 class="blogtitle">
-					<a :href="['/detail/'+item.id]" target="_blank" v-html="item.title">{{item.title}}</a>
-				</h3>
-				<span v-if="item.showStyle==1" class="blogpic"><a :href="['/detail/'+item.id]"
-					:title="item.title"><img :src="item.coverImageList[0]" alt=""></a></span> <span
-					v-else-if="item.showStyle==2" class="bplist">
-					<ul v-if="item.coverImageList">
-						<li v-for="img in item.coverImageList"><a :href="['/detail/'+item.id]" :title="item.title"><img
-								:src="img" alt=""></a></li>
-					</ul>
-				</span> <span v-else-if="item.showStyle==3" class="bigpic"><a
-					:href="['/detail/'+item.id]" :title="item.title" target="_blank"><img :src="item.coverImageList[0]" alt=""></a></span>
-				<p class="blogtext" v-html="item.abstractContent">{{item.abstractContent}}</p>
-				<div class="bloginfo">
-					<ul>
-					    <li><a href="/" v-if="item.articleType"><span class="label label-warn">转载</span></a><a href="/" v-else><span class="label label-success">原创</span></a></li>
-						<li class="author"><a href="/">{{item.author}}</a></li>
-						<li class="lmname"><a href="/">{{item.categoryName}}</a></li>
-						<li class="timer">{{item.createTime}}</li>
-						<li class="view"><span>{{item.showCount}}</span>已阅读</li>
-						<li class="like">9999</li>
-					</ul>
+					<h3 class="blogtitle">
+						<a :href="['/detail/'+item.id]" target="_blank" v-html="item.title">{{item.title}}</a>
+					</h3>
+					<span v-if="item.showStyle==1" class="blogpic">
+						<a :href="['/detail/'+item.id]" :title="item.title">
+							<img v-if="item.coverImageList&&item.coverImageList.length>0"  :src="item.coverImageList[0].coverImage" alt="">
+						</a>
+					</span>
+					<span v-else-if="item.showStyle==2" class="bplist">
+						<ul v-if="item.coverImageList&&item.coverImageList.length>0">
+							<li v-for="img in item.coverImageList">
+								<a :href="['/detail/'+item.id]" :title="item.title">
+									<img :src="img.coverImage" alt="">
+								</a>
+							</li>
+						</ul>
+					</span>
+					<span v-else-if="item.showStyle==3" class="bigpic">
+						<a :href="['/detail/'+item.id]" :title="item.title" target="_blank">
+							<img v-if="item.coverImageList&&item.coverImageList.length>0" :src="item.coverImageList[0].coverImage" alt="">
+						</a>
+					</span>
+					<p class="blogtext" v-html="item.abstractContent">{{item.abstractContent}}</p>
+					<div class="bloginfo">
+						<ul>
+							<li>
+								<a href="/" v-if="item.articleType">
+									<span class="label label-warn">转载</span>
+								</a>
+								<a href="/" v-else>
+									<span class="label label-success">原创</span>
+								</a>
+							</li>
+							<li class="author"><a href="/">{{item.author}}</a></li>
+							<li class="lmname"><a href="/">{{item.categoryName}}</a></li>
+							<li class="timer">{{item.createTime}}</li>
+							<li class="view"><span>{{item.showCount}}</span>已阅读</li>
+							<!--<li class="like">9999</li>-->
+						</ul>
+					</div>
 				</div>
-			</div>
+			</template>
 			<div class="loading" v-show="loading">
 				<img th:src="@{/images/loading.gif}" alt="loading" />
 			</div>
@@ -62,7 +81,9 @@
 				<h2 class="hometitle">特别推荐</h2>
 				<ul v-if="recommendArticlelist">
 					<li v-for="article in recommendArticlelist">
-						<i v-if="article.coverImageList"><img :src="article.coverImageList[0]"></i>
+						<i v-if="article.coverImageList&&article.coverImageList.length>0">
+							<img :src="article.coverImageList[0].coverImage">
+						</i>
 						<p>
 							{{article.title}} <span><a :href="['/detail/'+article.id]" target="_blank">阅读</a></span>
 						</p>
@@ -74,7 +95,9 @@
 				<h2 class="hometitle">推荐文章</h2>
 				<ul class="sidenews" v-if="topReadArticlelist">
 					<li v-for="article in topReadArticlelist">
-						<i v-if="article.coverImageList"><img :src="article.coverImageList[0]"></i>
+						<i v-if="article.coverImageList&&article.coverImageList.length>0">
+							<img :src="article.coverImageList[0].coverImage">
+						</i>
 						<p>
 							<a :href="['/detail/'+article.id]" target="_blank">{{article.title}} </a>
 						</p> 
@@ -102,6 +125,7 @@
 		</div>
 	</div>
 	<div layout:fragment="js">
+
 		<script type="text/javascript">
     var initData=function initData() {
     	var _this=this;
@@ -116,17 +140,14 @@
             //url: "/getEsArticlelist",//启用es时用这个
             data: param,
             success: function (result) {
-            	//debugger;
                 if (result.code==0) {
                     _this.loading=false;
-                	//debugger;
                 	//var resultCount=result.data.recordList.length;//启用es时用这个
                 	var resultCount=result.data.rows.length;
                 	if(resultCount>0){
-                		setTimeout(function() {
-                    		//_this.articleList = _this.articleList.concat(result.data.recordList);//启用es时用这个
-                    		_this.articleList = _this.articleList.concat(result.data.rows);
-               	     	}, 1000)
+                        //_this.articleList = _this.articleList.concat(result.data.recordList);//启用es时用这个
+                        _this.articleList = _this.articleList.concat(result.data.rows);
+                        _this.scrollReveal.sync();
                 	}
                 	_this.showMore=resultCount==_this.queryForm.pageSize?true:false;
                 }
@@ -257,29 +278,28 @@
     		   // 缓存指针  
               var _this = this;
               _this.defaultfollowUsPosition=this.$refs.followUs.offsetTop;
+              _this.initScrollRevealOption();
               // 注册scroll事件并监听  
 		      window.addEventListener('scroll', ()=> {
         		var scrollTop = document.documentElement.scrollTop;
                 _this.scrollTop=scrollTop;
-                
         		 if(scrollTop + window.innerHeight >= document.body.clientHeight) {
                 	if(!_this.scrollDisable) {
                 		if(_this.showMore){
-  	                  	  _this.initData(); 
+  	                  	  _this.initData();
+  	                  	  //_this.initScrollRevealOption();
   	                  	  _this.queryForm.pageIndex=_this.queryForm.pageIndex+1;
-  	                  	  _this.initScrollRevealOption();
   	                 }
                 	}
 		        }
         		 //console.log(_this.queryForm.pageIndex);
         		 var followUsPosition = this.$refs.followUs.offsetTop;
         		 _this.defaultfollowUsPosition=followUsPosition;
-        		
         		 if(scrollTop<=_this.defaultfollowUsPosition ){
          			 _this.followUsPosition=_this.defaultfollowUsPosition;
          		 }
-		      })
-		      
+		      });
+
     	  },
     	  created(){
     		  this.initData(); 

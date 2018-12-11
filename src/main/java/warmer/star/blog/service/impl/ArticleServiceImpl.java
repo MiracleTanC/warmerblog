@@ -1,15 +1,16 @@
 package warmer.star.blog.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import warmer.star.blog.dto.ArticleItem;
 import warmer.star.blog.dto.ArticleQueryItem;
 import warmer.star.blog.dto.ArticleSubmitItem;
 import warmer.star.blog.mapper.ArticleMapper;
+import warmer.star.blog.model.ArticleDetail;
+import warmer.star.blog.model.ArticleFile;
 import warmer.star.blog.service.ArticleService;
+
+import java.util.List;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -34,10 +35,25 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleMapper.getById(articleId);
 	}
 
+	@Override
+	public ArticleDetail getContentById(int articleId) {
+		return articleMapper.getContentById(articleId);
+	}
+
 
 	@Override
-	public boolean saveArticle(ArticleSubmitItem submitItem) {
+	public int saveArticle(ArticleSubmitItem submitItem) {
 		return articleMapper.saveArticle(submitItem);
+	}
+
+	@Override
+	public void saveContent(ArticleDetail submitItem) {
+		articleMapper.saveContent(submitItem);
+	}
+
+	@Override
+	public void saveImage(List<ArticleFile> fileList) {
+		articleMapper.saveImage(fileList);
 	}
 
 	@Override
@@ -48,6 +64,16 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public boolean deleteArticle(int articleId) {
 		return articleMapper.deleteArticle(articleId);
+	}
+
+	@Override
+	public boolean deleteImage(int articleId) {
+		return articleMapper.deleteImage(articleId);
+	}
+
+	@Override
+	public boolean deleteContent(int articleId) {
+		return articleMapper.deleteContent(articleId);
 	}
 
 	@Override

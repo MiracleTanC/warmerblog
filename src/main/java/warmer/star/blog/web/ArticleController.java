@@ -1,9 +1,9 @@
 package warmer.star.blog.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,18 +11,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.util.StringUtil;
-
 import warmer.star.blog.dto.ArticleItem;
 import warmer.star.blog.dto.ArticleQueryItem;
 import warmer.star.blog.dto.ArticleSubmitItem;
+import warmer.star.blog.model.ArticleDetail;
+import warmer.star.blog.model.ArticleFile;
 import warmer.star.blog.service.ArticleService;
 import warmer.star.blog.util.DateTimeHelper;
 import warmer.star.blog.util.PageRecord;
 import warmer.star.blog.util.R;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -97,6 +99,10 @@ public class ArticleController extends BaseController {
 		ArticleItem articleItem = new ArticleItem();
 		if (articleId!=null&&articleId != 0) {
 			articleItem = articleService.getById(articleId);
+			ArticleDetail contentItem=articleService.getContentById(articleId);
+			if(contentItem!=null&&StringUtils.isNotBlank(contentItem.getContent())){
+				articleItem.setContent(contentItem.getContent());
+			}
 			model.addAttribute("articleModel", articleItem);
 		}
 		if(t==0) {
@@ -128,15 +134,64 @@ public class ArticleController extends BaseController {
 	public R saveArticle(ArticleSubmitItem submitItem) {
 		boolean result = false;
 		try {
+			Date time=DateTimeHelper.getNowDate();
 			if (submitItem.getId() == 0) {
-				submitItem.setCreateTime(DateTimeHelper.getNowDate());
-				submitItem.setUpdateTime(DateTimeHelper.getNowDate());
-				submitItem.setContent(submitItem.getContent());
-				result = articleService.saveArticle(submitItem);
+				submitItem.setCreateTime(time);
+				submitItem.setUpdateTime(time);
+				articleService.saveArticle(submitItem);
+				int id = Integer.parseInt(submitItem.getId().toString());
+				ArticleDetail detail=new ArticleDetail();
+				detail.setArticleId(id);
+				detail.setContent(submitItem.getContent());
+				detail.setCreateTime(time);
+				detail.setUpdateTime(time);
+				articleService.saveContent(detail);
+				List<ArticleFile> files=new ArrayList<ArticleFile>();
+				if(submitItem.getCoverImageList().length>0){
+					for (String url:submitItem.getCoverImageList()) {
+						ArticleFile img=new ArticleFile();
+						img.setArticleId(id);
+						img.setCoverImage(url);
+						img.setCreateTime(time);
+						img.setUpdateTime(time);
+						files.add(img);
+					}
+				}
+				if(files.size()>0){
+					articleService.saveImage(files);
+				}
+				result=true;
 			} else {
+				int id=submitItem.getId();
 				submitItem.setUpdateTime(DateTimeHelper.getNowDate());
-				submitItem.setContent(submitItem.getContent());
-				result = articleService.updateArticle(submitItem);
+				articleService.updateArticle(submitItem);
+				//删除正文
+				articleService.deleteContent(id);
+				ArticleDetail detail=new ArticleDetail();
+				detail.setArticleId(id);
+				detail.setContent(submitItem.getContent());
+				detail.setCreateTime(time);
+				detail.setUpdateTime(time);
+				//添加正文
+				articleService.saveContent(detail);
+				List<ArticleFile> files=new ArrayList<ArticleFile>();
+				if(submitItem.getCoverImageList().length>0){
+					for (String url:submitItem.getCoverImageList()) {
+						ArticleFile img=new ArticleFile();
+						img.setArticleId(id);
+						img.setCoverImage(url);
+						img.setCreateTime(time);
+						img.setUpdateTime(time);
+						files.add(img);
+					}
+				}
+				//删除封面
+				articleService.deleteImage(id);
+				if(files.size()>0){
+					//添加封面
+					articleService.saveImage(files);
+				}
+				result=true;
 			}
 
 		} catch (Exception e) {
