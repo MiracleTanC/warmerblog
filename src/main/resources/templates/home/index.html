@@ -315,46 +315,46 @@
    	 	  methods:{
     	      initd3cloud(data){
                   var _this=this;
-                  var fill = d3.scale.category20();
+                  //var fill = d3.scale.category20();
+                  var formatData=data.map(function(d) {
+                      return {"text": d.value, "size": 10 + Math.random() * 50,"color":d.color};
+                  });
                   d3.layout.cloud().size([325, 200]) //size([x,y])  词云显示的大小
-                      .words(data.map(function(d) {
-                          return {"text": d.value, "size": 10 + Math.random() * 50,"color":d.color};
-                      }))
+                      .words(formatData)
                       .rotate(function() { return ~~(Math.random() * 2) * 90; })
                       .font("Impact")
                       .fontSize(function(d) { return d.size; })
-                      .on("end", draw)//结束时运行draw函数
+                      .on("end", _this.draw)//结束时运行draw函数
                       .start();
-                  function draw(words) {
-                      d3.select("#tagcontainer").append("svg")
-                          .attr("width", 345)
-                          .attr("height", 205)
-                          .append("g")
-                          .attr("transform", "translate(160,110)")
-                          .selectAll("text")
-                          .data(words)
-                          .enter().append("text")
-                          .style("font-size", function(d) { return d.size + "px"; })
-                          .style("font-family", "Impact")
-                          .style("fill", function(d, i) {
-                              return d.color;
-                          })
-                          .attr("text-anchor", "middle")
-                          .attr("transform", function(d) {
-                              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                          })
-                          .text(function(d) { return d.text; })
-						  .on("click",function(d){
-						      var tag=d.text;
-                              _this.queryForm.tag=tag;
-                              _this.queryForm.pageIndex=1;
-                              _this.articleList=[];
-                              _this.initData();
-						  });
-
-
-                  }
 			  },
+              draw(words) {
+    	          var _this=this;
+				d3.select("#tagcontainer").append("svg")
+					.attr("width", 345)
+					.attr("height", 205)
+					.append("g")
+					.attr("transform", "translate(160,110)")
+					.selectAll("text")
+					.data(words)
+					.enter().append("text")
+					.style("font-size", function(d) { return d.size + "px"; })
+					.style("font-family", "Impact")
+					.style("fill", function(d, i) {
+						return d.color;
+					})
+					.attr("text-anchor", "middle")
+					.attr("transform", function(d) {
+						return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+					})
+					.text(function(d) { return d.text; })
+					.on("click",function(d){
+						var tag=d.text;
+						_this.queryForm.tag=tag;
+						_this.queryForm.pageIndex=1;
+						_this.articleList=[];
+						_this.initData();
+					});
+				},
 			  initData:initData,
 			  initScrollRevealOption:initScrollRevealOption,
 			  initBanner:initBanner,
