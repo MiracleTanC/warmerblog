@@ -1,15 +1,16 @@
 
 package warmer.star.blog.dto;
 
-import java.util.Date;
-
 import warmer.star.blog.util.BaseQueryItem;
+
+import java.util.Date;
 
 public class ArticleQueryItem  extends BaseQueryItem{
 
 	public Integer categoryId;
 	public Integer sort;
 	public String sortfield;
+	public String tag;
 	public Date startdate;
 	public Date enddate;
 	public Date getStartdate() {
@@ -55,5 +56,12 @@ public class ArticleQueryItem  extends BaseQueryItem{
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 }

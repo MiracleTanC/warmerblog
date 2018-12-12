@@ -71,6 +71,9 @@
 	      	<if test="categoryId != null and categoryId != ''">
            		and a.categoryId = #{categoryId,jdbcType=INTEGER}
         	</if>
+			<if test="tag!= null and tag!= ''">
+				and find_in_set(#{tag},a.articleTags)
+			</if>
         	 <choose>
 	           <when test="status != null and status != '' or 0 == status">
 	       	      and a.status = #{status,jdbcType=INTEGER}

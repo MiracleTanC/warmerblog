@@ -1,14 +1,13 @@
 package warmer.star.blog.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import warmer.star.blog.dto.TagItem;
 import warmer.star.blog.mapper.TagMapper;
 import warmer.star.blog.model.Tag;
 import warmer.star.blog.service.TagService;
+
+import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -18,6 +17,11 @@ public class TagServiceImpl implements TagService {
 	@Override
 	public List<Tag> getAll() {
 		return tagMapper.getAll();
+	}
+
+	@Override
+	public List<Tag> getTagByName(String tagName) {
+		return tagMapper.getTagByName(tagName);
 	}
 
 	@Override

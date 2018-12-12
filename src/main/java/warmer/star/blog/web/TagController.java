@@ -1,24 +1,21 @@
 package warmer.star.blog.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import warmer.star.blog.dto.TagItem;
 import warmer.star.blog.model.Tag;
 import warmer.star.blog.service.TagService;
 import warmer.star.blog.util.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 @Controller
 @RequestMapping("/")
 public class TagController extends BaseController {
-
-	// 文章service
 	@Autowired
 	private TagService tagService;
 

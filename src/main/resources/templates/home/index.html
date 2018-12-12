@@ -4,7 +4,9 @@
 	layout:decorator="partial/layout" lang="zh">
 <head>
 <style type="text/css">
-0
+	text{
+		cursor: pointer;
+	}
 </style>
 </head>
 <body>
@@ -50,7 +52,7 @@
 							<img v-if="item.coverImageList&&item.coverImageList.length>0" :src="item.coverImageList[0].coverImage" alt="">
 						</a>
 					</span>
-					<p class="blogtext" v-html="item.abstractContent">{{item.abstractContent}}</p>
+					<a :href="['/detail/'+item.id]" target="_blank"><p class="blogtext" v-html="item.abstractContent">{{item.abstractContent}}</p></a>
 					<div class="bloginfo">
 						<ul>
 							<li>
@@ -96,7 +98,7 @@
 				<ul class="sidenews" v-if="topReadArticlelist">
 					<li v-for="article in topReadArticlelist">
 						<i v-if="article.coverImageList&&article.coverImageList.length>0">
-							<img :src="article.coverImageList[0].coverImage">
+							<img :src="article.coverImageList[0].coverImage" >
 						</i>
 						<p>
 							<a :href="['/detail/'+article.id]" target="_blank">{{article.title}} </a>
@@ -109,10 +111,7 @@
 			</div>
 			<div class="cloud">
 				<h2 class="hometitle">标签云</h2>
-				<ul v-if="tagList">
-					<a v-for="tag in tagList" href="javascript:void(0);" @click="tagClick">{{tag.value}}</a>
-					
-				</ul>
+				<ul v-if="tagList" id="tagcontainer"></ul>
 			</div>
 			<div class="links">
 				<h2 class="hometitle">友情链接</h2>
@@ -125,7 +124,8 @@
 		</div>
 	</div>
 	<div layout:fragment="js">
-
+		<script src="https://d3js.org/d3.v3.min.js"></script>
+		<script src="https://cdn.bootcss.com/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
 		<script type="text/javascript">
     var initData=function initData() {
     	var _this=this;
@@ -202,6 +202,7 @@
                 	var resultCount=result.data.length;
                 	if(resultCount>0){
                 		_this.tagList=result.data;
+                		_this.initd3cloud(result.data);
                 	}
                 }
             }
@@ -258,7 +259,8 @@
     		queryForm:{
     			pageIndex: 1,
          	    pageSize: 10,
-         	    title:''
+         	    title:'',
+				tag:''
     		},
     		showMore:true,
     		loading:true,
@@ -311,20 +313,62 @@
     		  this.queryForm.pageIndex=this.queryForm.pageIndex+1;  
     	  },
    	 	  methods:{
-   	 		initData:initData,
-   	 	    initScrollRevealOption:initScrollRevealOption,
-   	 	    initBanner:initBanner,
-   	 	    initPartner:initPartner,
-   	 	    initTagList:initTagList,
-   	 		getTopReadArticleList:getTopReadArticleList,
-   	 		getRecommendArticleList:getRecommendArticleList,
-   	 	    backToTop(){
-   	 	      document.body.scrollTop = 0;
-   	 	      document.documentElement.scrollTop = 0;
-   	 	    },
-   	 	    tagClick(){
-   	 	    	
-   	 	    }
+    	      initd3cloud(data){
+                  var _this=this;
+                  var fill = d3.scale.category20();
+                  d3.layout.cloud().size([325, 200]) //size([x,y])  词云显示的大小
+                      .words(data.map(function(d) {
+                          return {"text": d.value, "size": 10 + Math.random() * 50,"color":d.color};
+                      }))
+                      .rotate(function() { return ~~(Math.random() * 2) * 90; })
+                      .font("Impact")
+                      .fontSize(function(d) { return d.size; })
+                      .on("end", draw)//结束时运行draw函数
+                      .start();
+                  function draw(words) {
+                      d3.select("#tagcontainer").append("svg")
+                          .attr("width", 345)
+                          .attr("height", 205)
+                          .append("g")
+                          .attr("transform", "translate(160,110)")
+                          .selectAll("text")
+                          .data(words)
+                          .enter().append("text")
+                          .style("font-size", function(d) { return d.size + "px"; })
+                          .style("font-family", "Impact")
+                          .style("fill", function(d, i) {
+                              return d.color;
+                          })
+                          .attr("text-anchor", "middle")
+                          .attr("transform", function(d) {
+                              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                          })
+                          .text(function(d) { return d.text; })
+						  .on("click",function(d){
+						      var tag=d.text;
+                              _this.queryForm.tag=tag;
+                              _this.queryForm.pageIndex=1;
+                              _this.articleList=[];
+                              _this.initData();
+						  });
+
+
+                  }
+			  },
+			  initData:initData,
+			  initScrollRevealOption:initScrollRevealOption,
+			  initBanner:initBanner,
+			  initPartner:initPartner,
+			  initTagList:initTagList,
+			  getTopReadArticleList:getTopReadArticleList,
+			  getRecommendArticleList:getRecommendArticleList,
+			  backToTop(){
+    	          document.body.scrollTop = 0;
+				  document.documentElement.scrollTop = 0;
+			  },
+			  tagClick(){
+
+			  }
    	 	  }
     	})
     </script>
