@@ -268,7 +268,7 @@ div#mceu_55 {
 							<div slot="header" class="clearfix">
 								<i class="el-icon-upload"></i><span>添加封面</span>
 							</div>
-							<div>
+							<div style="margin: 20px 0">
 								<el-radio-group v-model="submitForm.showStyle">
 									<el-radio :label="0">无图</el-radio>
 									<el-radio :label="1">单图</el-radio>
@@ -276,16 +276,27 @@ div#mceu_55 {
 									<el-radio :label="3">大图</el-radio>
 								</el-radio-group>
 							</div>
-							<el-upload :headers="headers"
-									   action="/qiniu/upload"
-									   multiple
-									   :show-file-list="showfileList"
-									   :on-success="uploadCoverImage"
-									   :before-upload="validCoverImageUpload"
-									   :limit="limit"
-									   list-type="picture-card">
-								<i class="el-icon-plus"></i>
-							</el-upload>
+							<el-tabs v-model="coverImageActive" type="card">
+								<el-tab-pane label="本地上传" name="first">
+									<el-upload title="选择图片"
+											   :headers="headers"
+											   action="/qiniu/upload"
+											   multiple
+											   :show-file-list="showfileList"
+											   :on-success="uploadCoverImage"
+											   :before-upload="validCoverImageUpload"
+											   :limit="limit"
+											   list-type="picture-card">
+										<i class="el-icon-plus"></i>
+									</el-upload>
+								</el-tab-pane>
+								<el-tab-pane label="网络地址" name="second">
+									<div style="margin: 20px 0">
+										<el-input  style="width: 60%"></el-input>
+										<el-button v-loading="loading" style="margin-left: 10px;" v-model="netimageurl" type="success" @click="addnetimage">添加网络图片 </el-button>
+									</div>
+								</el-tab-pane>
+							</el-tabs>
 							<ul class="el-upload-list el-upload-list--picture-card">
 								<li v-for="item in submitForm.coverImageList" class="el-upload-list__item is-success">
 									<img :src="item" alt="" class="el-upload-list__item-thumbnail">
@@ -342,7 +353,7 @@ div#mceu_55 {
 				this.submitForm.author=articleModel.author;
 				this.submitForm.content=articleModel.content;
 				this.submitForm.abstractContent=articleModel.abstractContent;
-				if(articleModel.coverImageList){
+				if(articleModel.coverImageList.length>0){
 				    for(var i=0;i<articleModel.coverImageList.length;i++){
                         this.submitForm.coverImageList.push(articleModel.coverImageList[i].coverImage);
 					}
@@ -498,6 +509,8 @@ div#mceu_55 {
 	 var app = new Vue({
          el: '#app',
          data:{
+             coverImageActive:'first',
+             netimageurl:'',
         	 submitForm:{
 	  			  status: '0',
 	  			  title: '', // 文章题目
@@ -582,6 +595,12 @@ div#mceu_55 {
    		 this.loadCategoryOptions();
    	  },
  	 methods: {
+         addnetimage(){
+             if(this.netimageurl!=''){
+                 this.submitForm.coverImageList.push(this.netimageurl);
+                 this.netimageurl="";
+			 }
+		 },
  		btnsaveoption(){
  			this.saveoptionshow=!this.saveoptionshow;
  		},
@@ -684,7 +703,6 @@ div#mceu_55 {
 	    	   
 	      },
 	      uploadCoverImage(res, file) {
-	    	  debugger;
 	    	  if(res.success==1){
 	    		  for(var i=0;i<res.results.length;i++){
 	    			  this.submitForm.coverImageList.push(res.results[i].url); 
@@ -700,7 +718,7 @@ div#mceu_55 {
 	        		this.$message.error('封面图片最多三张!');
 	        		return false;
 	        	}
-	          const isLt2M = file.size / 1024 / 1024 < 2;
+	          var isLt2M = file.size / 1024 / 1024 < 2;
 	          if (file.type !== 'image/jpeg'&&file.type !== 'image/jpg'&&file.type !== 'image/gif'&&file.type !== 'image/png') {
 	            this.$message.error('上传头像图片只能是 JPG 格式!');
 	          }
