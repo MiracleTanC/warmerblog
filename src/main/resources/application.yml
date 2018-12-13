@@ -58,7 +58,7 @@ mybatis:
   mapper-locations: classpath*:mapper/*.xml
   #config-location: classpath:mybatis-conf.xml
 logging:
-  config: classpath:logback.xml  
+  config: classpath:logback-spring.xml
   level:
     root: info
 #--------七牛云配置
