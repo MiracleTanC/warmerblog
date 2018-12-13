@@ -127,7 +127,7 @@
 		<script src="https://d3js.org/d3.v3.min.js"></script>
 		<script src="https://cdn.bootcss.com/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
 		<script type="text/javascript">
-    var initData=function initData() {
+    var initData=function() {
     	var _this=this;
     	// 开始加载数据，就不能再次触发这个函数了
     	_this.scrollDisable = true;
@@ -157,7 +157,7 @@
         });
        
     }
-    var getTopReadArticleList=function initData() {
+    var getTopReadArticleList=function() {
     	var _this=this;
         $.ajax({
             type: "POST",
@@ -174,7 +174,7 @@
         });
        
     }
-    var getRecommendArticleList=function initData() {
+    var getRecommendArticleList=function() {
     	var _this=this;
         $.ajax({
             type: "POST",
@@ -353,6 +353,7 @@
 						_this.queryForm.pageIndex=1;
 						_this.articleList=[];
 						_this.initData();
+						_this.backToTop();
 					});
 				},
 			  initData:initData,
@@ -363,8 +364,14 @@
 			  getTopReadArticleList:getTopReadArticleList,
 			  getRecommendArticleList:getRecommendArticleList,
 			  backToTop(){
-    	          document.body.scrollTop = 0;
-				  document.documentElement.scrollTop = 0;
+                  timer = setInterval(function () {
+                      var osTop = document.documentElement.scrollTop || document.body.scrollTop
+                      var ispeed = Math.floor(-osTop / 5)
+                      document.documentElement.scrollTop = document.body.scrollTop = osTop + ispeed
+                      if (osTop === 0) {
+                          clearInterval(timer);
+                      }
+                  },30)
 			  },
 			  tagClick(){
 

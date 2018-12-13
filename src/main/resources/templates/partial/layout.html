@@ -65,7 +65,7 @@
 			<div th:include="partial/musicplayer::musicplayer"></div>
 		</div>
 		<div id="appbackTop">
-			<a :click="backToTop" href="#" :class="[scrollTop>offset ? 'cd-is-visible' : '', 'cd-top']">Top</a>
+			<a @click="backToTop" href="javascript:void(0)" :class="[scrollTop>offset ? 'cd-is-visible' : '', 'cd-top']">Top</a>
 		</div>
 	</div>
 	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
@@ -168,8 +168,14 @@
 		    },
 	   	 	  methods:{
 	   	 	    backToTop(){
-	   	 	      document.body.scrollTop = 0;
-	   	 	      document.documentElement.scrollTop = 0;
+                    timer = setInterval(function () {
+                        var osTop = document.documentElement.scrollTop || document.body.scrollTop
+                        var ispeed = Math.floor(-osTop / 5)
+                        document.documentElement.scrollTop = document.body.scrollTop = osTop + ispeed
+                        if (osTop === 0) {
+                            clearInterval(timer);
+                        }
+                    },30)
 	   	 	    }
 	   	 	  }
      })
