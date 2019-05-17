@@ -33,11 +33,7 @@
 			</div>
 
 			<el-table height="678" :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%"> 
-				<el-table-column align="center" label="编号" width="120"> 
-					<template slot-scope="scope"> 
-						<span>{{scope.row.serialNumber}}</span> 
-					</template> 
-				</el-table-column> 				
+				<el-table-column align="center" label="编号" width="120"  type="index"></el-table-column>
 				<el-table-column min-width="250px" label="歌曲名称"> 
 					<template slot-scope="scope"> 
 						<span class="link-type">{{scope.row.title}}</span> 	
@@ -75,18 +71,23 @@
 		<script type="text/javascript">
 		var getList=function(){
 			var param=this.listQuery;
-			axios.post('/getmusiclist', param)
-				.then(function (response) {
-					var result=response.data;
-					if(result.code==0){
-						app.list = result.data.rows;
-						app.total = result.data.totalCount;
-						app.listLoading = false;
-					}
-				})
-				.catch(function (error) {
-				 	console.log(error);
-				});
+            $.ajax({
+                data: param,
+                type: "POST",
+                url: '/getmusiclist',
+                success: function (result) {
+                    if(result.code==0){
+                        app.list = result.data.rows;
+                        app.total = result.data.totalCount;
+                        app.listLoading = false;
+                    }else{
+                        app.$message.error(result.msg);
+                    }
+                },
+                error: function (data) {
+
+                }
+            });
 		}
 		var submitMusic=function(status){
 			var param=this.submitForm;
@@ -202,15 +203,15 @@
  		},
  		getList:getList,
  	    handleFilter() {
- 	      this.listQuery.page = 1
+ 	      this.listQuery.pageIndex = 1
  	      this.getList()
  	    },
  	    handleSizeChange(val) {
- 	      this.listQuery.limit = val
+ 	      this.listQuery.pageSize = val
  	      this.getList()
  	    },
  	    handleCurrentChange(val) {
- 	      this.listQuery.page = val
+ 	      this.listQuery.pageIndex = val
  	      this.getList()
  	    }, 
  	   deleteMusic(rowId) {

@@ -7,6 +7,9 @@
         <id column="id" property="id" jdbcType="INTEGER"></id>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="singer" property="singer" jdbcType="VARCHAR"/>
+        <result column="converUrl" property="converUrl" jdbcType="VARCHAR"/>
+        <result column="totalTime" property="totalTime" jdbcType="VARCHAR"/>
         <result column="sortCode" property="sortCode" jdbcType="INTEGER"/>
         <result column="createOn" property="createOn" jdbcType="TIMESTAMP"/>
         <result column="updateOn" property="updateOn" jdbcType="TIMESTAMP"/>
@@ -14,7 +17,7 @@
      </resultMap>
     
     <sql id="Base_Column_List">
-		a.id,a.title,a.url,a.sortCode,a.createOn,a.updateOn
+		a.id,a.title,a.url,a.singer,a.converUrl,a.totalTime,a.sortCode,a.createOn,a.updateOn
 	</sql>
 	<sql id="Where_Clause" >
 	    <where >
@@ -46,32 +49,23 @@
         where a.id= #{musicId} 
     </select>
      <insert id="saveMusic">
-		  insert into Music (title,url,sortCode,createOn,updateOn)
-		  values (#{title},#{url},#{sortCode},#{createOn},#{updateOn})
+		  insert into Music (title,url,singer,converUrl,totalTime,sortCode,createOn,updateOn)
+		  values (#{title},#{url},#{singer},#{converUrl},#{totalTime},#{sortCode},#{createOn},#{updateOn})
 	</insert>
 	<update id="updateMusic">
 		  update Music
 		  <set>
-			  <if test="title!= null and title !=''">
-			      	title = #{title},
-			  </if>
-			  <if test="url!= null and url !=''">
-			  		url = #{url},
-			  </if>
-			  <if test="sortCode!= null and sortCode !=''">
-		  			sortCode=#{sortCode},
-			  </if>
-			  
-			  <if test="createOn!= null">
-			  		createOn=#{createOn},
-			  </if>
-			  <if test="updateOn!= null">
-			  		updateOn=#{updateOn},
-			  </if>
+			  title = #{title},
+			  url = #{url},
+			  singer = #{singer},
+			  converUrl = #{converUrl},
+			  totalTime = #{totalTime},
+			  sortCode=#{sortCode},
+			  updateOn=#{updateOn}
 		  </set>
 			where id = #{id}
 	</update>
 	<delete id="deleteMusic">
-		  delete Music where id = #{musicId}
+		  delete from Music where id = #{musicId}
 	</delete>
 </mapper>

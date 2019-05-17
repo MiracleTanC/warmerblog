@@ -15,12 +15,11 @@ public class AboutController extends BaseController {
 
 	@Autowired
 	private UserService userService;
+	
 	@RequestMapping(value = "/about", method = RequestMethod.GET)
 	public String about(Model model) {
 		UserInfo userInfo=userService.getUserInfo("sa");
 		model.addAttribute("userModel", userInfo);
 		return "about/index";
 	}
-
-
 }

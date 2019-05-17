@@ -178,11 +178,11 @@ a {
 
 .m_player {
 	width: 303px;
-	height: 115px;
+	height: 86px;
 	position: fixed;
-	z-index: 15;
-	display:none;
-	bottom: 10px;
+	z-index: 1000;
+	top: 60px;
+	right: 0;
 	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.42);
 	border-radius: 4px;
 	transition: left .4s linear;
@@ -190,39 +190,43 @@ a {
 
 .m_player .m_player_dock {
 	width: 303px;
-	height: 115px;
+	height: 86px;
 	background-color: black;
 	position: relative;
 }
 
 .m_player .m_player_dock .music_icon {
-	height: 111px;
+	height: 86px;
 }
 
-.m_player .m_player_dock .music_icon .album_pic {
+.m_player .m_player_dock .music_icon .album_pic{
 	display: block;
-	width: 45px;
-	height: 45px;
-	margin: 10px;
-	float: left;
+	width: 86px;
+	height: 86px;
+	margin-left: 20px;
 	overflow: hidden;
 }
+
 
 .m_player .m_player_dock .music_icon .music_info_main {
 	font-family: tahoma;
 	float: left;
 }
 
-.m_player .m_player_dock .music_icon .music_info_main p {
+.m_player .m_player_dock .music_icon {
 	width: 210px;
 	height: 20px;
 	margin: 2px 0;
 }
-
+.music_info_main p {
+	width: 210px;
+	height: 20px;
+	margin: 2px 0;
+}
 .m_player .m_player_dock .music_icon .music_info_main .music_name span {
 	color: #fff;
 	float: left;
-	max-width: 210px;
+	width: 280px;
 	overflow: hidden;
 }
 
@@ -269,9 +273,9 @@ a {
 
 .m_player .bar_op {
 	position: absolute;
-	top: 70px;
-	left: 0px;
-	width: 280px;
+	top: 40px;
+	left: 138px;
+	width: 190px;
 	height: 42px;
 }
 
@@ -461,12 +465,11 @@ a {
 
 .m_player .folded_bt {
 	width: 22px;
-	height: 115px;
+	height: 90px;
 	position: absolute;
 	top: 0;
-	right: 0;
-	background: url(../images/music/player_bg.png) no-repeat;
-	background-position: 0 0;
+	left: 0;
+	background: #0F192A;
 	outline: none;
 	border: none;
 }
@@ -475,8 +478,6 @@ a {
 	width: 303px;
 	height: 345px;
 	position: absolute;
-	display:none;
-	top: -345px;
 	left: 0;
 	background-color: #1c1c1c;
 	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.42);
@@ -484,7 +485,7 @@ a {
 
 .m_player .play_list_frame .play_list_title {
 	background-color: #000;
-	height: 52px;
+	height: 33px;
 	position: relative;
 	z-index: 2;
 }
@@ -499,8 +500,8 @@ a {
 	color: #fff;
 	font-size: 18px;
 	font-family: '微软雅黑';
-	height: 52px;
-	line-height: 52px;
+	height: 33px;
+	line-height: 33px;
 	padding: 0 20px;
 }
 
@@ -576,7 +577,7 @@ a {
 }
 
 .m_player .play_list_frame .single_list li .music_name {
-	width: 254px;
+	width: 225px;
 }
 
 .m_player .play_list_frame .single_list li .singer_name {
@@ -636,14 +637,14 @@ a {
 }
 
 .m_player .open_list {
-	width: 47px;
-	height: 28px;
+	width: 20px;
+	height: 20px;
 	position: absolute;
+	font-size: 20px;
 	top: 0;
-	right: 61px;
-	background: url(../images/music/player_bg.png) no-repeat;
-	background-position: -222px -97px;
+	right: 5px;
 	cursor: pointer;
+	color: #fff;
 }
 
 .m_player .open_list span {
@@ -674,7 +675,7 @@ a {
 	background-position: -23px 0;
 }
 
-#audio_btn {
+.audio_icon {
         background: #282828 none repeat scroll 0 0;
         border: 1px solid #ffffff;
         border-radius: 100%;
@@ -696,7 +697,11 @@ a {
         -o-animation: rotating 1.2s linear infinite;
         animation: rotating 1.2s linear infinite;
     }
-
+.line-limit-length {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap; //文本不换行，这样超出一行的部分被截取，显示...
+}
     @-webkit-keyframes rotating {
         from {
             -webkit-transform: rotate(0);
@@ -727,31 +732,31 @@ a {
         }
     }
      @media screen and (max-width: 1024px) {
-        #audio_btn {
+        .audio_icon {
             top: 10px;
             right:55px;
         }
     }
     @media screen and (max-width: 768px) {
-        #audio_btn {
+		.audio_icon {
            top: 10px !important;
            right:55px !important;
         }
     }
     @media screen and (max-width: 414px) {
-        #audio_btn {
+        .audio_icon {
              top: 10px !important;
            right:55px !important;
         }
     }
     @media screen and (max-width: 375px) {
-        #audio_btn {
+        .audio_icon {
              top: 10px !important;
            right:55px !important;
         }
     }
     @media screen and (max-width: 320px) {
-        #audio_btn {
+        .audio_icon {
              top: 10px !important;
            right:55px !important;
         }

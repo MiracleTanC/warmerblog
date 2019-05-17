@@ -5,6 +5,8 @@ header { width: 100%; margin: auto; }
 .nav li a { padding: 0 15px }
 .search_bar { display: none }
 article { width: 90%; margin: 100px auto 0 }
+ .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .BlogAnchor{display: none !important;}
 .fader { padding-top: 0; height: 360px }
 .imginfo { bottom: 15% }
 .toppic li i img { height: 170px; }
@@ -18,6 +20,8 @@ header { width: 100%; margin: auto; }
 .nav li a { padding: 0 15px }
 .search_bar { display: none }
 article { width: 90%; margin: 100px auto 0 }
+ .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .BlogAnchor{display: none !important;}
 .fader { padding-top: 0; height: 337px }
 .imginfo { bottom: 15% }
 .toppic li i img { height: 160px; }
@@ -33,6 +37,8 @@ header, .blogsbox { width: 100%; margin: auto; }
 #mnav { display: block; z-index: 99999;  }
 .search_bar { display: none }
 article { width: 90%; margin: 70px auto 0 }
+ .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .BlogAnchor{display: none !important;}
 .imginfo { bottom: 17% }
 .fader { padding-top: 0; height: 279px }
 .toppic li i img { height: 130px; }
@@ -59,6 +65,8 @@ header, .blogsbox, .banner { width: 100%; margin: auto; }
 #mnav { display: block; z-index: 99999; }
 .search_bar, .toppic { display: none }
 article { width: 90%; margin: 70px auto 0 }
+ .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .BlogAnchor{display: none !important;}
 .bloginfo { width: 100%; clear: both }
 .blogs .blogpic { width: 30%; height: auto }
 .fader { padding-top: 50%; width: 100% }
@@ -92,6 +100,8 @@ h1.t_nav span { display: none }
  #mnav { display: block; z-index: 99999;  }
  .search_bar, .toppic { display: none }
  article { width: 90%; margin: 70px auto 0 }
+ .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .BlogAnchor{display: none !important;}
  .imginfo { font-size: 18px; bottom: 22%; }
  .bloginfo { width: 100%; clear: both; }
  .blogs .blogpic { width: 100%; height: auto; margin-bottom: 10px }
@@ -122,6 +132,7 @@ h1.t_nav span { display: none }
  .diggit{ float:none; margin-left: auto;}
  .dasbox{ display:none}
  .el-carousel__container{height: 138px !important;}
+ .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
 }
 @media only screen and  (min-width: 361px) and (max-width: 375px) {
 header, .blogsbox, .banner { width: 100%; margin: auto; }
@@ -129,6 +140,8 @@ header, .blogsbox, .banner { width: 100%; margin: auto; }
 #mnav { display: block; z-index: 99999;  }
 .search_bar, .toppic { display: none }
 article { width: 90%; margin: 70px auto 0 }
+ .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .BlogAnchor{display: none !important;}
 .imginfo { font-size: 18px; bottom: 22%; }
 .bloginfo { width: 100%; clear: both; }
 .blogs .blogpic { width: 100%; height: auto; margin-bottom: 10px }
@@ -166,6 +179,8 @@ footer p { padding: 0 30px }
  #mnav { display: block; z-index: 99999;  }
  .search_bar, .toppic { display: none }
  article { width: 90%; margin: 70px auto 0 }
+ .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .BlogAnchor{display: none !important;}
  .imginfo { font-size: 18px; bottom: 22%; }
  .bloginfo { width: 100%; clear: both; }
  .blogs .blogpic { width: 100%; height: auto; margin-bottom: 10px }

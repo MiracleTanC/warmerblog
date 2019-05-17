@@ -29,7 +29,7 @@ public class ArticleItem implements Serializable {
     private String author; //作者
     private Date createTime;    //创建时间
     private Date updateTime;    //更新时间
-    private Integer showCount;  //浏览数
+    private Integer viewCount;  //浏览数
     private Category category;
 	private String content;
 
@@ -103,12 +103,12 @@ public class ArticleItem implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Integer getShowCount() {
-        return showCount;
+    public Integer getViewCount() {
+        return viewCount;
     }
 
-    public void setShowCount(Integer showCount) {
-        this.showCount = showCount;
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
     }
 	public String getAbstractContent() {
 		return abstractContent;

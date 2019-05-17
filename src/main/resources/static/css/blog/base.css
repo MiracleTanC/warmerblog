@@ -4,8 +4,8 @@
 body { font: 15px "Microsoft YaHei", Arial, Helvetica, sans-serif; color: #555; background-color: #f6f6f6; line-height: 1.5;  }
 img { border: 0; display: block }
 ul, li { list-style: none; }
-/* ol{padding-left: 20px !important;}
-ol li{ list-style-type:decimal !important;list-style-position:inside !important;} *//*显示序号,不能分块显示1,2,3,是连续的1~9~n,初衷不符*/
+ol{padding-left: 20px !important;}
+ol li{ list-style-type:decimal !important;list-style-position:inside !important;} /*显示序号,不能分块显示1,2,3,是连续的1~9~n,初衷不符*/
 a { text-decoration: none; color: #555 }
 a:hover { text-decoration: none; color: #00A7EB; }
 .clear { clear: both; }
@@ -15,12 +15,14 @@ a:hover { text-decoration: none; color: #00A7EB; }
 .f_r { float: right }
 .mt20 { margin-top: 20px }
 header { width: 100%; background: rgba(255,255,255,1); }
-article { width: 65%; margin: 65px auto 0; overflow: hidden }
+/*article { width: 65%; margin: 15px auto 0; overflow: hidden }*/
+.blogcontainer{ width: 65%; margin: 15px auto 0; overflow: hidden }
+.detailcontainer{ width: 60%; margin: 15px auto 0;margin-top: 80px }
 .tophead { width: 1200px; margin: 0 auto 10px; overflow: hidden; }
 header { position: fixed; top: 0; z-index: 100 }
 .container { width: 1140px; margin: 20px auto }
 /*nav*/
-.logo { float: left; margin-left: 56px; margin-right: 100px;font-size: 26px; }
+.logo {margin-top: 15px; float: left; margin-right: 50px; font-size: 20px; }
 .logo a { color: #00A7EB }
 .menu { height: 56px; line-height: 56px; width: 100%; background-color: #000; }
 .nav { height: 56px; width:100%; margin: 0 auto; }
@@ -64,8 +66,9 @@ header { position: fixed; top: 0; z-index: 100 }
 /*cd-top*/
 .cd-top { display: inline-block; height: 40px; width: 40px; position: fixed; bottom: 40px; right: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);  overflow: hidden; text-indent: 100%; white-space: nowrap; background: rgba(0, 0, 0, 0.8) url(/images/blog/top.png) no-repeat center ; visibility: hidden; opacity: 0; -webkit-transition: all 0.3s; -moz-transition: all 0.3s; transition: all 0.3s; }
 .cd-top.cd-is-visible {  visibility: visible; opacity: 1; }
+.cd-chat { display: inline-block; height: 40px; width: 40px; position: fixed; bottom: 80px; right: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);  overflow: hidden; text-indent: 100%; white-space: nowrap; background: rgba(0, 0, 0, 0.8) url(/images/blog/top.png) no-repeat center ; -webkit-transition: all 0.3s; -moz-transition: all 0.3s; transition: all 0.3s; }
 /*footer*/
-footer { width: 100%; background: #333; color: #a5a4a4; text-align: center; padding: 20px 0; clear: both; }
+footer { width: 100%; background: #333; color: #a5a4a4; text-align: center; padding: 20px 0; clear: both;}
 footer a { color: #a5a4a4 }
 footer .links {
     font-size: 12px;
@@ -108,4 +111,215 @@ footer img {
   margin-top: 20px;
   -webkit-transform: translateY(-50%)  translateX(-50%);
   transform: translateY(-50%)  translateX(-50%);
+}
+.search-wrapper {
+    position: absolute;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    top:50%;
+    left:80%;
+}
+.search-wrapper.active {}
+
+.search-wrapper .input-holder {
+    overflow: hidden;
+    height: 35px;
+    background: rgba(255,255,255,0);
+    border-radius:6px;
+    position: relative;
+    width:315px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.search-wrapper.active .input-holder {
+    /*border-radius: 50px;*/
+    width:215px;
+    background: #fff;
+    -webkit-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    -moz-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+}
+
+.search-wrapper .input-holder .search-input {
+    width:100%;
+    height: 16px;
+    padding:0px 70px 0 20px;
+    opacity: 0;
+    position: absolute;
+    top:0px;
+    left:0px;
+    background: transparent;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border:none;
+    outline:none;
+    font-family:"Open Sans", Arial, Verdana;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    -webkit-transform: translate(0, 60px);
+    -moz-transform: translate(0, 60px);
+    transform: translate(0, 60px);
+    -webkit-transition: all .3s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    -moz-transition: all .3s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    transition: all .3s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    -webkit-transition-delay: 0.3s;
+    -moz-transition-delay: 0.3s;
+    transition-delay: 0.3s;
+}
+.search-wrapper.active .input-holder .search-input {
+    opacity: 1;
+    -webkit-transform: translate(0, 10px);
+    -moz-transform: translate(0, 10px);
+    transform: translate(0, 10px);
+}
+
+.search-wrapper .input-holder .search-icon {
+     width:38px;
+     height:38px;
+     border:none;
+     border-radius:6px;
+     background: black;
+     outline:none;
+     position: relative;
+     z-index: 2;
+     float:right;
+     cursor: pointer;
+     -webkit-transition: all 0.3s ease-in-out;
+     -moz-transition: all 0.3s ease-in-out;
+     transition: all 0.3s ease-in-out;
+ }
+.search-wrapper.active .input-holder .search-icon {
+    width: 35px;
+    height:35px;
+    margin: 0px;
+    /* border-radius: 30px;*/
+}
+.search-wrapper .input-holder .search-icon span {
+    width:22px;
+    height:22px;
+    display: inline-block;
+    vertical-align: middle;
+    position:relative;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transition: all .4s cubic-bezier(0.650, -0.600, 0.240, 1.650);
+    -moz-transition: all .4s cubic-bezier(0.650, -0.600, 0.240, 1.650);
+    transition: all .4s cubic-bezier(0.650, -0.600, 0.240, 1.650);
+
+}
+.search-wrapper.active .input-holder .search-icon span {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+.search-wrapper .input-holder .search-icon span::before, .search-wrapper .input-holder .search-icon span::after {
+    position: absolute;
+    content:'';
+}
+.search-wrapper .input-holder .search-icon span::before {
+    width: 4px;
+    height: 10px;
+    left: 10px;
+    top: 18px;
+    border-radius: 2px;
+    background: #fff;
+}
+.search-wrapper .input-holder .search-icon span::after {
+    width: 14px;
+    height: 14px;
+    left: 0px;
+    top: 0px;
+    border-radius: 16px;
+    border: 4px solid #fff;
+}
+
+.search-wrapper .close {
+    position: absolute;
+    z-index: 1;
+    top:5px;
+    right:10px;
+    width:25px;
+    height:25px;
+    cursor: pointer;
+    -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+    -webkit-transition: all .3s cubic-bezier(0.285, -0.450, 0.935, 0.110);
+    -moz-transition: all .3s cubic-bezier(0.285, -0.450, 0.935, 0.110);
+    transition: all .3s cubic-bezier(0.285, -0.450, 0.935, 0.110);
+    -webkit-transition-delay: 0.2s;
+    -moz-transition-delay: 0.2s;
+    transition-delay: 0.2s;
+}
+.search-wrapper.active .close {
+    right:-35px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transition: all .6s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    -moz-transition: all .6s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    transition: all .6s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    -webkit-transition-delay: 0.5s;
+    -moz-transition-delay: 0.5s;
+    transition-delay: 0.5s;
+}
+.search-wrapper .close::before, .search-wrapper .close::after {
+    position:absolute;
+    content:'';
+    background: #FFF;
+    border-radius: 2px;
+}
+.search-wrapper .close::before {
+    width: 5px;
+    height: 25px;
+    left: 10px;
+    top: 0px;
+}
+.search-wrapper .close::after {
+    width: 25px;
+    height: 5px;
+    left: 0px;
+    top: 10px;
+}
+.search-wrapper .result-container {
+    width: 100%;
+    position: absolute;
+    top:80px;
+    left:0px;
+    text-align: center;
+    font-family: "Open Sans", Arial, Verdana;
+    font-size: 14px;
+    display:none;
+    color:#B7B7B7;
+}
+/*返回顶部*/
+.back_to_top .item {
+    width: 46px;
+    height: 64px;
+    position: relative;
+    padding-top: 8px;
+    color: #999;
+    cursor: pointer;
+}
+.back_to_top .item.backtop .icon {
+    font-size: 30px;
+}
+.back_to_top .item .icon {
+    line-height: 30px;
+    font-size: 24px;
+    text-align: center;
+}
+.back_to_top .item .icon {
+    line-height: 30px;
+    text-align: center;
+}
+.back_to_top .item .text {
+    font-size: 12px;
+    text-align: center;
+    color: #333;
 }

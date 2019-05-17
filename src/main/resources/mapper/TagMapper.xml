@@ -12,6 +12,23 @@
     <select id="getAll" resultMap="tagmodel">
         select * from tag
     </select>
+	<select id="getTagByName" resultMap="tagmodel">
+        select * from tag
+		<where>
+			<if test="tagName!=null || tagName!=''">
+				and tagName like concat('%',#{tagName},'%')
+			</if>
+		</where>
+    </select>
+	<select id="getTagByIds" resultMap="tagmodel">
+        select * from tag where 1=1
+		<if test="tagIds.size() > 0">
+			and id IN
+			<foreach collection="tagIds" item="id" index="index" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+		</if>
+    </select>
      <insert id="saveTag" parameterType="warmer.star.blog.dto.TagItem">
 		  insert into tag (tagName,aliasName,color)
 		  values (#{name},#{name},#{color})

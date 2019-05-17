@@ -314,15 +314,26 @@ div#mceu_55 {
 				this.submitForm.openComment=articleModel.openComment;
 				this.submitForm.articleTags=articleModel.articleTags;
 				this.submitForm.isRecommend=articleModel.isRecommend;
-				var tagLists=articleModel.articleTags.split(',');
-				var tags=[];
-				for(var i=0;i<tagLists.length;i++){
-					if(tagLists[i]!==""){
-						tags.push({ name: tagLists[i], type: '' })
-					}
-				}
-				this.selectedTags=tags;
+                this.initArticleTags(articleModel.articleTags);
 			}
+		}
+		var initArticleTags=function(value){
+		    var _this=this;
+		    var param={tagids:value}
+            $.ajax({
+                data: param,
+                type: "POST",
+                url: '/getTagByIds',
+                traditional:true,
+                success: function (result) {
+                    if(result.code==0){
+                        for(var i=0;i<result.data.length;i++){
+                            _this.selectedTags.push({ name: result.data[i].alia, type: '' })
+                        }
+                    }
+                },
+                error: function (data) {}
+            });
 		}
 		var returnArticle=function(){
 			window.location.href='/article'
@@ -350,7 +361,7 @@ div#mceu_55 {
 					          message: result.msg,
 					          type: 'success'
 					        });
-						//_this.returnArticle();
+						_this.returnArticle();
 					}else{
 						_this.$message.error(result.msg);
 					}

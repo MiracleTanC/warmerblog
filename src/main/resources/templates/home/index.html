@@ -11,34 +11,41 @@
 </head>
 <body>
 	<div layout:fragment="main">
-		<a target="_blank" href="https://github.com/MiracleTanC?tab=repositories">
-			<img style="position: absolute; top: 56px; right: 0; border: 0;z-index: 999;" src="http://file.miaoleyan.com/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
-		</a>
-		<!--banner begin-->
-		<div class="picsbox">
-			<el-carousel :interval="3000" arrow="always">
-			    <el-carousel-item v-for="banner in bannerList" :key="banner.id">
-		     		<a :href="banner.linkUrl">
-					  <img :src="banner.imgSrc" alt="个人博客" data-bd-imgshare-binded="1"> 
-					</a>
-					<span class="imginfo">{{banner.title}}</span>
-			    </el-carousel-item>
-			  </el-carousel>
+		<div>
+			<a target="_blank" href="https://github.com/MiracleTanC?tab=repositories">
+				<img style="position: absolute; top: 56px; right: 0; border: 0;z-index: 999;" src="http://file.miaoleyan.com/forkme_right_red_aa0000.png" alt="Fork me on GitHub">
+			</a>
+			<div class="picsbox">
+				<el-carousel :interval="3000" arrow="always">
+					<el-carousel-item v-for="banner in bannerList" :key="banner.id">
+						<a :href="banner.linkUrl">
+							<img :src="banner.imgSrc" alt="个人博客" data-bd-imgshare-binded="1">
+						</a>
+						<span class="imginfo">{{banner.title}}</span>
+					</el-carousel-item>
+				</el-carousel>
+			</div>
+			<div class="hotmessage">
+				<div class="news">
+					<div class="item">
+						友盟+短视频行业研究： 5.9亿用户的狂欢，短视频的“舞台社交”
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="blank"></div>
-		<!--blogsbox begin-->
-		<div class="blogsbox">
-			<template>
-			<div class="blogs" v-for="item in articleList">
-					<h3 class="blogtitle">
-						<a :href="['/detail/'+item.id]" target="_blank" v-html="item.title">{{item.title}}</a>
-					</h3>
-					<span v-if="item.showStyle==1" class="blogpic">
+		<div class="blogcontainer">
+			<div class="blogsbox">
+				<template>
+					<div class="blogs" v-for="item in articleList">
+						<h3 class="blogtitle">
+							<a :href="['/detail/'+item.id]" target="_blank" v-html="item.title">{{item.title}}</a>
+						</h3>
+						<span v-if="item.showStyle==1" class="blogpic">
 						<a :href="['/detail/'+item.id]" :title="item.title">
 							<img v-if="item.coverImageList&&item.coverImageList.length>0"  :src="item.coverImageList[0].coverImage" alt="">
 						</a>
 					</span>
-					<span v-else-if="item.showStyle==2" class="bplist">
+						<span v-else-if="item.showStyle==2" class="bplist">
 						<ul v-if="item.coverImageList&&item.coverImageList.length>0">
 							<li v-for="img in item.coverImageList">
 								<a :href="['/detail/'+item.id]" :title="item.title">
@@ -47,84 +54,84 @@
 							</li>
 						</ul>
 					</span>
-					<span v-else-if="item.showStyle==3" class="bigpic">
+						<span v-else-if="item.showStyle==3" class="bigpic">
 						<a :href="['/detail/'+item.id]" :title="item.title" target="_blank">
 							<img v-if="item.coverImageList&&item.coverImageList.length>0" :src="item.coverImageList[0].coverImage" alt="">
 						</a>
 					</span>
-					<a :href="['/detail/'+item.id]" target="_blank"><p class="blogtext" v-html="item.abstractContent">{{item.abstractContent}}</p></a>
-					<div class="bloginfo">
-						<ul>
-							<li>
-								<a href="/" v-if="item.articleType">
-									<span class="label label-warn">转载</span>
-								</a>
-								<a href="/" v-else>
-									<span class="label label-success">原创</span>
-								</a>
-							</li>
-							<li class="author"><a href="/">{{item.author}}</a></li>
-							<li class="lmname"><a href="/">{{item.categoryName}}</a></li>
-							<li class="timer">{{item.createTime}}</li>
-							<li class="view"><span>{{item.showCount}}</span>已阅读</li>
-							<!--<li class="like">9999</li>-->
-						</ul>
+						<a :href="['/detail/'+item.id]" target="_blank"><p class="blogtext" v-html="item.abstractContent">{{item.abstractContent}}</p></a>
+						<div class="bloginfo">
+							<ul>
+								<li>
+									<a href="/" v-if="item.articleType">
+										<span class="label label-warn">转载</span>
+									</a>
+									<a href="/" v-else>
+										<span class="label label-success">原创</span>
+									</a>
+								</li>
+								<li class="author"><a href="/">{{item.author}}</a></li>
+								<li class="lmname"><a href="/">{{item.categoryName}}</a></li>
+								<li class="timer">{{item.createTime}}</li>
+								<li class="view"><span>{{item.viewCount}}</span>已阅读</li>
+							</ul>
+						</div>
 					</div>
+				</template>
+				<div class="loading" v-show="loading">
+					<img th:src="@{/images/loading.gif}" alt="loading" />
 				</div>
-			</template>
-			<div class="loading" v-show="loading">
-				<img th:src="@{/images/loading.gif}" alt="loading" />
+				<div v-show="!showMore" style="text-align: center;">这个人很懒,只写了这么多</div>
 			</div>
-			<div v-show="!showMore" style="text-align: center;">这个人很懒,只写了这么多</div>
-		</div>
-		<!--blogsbox end-->
-		<div class="sidebar">
-			<div class="zhuanti">
-				<h2 class="hometitle">特别推荐</h2>
-				<ul v-if="recommendArticlelist">
-					<li v-for="article in recommendArticlelist">
-						<i v-if="article.coverImageList&&article.coverImageList.length>0">
-							<img :src="article.coverImageList[0].coverImage">
-						</i>
-						<p>
-							{{article.title}} <span><a :href="['/detail/'+article.id]" target="_blank">阅读</a></span>
-						</p>
-					</li>
-					
-				</ul>
+			<!--blogsbox end-->
+			<div class="sidebar">
+				<div class="zhuanti">
+					<h2 class="hometitle">系列专题</h2>
+					<ul v-if="recommendArticlelist">
+						<li v-for="article in recommendArticlelist">
+							<i v-if="article.coverImageList&&article.coverImageList.length>0">
+								<img :src="article.coverImageList[0].coverImage">
+							</i>
+							<p>
+								{{article.title}} <span><a :href="['/detail/'+article.id]" target="_blank">阅读</a></span>
+							</p>
+						</li>
+
+					</ul>
+				</div>
+				<div class="tuijian">
+					<h2 class="hometitle">点击排名</h2>
+					<ul class="sidenews" v-if="topReadArticlelist">
+						<li v-for="article in topReadArticlelist">
+							<i v-if="article.coverImageList&&article.coverImageList.length>0">
+								<img :src="article.coverImageList[0].coverImage" >
+							</i>
+							<p>
+								<a :href="['/detail/'+article.id]" target="_blank">{{article.title}} </a>
+							</p>
+							<span class="action-icon action-icon-view">{{article.showCount}}</span>
+							<span class="action-icon action-icon-time" style="display: inline-block;">{{article.createTime}}</span>
+						</li>
+
+					</ul>
+				</div>
+				<div class="cloud">
+					<h2 class="hometitle">标签云</h2>
+					<ul v-if="tagList" id="tagcontainer"></ul>
+				</div>
+				<div class="links">
+					<h2 class="hometitle">友情链接</h2>
+					<ul v-if="partnerList">
+						<li v-for="partner in partnerList"><a :href="partner.siteUrl" :alt="partner.siteDesc" target="_blank">{{partner.siteName}}</a></li>
+					</ul>
+				</div>
+				<!-- 设置固定关注我们 -->
+				<div th:include="partial/focus::focus"></div>
 			</div>
-			<div class="tuijian">
-				<h2 class="hometitle">推荐文章</h2>
-				<ul class="sidenews" v-if="topReadArticlelist">
-					<li v-for="article in topReadArticlelist">
-						<i v-if="article.coverImageList&&article.coverImageList.length>0">
-							<img :src="article.coverImageList[0].coverImage" >
-						</i>
-						<p>
-							<a :href="['/detail/'+article.id]" target="_blank">{{article.title}} </a>
-						</p> 
-						<span class="action-icon action-icon-view">{{article.showCount}}</span>
-						<span class="action-icon action-icon-time" style="display: inline-block;">{{article.createTime}}</span>
-					</li>
-					
-				</ul>
-			</div>
-			<div class="cloud">
-				<h2 class="hometitle">标签云</h2>
-				<ul v-if="tagList" id="tagcontainer"></ul>
-			</div>
-			<div class="links">
-				<h2 class="hometitle">友情链接</h2>
-				<ul v-if="partnerList">
-					<li v-for="partner in partnerList"><a :href="partner.siteUrl" :alt="partner.siteDesc" target="_blank">{{partner.siteName}}</a></li>
-				</ul>
-			</div>
-			<!-- 设置固定关注我们 -->
-			<div th:include="partial/focus::focus"></div>
 		</div>
 	</div>
 	<div layout:fragment="js">
-		<script src="https://d3js.org/d3.v3.min.js"></script>
+		<script  th:src="@{/js/d3.v4.min.js}" src="https://d3js.org/d3.v4.min.js"type="text/javascript"></script>
 		<script src="https://cdn.bootcss.com/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
 		<script type="text/javascript">
     var initData=function() {
@@ -133,7 +140,6 @@
     	_this.scrollDisable = true;
     	_this.loading=true;
         var param = this.queryForm;
-       // debugger;
         $.ajax({
             type: "POST",
             url: "/getArticlelist",
@@ -317,7 +323,7 @@
                   var _this=this;
                   //var fill = d3.scale.category20();
                   var formatData=data.map(function(d) {
-                      return {"text": d.value, "size": 10 + Math.random() * 50,"color":d.color};
+                      return {"id": d.id,"text": d.value, "size": 10 + Math.random() * 50,"color":d.color};
                   });
                   d3.layout.cloud().size([325, 200]) //size([x,y])  词云显示的大小
                       .words(formatData)
@@ -348,7 +354,7 @@
 					})
 					.text(function(d) { return d.text; })
 					.on("click",function(d){
-						var tag=d.text;
+						var tag=d.id;
 						_this.queryForm.tag=tag;
 						_this.queryForm.pageIndex=1;
 						_this.articleList=[];

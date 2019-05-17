@@ -5,7 +5,6 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-import warmer.star.blog.mapper.LoggerMapper;
 import warmer.star.blog.model.Logger;
 import warmer.star.blog.util.LoggerUtils;
 
@@ -78,8 +77,8 @@ public class LoggerInterceptor implements HandlerInterceptor {
                     SerializerFeature.DisableCircularReferenceDetect,
                     SerializerFeature.WriteMapNullValue));
             //执行将日志写入数据库
-            LoggerMapper loggerDAO = getDAO(LoggerMapper.class,request);
-            loggerDAO.savelogger(loggerEntity);
+            //LoggerMapper loggerDAO = getDAO(LoggerMapper.class,request);
+            //loggerDAO.savelogger(loggerEntity);
         }
         /**
          * 根据传入的类型获取spring管理的对应dao

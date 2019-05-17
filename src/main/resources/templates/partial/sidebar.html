@@ -20,7 +20,7 @@
                         </div>
                     </li>
                     <li v-if="menuList" v-for="item in menuList" :class="{'active':item.active}" @click="collapseClick(item)">
-                        <a href="javascript:void(0);"><i :class="item.icon"></i> 
+                        <a :href="item.linkUrl"><i :class="item.icon"></i>
                             <span class="nav-label">{{item.title}}</span>
                         </a>
                         <ul :class="[item.active ? ' in' : '', 'nav nav-second-level collapse']" v-if="item.childrens" >

@@ -367,14 +367,7 @@ div#mceu_55 {
 				this.submitForm.openComment=articleModel.openComment;
 				this.submitForm.articleTags=articleModel.articleTags;
 				this.submitForm.isRecommend=articleModel.isRecommend;
-				var tagLists=articleModel.articleTags.split(',');
-				var tags=[];
-				for(var i=0;i<tagLists.length;i++){
-					if(tagLists[i]!==""){
-						tags.push({ name: tagLists[i], type: '' })
-					}
-				}
-				this.selectedTags=tags;
+                this.initArticleTags(articleModel.articleTags);
 			}
 		}
 		var returnArticle=function(){
@@ -460,10 +453,33 @@ div#mceu_55 {
 			});
 			
 		}
+        var initArticleTags=function(value){
+            var _this=this;
+            var param={tagIds:value}
+            $.ajax({
+                data: param,
+                type: "POST",
+                url: '/getTagByIds',
+                traditional:true,
+                success: function (result) {
+                    if(result.code==0){
+                        _this.selectedTags=[];
+                        var t=[];
+                        for(var i=0;i<result.data.length;i++){
+                            t.push(result.data[i].alia);
+                            _this.selectedTags.push({ name: result.data[i].alia, type: '' })
+                        }
+                        _this.submitForm.articleTags=t;
+                    }
+                },
+                error: function (data) {}
+            });
+        }
 		var initMarkdowm=function(){
 			var _this = this
 			testEditor = editormd("test-editormd", {
                 width: "100%",
+                //autoHeight: true,//自动高度
                 height: document.body.clientHeight-60,
                 path : '/editor/lib/',
                 //theme : "dark",
@@ -595,6 +611,7 @@ div#mceu_55 {
    		 this.loadCategoryOptions();
    	  },
  	 methods: {
+         initArticleTags:initArticleTags,
          addnetimage(){
              if(this.netimageurl!=''){
                  this.submitForm.coverImageList.push(this.netimageurl);
@@ -646,7 +663,7 @@ div#mceu_55 {
 	      selectTag(item) {
 	    	  if (JSON.stringify(this.selectedTags).toLowerCase().indexOf(item.value.trim().toLowerCase())==-1 )  {
 	    		  this.selectedTags.push({ name: item.value, type: '' });
-	    		  if(this.submitForm.articleTags.length==0){
+	    		  if(this.submitForm.articleTags==''){
 	    			  this.submitForm.articleTags=item.value;
 	    		  }else{
 	    			  this.submitForm.articleTags+=","+item.value;
@@ -666,14 +683,14 @@ div#mceu_55 {
 	    	  var value=this.defaultTag.trim();
 	    	  if (JSON.stringify(this.selectedTags).toLowerCase().indexOf(value.toLowerCase())==-1 )  {
 	    		  this.selectedTags.push({ name: value, type: '' });
-	    		  if(this.submitForm.articleTags.length==0){
+	    		  if(this.submitForm.articleTags==''){
 	    			  this.submitForm.articleTags=value;
 	    		  }else{
 	    			  this.submitForm.articleTags+=","+value;
 	    		  }
 	    		  
 	    		}
-	    	  this.defaultTag='';
+              this.defaultTag='';
 	      },
 	      myupload(param){
 	    	  var form = new FormData();

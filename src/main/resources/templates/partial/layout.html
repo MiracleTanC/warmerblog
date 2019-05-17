@@ -18,6 +18,8 @@
 <link th:href="@{/css/animate.css}" rel="stylesheet" />
 <!-- import css -->
 <link href="https://cdn.bootcss.com/element-ui/2.4.0/theme-chalk/index.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
 <!--[if lt IE 9]>
 		<script th:src="@{/js/modernizr.js}"></script>
 	<![endif]-->
@@ -25,53 +27,27 @@
 [v-cloak] {
 	display: none !important;
 }
-
-.search_input {
-	width: 150px;
-	padding: 2px 3px 1px 3px;
-	float: left;
-	font-size: 14px;
-	font-family: "t", "microsoft yahei";
-	height: 24px;
-	line-height: 14px;
-	text-indent: 10px;
-	border: 0;
-	border-radius: 15px;
-	outline: 0;
-    margin-top: 18px;
-	-webkit-transition: all .5s;
-	-moz-transition: all .5s;
-	-o-transition: all .5s;
-	transition: all .5s;
-	margin-bottom: 2px;
-}
-
 </style>
-
 </head>
 <body>
-	<div>
-		<header id="appheader" v-cloak>
-			<div th:include="partial/header::header"></div>
+	<div id="app" v-cloak>
+		<header>
+			<warmer-appheader-view  v-bind:currenturl="'${#request.getRequestURI()}'"></warmer-appheader-view>
 		</header>
-		<article id="app" v-cloak>
+
+		<article>
 			<div layout:fragment="main"></div>
 		</article>
 		<footer>
-			<div th:include="partial/footer::footer"></div>
+			<warmer-appfooter-view  v-bind:data="'footer'"></warmer-appfooter-view>
 		</footer>
-		
-		<div id="musicplayer">
-			<div th:include="partial/musicplayer::musicplayer"></div>
-		</div>
-		<div id="appbackTop">
-			<a @click="backToTop" href="javascript:void(0)" :class="[scrollTop>offset ? 'cd-is-visible' : '', 'cd-top']">Top</a>
-		</div>
+		<warmer-musicplayer-view  v-bind:data="'music'"></warmer-musicplayer-view>
+		<warmer-appbacktop-view  v-bind:data="'backtop'"></warmer-appbacktop-view>
 	</div>
 	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
 	<script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
-	<script th:src="@{/js/music.js}"></script>
+	<script th:src="@{/js/iconfont.js}"></script>
 	<script src="https://cdn.bootcss.com/scrollReveal.js/4.0.5/scrollreveal.min.js"></script>
 	<script type="text/javascript">
 	    var token = $("meta[name='_csrf']").attr("content");
@@ -80,106 +56,10 @@
 			xhr.setRequestHeader(header, token);
 		});
     </script>
-	<script th:inline="javascript" type="text/javascript">
-     var appheader=  new Vue({
-		    el: '#appheader',
-		    data:{
-		    	currentUrl:[[${#request.getRequestURI()}]],//当前路由
-		    	navList:[
-		    		{
-		    			title:'首页',icon:'glyphicon glyphicon-cog',linkUrl:'/',active:false,childrens:[]
-		    		},
-		    		{
-		    			title:'关于我',icon:'glyphicon glyphicon-cog',linkUrl:'/about',active:false,childrens:[]
-		    		},
-		    		{
-		    			title:'分享',icon:'glyphicon glyphicon-th-list',linkUrl:'javascript:void(0);',active:false,childrens:[
-		    				{title:'杨青博客',icon:'',linkUrl:'http://www.yangqq.com/',active:false,childrens:[]},
-		    				{title:'程序猿DD',icon:'',linkUrl:'http://blog.didispace.com/',active:false,childrens:[]},
-		    				{title:'editor.md',icon:'',linkUrl:'https://pandao.github.io/editor.md/',active:false,childrens:[]},
-		    				{title:'hAdmin',icon:'',linkUrl:'http://demo.mycodes.net/houtai/hAdmin',active:false,childrens:[]},
-		    			]
-		    		}
-		    	],
-		    	isOpen:false,
-		    	search_active:false,
-		    	searchkeyword:'',
-		      },
-		      created(){
-		    	  /* initMusic() */
-		      },
-		    methods: {
-		    	selectStyle(nav){
-		    		var _this=this;
-		            this.$nextTick(function () {
-		            	_this.navList.forEach(function (item) {
-		            		item.active=false;
-		              });
-		            	nav.active=true;
-		            });
-		    	},
-		    	outStyle(nav) {
-		    		nav.active=false;
-	            },
-	            changeIcon(){
-	        	  this.isOpen=!this.isOpen;
-	            },
-	            searchActive() {
-	            	 this.search_active=!this.search_active;
-	            },
-	            clickNav(nav){
-		          nav.active=!nav.active;
-		    	},
-                searchToggle(evt){
-		    	    var obj=evt.currentTarget;
-                    var container = $(obj).closest('.search-wrapper');
-					 if(!container.hasClass('active')){
-						 container.addClass('active');
-						 evt.preventDefault();
-					 }
-					 else if(container.hasClass('active') && $(obj).closest('.input-holder').length == 0){
-						 container.removeClass('active');
-                         this.searchkeyword="";
-					 }else{
-                         this.searchResult();
-					 }
-     			},
-		    	searchResult(){
-		    		app.queryForm.pageIndex=1;
-		    		app.queryForm.title=this.searchkeyword.trim();
-		    		app.initData();
-		    		app.articleList=[];
-		    	}
-	        }
-		 })
-     var appbackTop=  new Vue({
-		    el: '#appbackTop',
-		    data:{
-		    	offset:300,
-	    	    offset_opacity:1200,
-	    	    scroll_top_duration:700,
-	    	    scrollTop:0,
-		    },
-		    mounted() {
-		    	 window.addEventListener('scroll', ()=> {
-		        		var scrollTop = document.documentElement.scrollTop;
-		                this.scrollTop=scrollTop;
-				      })
-		    },
-	   	 	  methods:{
-	   	 	    backToTop(){
-                    timer = setInterval(function () {
-                        var osTop = document.documentElement.scrollTop || document.body.scrollTop
-                        var ispeed = Math.floor(-osTop / 5)
-                        document.documentElement.scrollTop = document.body.scrollTop = osTop + ispeed
-                        if (osTop === 0) {
-                            clearInterval(timer);
-                        }
-                    },30)
-	   	 	    }
-	   	 	  }
-     })
-     </script>
+	<script th:inline="javascript" th:src="@{/js/components/appheader.js}" type="text/javascript"></script>
+	<script th:inline="javascript" th:src="@{/js/components/appfooter.js}" type="text/javascript"></script>
+	<script th:inline="javascript" th:src="@{/js/components/appbacktop.js}" type="text/javascript"></script>
+	<script th:inline="javascript" th:src="@{/js/components/musicplayer.js}" type="text/javascript"></script>
 	<!-- js内容 -->
 	<div layout:fragment="js"></div>
 </body>

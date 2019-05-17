@@ -73,15 +73,18 @@
 	    data:{
 	    	currentUrl:[[${#request.getRequestURI()}]],
 	    	menuList:[
+                {
+                    title:'工作台',icon:'el-icon-setting',linkUrl:'/home',active:false,childrens:[]
+                },
 	    		{
-	    			title:'系统管理',icon:'el-icon-setting',linkUrl:'',active:false,childrens:[
+	    			title:'系统管理',icon:'el-icon-setting',linkUrl:'javascript:void(0);',active:false,childrens:[
 	    				{title:'菜单管理',icon:'',linkUrl:'#',active:false,childrens:[]},
 	    				{title:'资源管理',icon:'',linkUrl:'#',active:false,childrens:[]}
 	    			]
 	    		},
 	    		{
-	    			title:'文章管理',icon:'el-icon-document',linkUrl:'#',active:false,childrens:[
-	    				{title:'文章列表',icon:'',linkUrl:'/article',active:false,childrens:[]},
+	    			title:'博客管理',icon:'el-icon-document',linkUrl:'javascript:void(0);',active:false,childrens:[
+	    				{title:'文章管理',icon:'',linkUrl:'/article',active:false,childrens:[]},
 	    				{title:'分类管理',icon:'',linkUrl:'/category',active:false,childrens:[]},
 	    				{title:'标签管理',icon:'',linkUrl:'/tag',active:false,childrens:[]},
 	    				{title:'轮播图',icon:'',linkUrl:'/banner',active:false,childrens:[]},
@@ -90,7 +93,7 @@
 	    			]
 	    		},
 	    		{
-	    			title:'任务计划',icon:'fa fa-envelope',linkUrl:'',active:false,childrens:[
+	    			title:'任务计划',icon:'fa fa-envelope',linkUrl:'javascript:void(0);',active:false,childrens:[
 	    				{title:'定时任务',icon:'',linkUrl:'#',active:false,childrens:[]},
 	    				{title:'项目计划',icon:'',linkUrl:'#',active:false,childrens:[]}
 	    			]
@@ -99,7 +102,12 @@
 	    			title:'用户管理',icon:'glyphicon glyphicon-user',linkUrl:'javascript:void(0);',active:false,childrens:[
 	    				{title:'个人信息',icon:'',linkUrl:'/user',active:false,childrens:[]},
 	    			]
-	    		}
+	    		},
+                {
+                    title:'音乐管理',icon:'glyphicon glyphicon-user',linkUrl:'javascript:void(0);',active:false,childrens:[
+                        {title:'我的音乐',icon:'',linkUrl:'/music',active:false,childrens:[]},
+                    ]
+                }
 	    	]
 	      },
 	      created(){

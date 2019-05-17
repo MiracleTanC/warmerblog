@@ -115,22 +115,29 @@
 	         methods: {
 	          loadAllTagList:loadAllTagList,
 	   	      removeTag(tag) {
-	        	  axios.post('/tag/deleteTag', {tagId:tag.id})
-	   				.then(function (response) {
-	   					var result=response.data;
-	   					if(result.code==0){
-	   						app.tags.splice(app.tags.indexOf(tag), 1);
-	   						app.$message({
-			   			          showClose: true,
-			   			          message: result.msg,
-			   			          type: 'success'
-		   			        	});
-	   					}
-	   				})
-	   				.catch(function (error) {
-	   				 	console.log(error);
-	   				});
-	   	        	
+                  $.ajax({
+                      data: {tagId:tag.id},
+                      type: "POST",
+                      url: '/tag/deleteTag',
+                      traditional:true,
+                      success: function (result) {
+                          if(result.code==0){
+                              app.tags.splice(app.tags.indexOf(tag), 1);
+                              app.$message({
+                                  showClose: true,
+                                  message: result.msg,
+                                  type: 'success'
+                              });
+                          }
+                      },
+                      error: function (data) {
+                          app.$message({
+                              showClose: true,
+                              message: error,
+                              type: 'error'
+                          });
+                      }
+                  });
 	   	      },
 	   	      addTag(){
 	   	    	  var value=this.defaultTag.trim();
@@ -140,38 +147,35 @@
 	   	    		  param.color=this.defaultColor;
 	   	    		  param.name=this.defaultTag;
 	   	    		  param.alia=this.defaultTag;
-		   	    		axios.post('/tag/saveTag', param)
-		   				.then(function (response) {
-		   					var result=response.data;
-		   					if(result.code==0){
-		   					   app.tags.push({ value: value, color: app.defaultColor,id:result.id,alia:value });
-		   					   app.defaultTag='';
-		   					   app.$message({
-			   			          showClose: true,
-			   			          message: result.msg,
-			   			          type: 'success'
-		   			        	});
-		   					}else{
-		   						app.$message({
-				   			          showClose: true,
-				   			          message: result.msg,
-				   			          type: 'error'
-				   			        });
-		   					}
-		   				})
-		   				.catch(function (error) {
-		   					app.$message({
-		   			          showClose: true,
-		   			          message: error,
-		   			          type: 'error'
-		   			        });
-		   				});
-	   	    		 
+                      $.ajax({
+                          data: param,
+                          type: "POST",
+                          url: '/tag/saveTag',
+                          traditional:true,
+                          /* async: false, */
+                          success: function (result) {
+                              if(result.code==0){
+                                  app.tags.push({ value: value, color: app.defaultColor,id:result.id,alia:value });
+                                  app.defaultTag='';
+                                  app.$message({
+                                      showClose: true,
+                                      message: result.msg,
+                                      type: 'success'
+                                  });
+                              }
+                          },
+                          error: function (data) {
+                              app.$message({
+                                  showClose: true,
+                                  message: error,
+                                  type: 'error'
+                              });
+						  }
+                      });
 	   	    		}
 	   	    	 
 	   	      },
 	   	      editTag(){
-	   	    	  alert("tag");
 	   	    	  console.log(tag);
 	   	      },
 	   	      colorChange(data){

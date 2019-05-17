@@ -7,12 +7,14 @@ import warmer.star.blog.model.ArticleDetail;
 import warmer.star.blog.model.ArticleFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ArticleService {
 
     List<ArticleItem> getArticleList(ArticleQueryItem queryItem);
     List<ArticleItem> getRecommendArticleList();
     List<ArticleItem> getTopReadArticleList();
+    List<Map<String,Object>> getRelvantArticle(Integer articleId,String tagIds);
     ArticleItem getById(int articleId);
     ArticleDetail getContentById(int articleId);
     int saveArticle(ArticleSubmitItem submitItem);
@@ -22,4 +24,6 @@ public interface ArticleService {
     boolean deleteArticle(int articleId);
     boolean deleteImage(int articleId);
     boolean deleteContent(int articleId);
+    void updateArticleViewCount(int articleId,int viewCount);
+    void updateArticleTags(int articleId,String articleTags);
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface TagMapper {
     List<Tag> getAll();
+    List<Tag> getTagByIds(@Param("tagIds")List<String> tagIds);
     List<Tag> getTagByName(@Param("tagName")String tagName);
     int saveTag(TagItem submitItem);
 	boolean updateTag(TagItem submitItem);

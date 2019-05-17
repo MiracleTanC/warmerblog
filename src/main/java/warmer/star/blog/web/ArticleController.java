@@ -88,18 +88,6 @@ public class ArticleController extends BaseController {
         //return R.success().put("data", record);
         return R.success().put("data", "");
     }
-
-    /*
-        @RequestMapping("/article/edit/{articleId}")
-        @PreAuthorize("hasPermission('/article/edit','create')")
-        public String edit(@PathVariable("articleId") int articleId, Model model) {
-            ArticleItem articleItem = new ArticleItem();
-            if (articleId != 0) {
-                articleItem = articleService.getById(articleId);
-                model.addAttribute("articleModel", articleItem);
-            }
-            return "article/edit";
-        }*/
     @RequestMapping("/article/edit/{t}/{articleId}")
     @PreAuthorize("hasPermission('/article/edit','create')")
     public String edit(@PathVariable("t") Integer t, @PathVariable("articleId") Integer articleId, Model model) {
@@ -143,6 +131,29 @@ public class ArticleController extends BaseController {
         boolean result = false;
         try {
             Date time = DateTimeHelper.getNowDate();
+            List<String> tagIds=new ArrayList<>();
+            //更新标签库
+            if (StringUtils.isNotBlank(submitItem.getArticleTags())) {
+                String[] tags = submitItem.getArticleTags().split(",");
+                if (tags != null && tags.length > 0) {
+                    for (String tag : tags) {
+                        //检查tag是存在
+                        List<Tag> tagList = tagService.getTagByName(tag);
+                        if (tagList != null && tagList.size() > 0) {
+                            tagIds.add(tagList.get(0).getId().toString());
+                            continue;
+                        }
+                        TagItem t = new TagItem();
+                        t.setAlia(tag);
+                        t.setColor("#EB6841");
+                        t.setName(tag);
+                        Integer tageId=tagService.saveTag(t);
+                        tagIds.add(tageId.toString());
+                    }
+                }
+            }
+            String articleTagIds=String.join(",",tagIds);
+            submitItem.setArticleTags(articleTagIds);
             if (submitItem.getId() == 0) {
                 submitItem.setCreateTime(time);
                 submitItem.setUpdateTime(time);
@@ -155,7 +166,7 @@ public class ArticleController extends BaseController {
                 detail.setUpdateTime(time);
                 articleService.saveContent(detail);
                 List<ArticleFile> files = new ArrayList<ArticleFile>();
-                if (submitItem.getCoverImageList().length > 0) {
+                if (submitItem.getCoverImageList()!=null&&submitItem.getCoverImageList().length > 0) {
                     for (String url : submitItem.getCoverImageList()) {
                         ArticleFile img = new ArticleFile();
                         img.setArticleId(id);
@@ -183,7 +194,7 @@ public class ArticleController extends BaseController {
                 //添加正文
                 articleService.saveContent(detail);
                 List<ArticleFile> files = new ArrayList<ArticleFile>();
-                if (submitItem.getCoverImageList().length > 0) {
+                if (submitItem.getCoverImageList()!=null&&submitItem.getCoverImageList().length > 0) {
                     for (String url : submitItem.getCoverImageList()) {
                         ArticleFile img = new ArticleFile();
                         img.setArticleId(id);
@@ -201,24 +212,7 @@ public class ArticleController extends BaseController {
                 }
                 result = true;
             }
-            //更新标签库
-            if (StringUtils.isNotBlank(submitItem.getArticleTags())) {
-                String[] tags = submitItem.getArticleTags().split(",");
-                if (tags != null && tags.length > 0) {
-                    for (String tag : tags) {
-                        //检查tag是存在
-                        List<Tag> tagList = tagService.getTagByName(tag);
-                        if (tagList != null && tagList.size() > 0) {
-                            continue;
-                        }
-                        TagItem t = new TagItem();
-                        t.setAlia(tag);
-                        t.setColor("#EB6841");
-                        t.setName(tag);
-                        tagService.saveTag(t);
-                    }
-                }
-            }
+
         } catch (Exception e) {
             log.error("操作失败:{0}", e);
             log.error(e.getMessage());

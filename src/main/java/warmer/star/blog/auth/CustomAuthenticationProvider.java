@@ -1,38 +1,31 @@
 package warmer.star.blog.auth;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AccountExpiredException;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import com.alibaba.fastjson.JSON;
-
 import warmer.star.blog.model.User;
 import warmer.star.blog.model.UserInfo;
 import warmer.star.blog.model.UserRole;
 import warmer.star.blog.service.UserRoleService;
 import warmer.star.blog.service.UserService;
 import warmer.star.blog.util.Md5Util;
-import warmer.star.blog.util.RedisService;
+import warmer.star.blog.util.RedisUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 	@Autowired
-    private RedisService redisService;
+    private RedisUtil redisUtil;
     @Autowired
     private UserService userService;
     @Autowired
@@ -73,9 +66,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     		grantedAuthorities.add(grantedAuthority);
 		}
         UserInfo userInfo=userService.getUserInfo(username);
-        redisService.remove(username);
-    	redisService.set(username, JSON.toJSONString(userInfo));
-        redisService.expire(username, 3600);
+        redisUtil.remove(username);
+    	redisUtil.set(username, JSON.toJSONString(userInfo),3600);
         //授权
         return new UsernamePasswordAuthenticationToken(userInfo, password, grantedAuthorities);
     }

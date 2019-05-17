@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface TagService {
 	List<Tag> getAll();
+	List<Tag> getTagByIds(List<String> tagIds);
 	List<Tag> getTagByName(String tagName);
 	int saveTag(TagItem submitItem);
 	boolean updateTag(TagItem submitItem);

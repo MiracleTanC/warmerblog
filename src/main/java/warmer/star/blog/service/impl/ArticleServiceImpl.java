@@ -10,7 +10,10 @@ import warmer.star.blog.model.ArticleDetail;
 import warmer.star.blog.model.ArticleFile;
 import warmer.star.blog.service.ArticleService;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -77,6 +80,16 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
+	public void updateArticleViewCount(int articleId, int viewCount) {
+		 articleMapper.updateArticleViewCount(articleId,viewCount);
+	}
+
+	@Override
+	public void updateArticleTags(int articleId, String articleTags) {
+		articleMapper.updateArticleTags(articleId,articleTags);
+	}
+
+	@Override
 	public List<ArticleItem> getRecommendArticleList() {
 		// TODO Auto-generated method stub
 		return articleMapper.getRecommendArticleList();
@@ -88,5 +101,12 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleMapper.getTopReadArticleList();
 	}
 
-  
+	@Override
+	public List<Map<String, Object>> getRelvantArticle(Integer articleId,String tagIds) {
+		List<String> tids=Arrays.asList(tagIds.split(","));
+		String StrTagId=String.join(",",tids.stream().map(n->String.format("'%s'",n)).collect(Collectors.toList()));
+		return articleMapper.getRelvantArticle(articleId,StrTagId);
+	}
+
+
 }

@@ -8,9 +8,12 @@ import java.util.Date;
 public class Music implements Serializable {
 	private Integer id;
     private String title; 
-    private String url; 
-    private Integer sortCode; 
-	private Date createOn;   
+    private String url;
+	private String singer;
+	private String converUrl;
+	private String totalTime;
+    private Integer sortCode;
+	private Date createOn;
     private Date updateOn;
 	public Integer getId() {
 		return id;
@@ -47,7 +50,30 @@ public class Music implements Serializable {
 	}
 	public void setUpdateOn(Date updateOn) {
 		this.updateOn = updateOn;
-	}  
-    
-  
+	}
+	public String getSinger() {
+		return singer;
+	}
+
+	public void setSinger(String singer) {
+		this.singer = singer;
+	}
+
+	public String getConverUrl() {
+		return converUrl;
+	}
+
+	public void setConverUrl(String converUrl) {
+		this.converUrl = converUrl;
+	}
+
+	public String getTotalTime() {
+		return totalTime;
+	}
+
+	public void setTotalTime(String totalTime) {
+		this.totalTime = totalTime;
+	}
+
+
 }

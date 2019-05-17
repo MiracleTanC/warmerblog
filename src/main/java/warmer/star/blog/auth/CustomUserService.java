@@ -1,8 +1,6 @@
 package warmer.star.blog.auth;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,15 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.alibaba.fastjson.JSON;
-
 import warmer.star.blog.model.UserInfo;
 import warmer.star.blog.model.UserRole;
 import warmer.star.blog.service.UserRoleService;
 import warmer.star.blog.service.UserService;
 import warmer.star.blog.util.AppUser;
-import warmer.star.blog.util.RedisService;
+import warmer.star.blog.util.RedisUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CustomUserService implements UserDetailsService {
@@ -28,7 +26,7 @@ public class CustomUserService implements UserDetailsService {
 	@Autowired
 	private UserRoleService userRoleService;
 	@Autowired
-    private RedisService redisService;
+    private RedisUtil redisUtil;
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
@@ -46,13 +44,16 @@ public class CustomUserService implements UserDetailsService {
 					userinfo.getPassword() == null ? "" : userinfo.getPassword(), grantedAuthorities);
 			
 			UserInfo userInfo=userService.getUserInfo(username);
-			user.setUserId(userinfo.getId());
-			user.setUserCode(userinfo.getUsername());
-			user.setAvatar(userInfo.getAvatar());
-			user.setNickname(userinfo.getUsername());
-	        redisService.remove(username);
-	    	redisService.set(username, JSON.toJSONString(userInfo));
-	        redisService.expire(username, 3600);
+			if(userInfo!=null){
+				user.setUserId(userinfo.getId());
+				user.setUserCode(userinfo.getUsername());
+				user.setAvatar(userInfo.getAvatar());
+				user.setNickname(userinfo.getUsername());
+				redisUtil.remove(username);
+				redisUtil.set(username, JSON.toJSONString(userInfo),3600);
+
+			}
+
 			return user;
 		} else {
 			throw new UsernameNotFoundException("admin: " + username + " do not exist!");

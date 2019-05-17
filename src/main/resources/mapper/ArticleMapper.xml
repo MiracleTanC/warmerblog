@@ -17,7 +17,7 @@
         <result column="articleTags" property="articleTags" jdbcType="VARCHAR"/>
         <result column="openComment" property="openComment" jdbcType="INTEGER"/>
         <result column="isRecommend" property="isRecommend" jdbcType="INTEGER"/>
-        <result column="showCount" property="showCount" jdbcType="INTEGER"/>
+        <result column="viewCount" property="viewCount" jdbcType="INTEGER"/>
         <result column="showStyle" property="showStyle" jdbcType="INTEGER"/>
         <result column="articleType" property="articleType" jdbcType="INTEGER"/>
         <result column="editorType" property="editorType" jdbcType="INTEGER"/>
@@ -54,18 +54,18 @@
 		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
 	</resultMap>
     <sql id="Base_Column_List">
-		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.openComment,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.openComment,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.viewCount,a.showStyle
 	</sql>
 	<sql id="Abstract_Column_List">
-		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.viewCount,a.showStyle
 	</sql>
 	<sql id="article_Column_List">
-		a.id,a.categoryId,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.showCount,a.showStyle
+		a.id,a.categoryId,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.viewCount,a.showStyle
 	</sql>
 	<sql id="Where_Clause" >
 	    <where >
 	        isRecommend=0	 
-	     	<if test="title!= null">
+	     	<if test="title!= null and title!= ''">
 	      		and a.title like concat('%',#{title},'%')
 	      	</if>
 	      	<if test="categoryId != null and categoryId != ''">
@@ -86,22 +86,25 @@
 	 </sql>
     <!--分页获取文章-->
     <select id="getArticleList" resultMap="article">
-        select 
-        <include refid="Abstract_Column_List" />
-        from article a left join category c on a.categoryId=c.id 
-       <include refid="Where_Clause" />
-       <choose>
-           <when test="sort ==0" >
-             order by a.updateTime asc 
-           </when>
-           <when test="sort == 1" >
-             order by a.updateTime desc 
-           </when>
-           <otherwise>  
-             order by a.updateTime desc  
-            </otherwise>  
-        </choose>
-    </select>
+	select
+	<include refid="Abstract_Column_List" />
+	from article a left join category c on a.categoryId=c.id
+	<include refid="Where_Clause" />
+	<choose>
+		<when test="sort ==0" >
+			order by a.updateTime asc
+		</when>
+		<when test="sort == 1" >
+			order by a.updateTime desc
+		</when>
+		<otherwise>
+			order by a.updateTime desc
+		</otherwise>
+	</choose>
+</select>
+	<select id="getRelvantArticle" resultType="map">
+		select id,title,publishTime from article where id!=#{articleId} and  articleTags in(${tagIds}) limit 5
+	</select>
 	<select id="getContentById" resultMap="articleDetail">
 		select articleId,content,createTime,updateTime  from articledetail where articleId=#{articleId}
 	</select>
@@ -124,7 +127,7 @@
         select 
         <include refid="article_Column_List" />
         from article a where a.status !=-1
-        order by a.showCount desc  limit 5
+        order by a.viewCount desc  limit 5
     </select>
      <insert id="saveArticle"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		 <selectKey resultType="int" order="AFTER" keyProperty="id">
@@ -197,4 +200,10 @@
 	<delete id="deleteImage">
 		delete from articlefile  where articleId = #{articleId}
 	</delete>
+	<update id="updateArticleViewCount">
+		  update article set  viewCount=viewCount+ #{viewCount} where id = #{articleId}
+	</update>
+	<update id="updateArticleTags">
+		  update article set  articleTags= #{articleTags} where id = #{articleId}
+	</update>
 </mapper>

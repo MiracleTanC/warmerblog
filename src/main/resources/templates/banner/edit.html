@@ -103,7 +103,8 @@
 			<div class="sub-navbar" :style="{top:stickyTop+'px',zIndex:zIndex,position:position,width:width,height:52+'px',background:'#BDBFBA'}">
 				<slot>
 					<div>
-						<template v-if="fetchSuccess"> 
+						<template v-if="fetchSuccess">
+							<span style="width:40%;margin-left: 25%;float: left;text-align: center">图片尺寸 1920x532</span>
 							<el-dropdown trigger="click"> 
 								<el-button plain>{{submitForm.isShow?'显示':'不显示'}} 
 									<i class="el-icon-caret-bottom el-icon--right"></i> 

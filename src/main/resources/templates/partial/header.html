@@ -5,7 +5,7 @@
 		 <!--menu begin-->
 		  <div class="menu">
 		    <nav class="nav" id="topnav">
-		      <h1 class="logo"><a href="/"><img style="width: 60px;margin-top: 15px;" th:src="@{/images/logo/logo_o.png}"></a></h1>
+		      <h1 class="logo"><a href="/"><img style="width: 60px;" th:src="@{/images/logo/logo_o.png}"></a></h1>
 		      <ul v-if="navList">
 			      <template v-for="nav in navList">
 				      <li @mouseover="selectStyle(nav)" @mouseout="outStyle(nav)">
@@ -19,29 +19,28 @@
 				      </template>
 		      </ul>
 		      <!--search begin-->
-			     <!-- <div :class="[search_active ? ' search_open' : '', 'search_bar']">
-			          <input class="search_input" placeholder="想搜点什么呢..." v-model="searchkeyword" type="text" @change="searchResult" @keyup.enter.native="searchResult">
-			          <span class="search_ico" @click="searchActive" ></span>
-			      </div>-->
-				  <div class="search-wrapper">
+				  <!--<div class="search-wrapper">
+					  <button class="search-icon" @click="searchToggle($event)"><span></span></button>
 					<div class="input-holder">
 						<input type="text" v-model="searchkeyword" @keyup.enter.native="searchResult" class="search-input" placeholder="想搜点什么呢..." />
-						<button class="search-icon" @click="searchToggle($event)"><span></span></button>
 					</div>
 					<span class="close" @click="searchToggle($event)"></span>
 					<div class="result-container"></div>
-				  </div>
-			  <!--search end--> 
+				  </div>-->
+				<div class="search-wrapper">
+					<span class="search-icon" icon="el-icon-search"></span>
+				</div>
+			  <!--search end-->
 		    </nav>
 		  </div>
-		  <!--menu end--> 
+		  <!--menu end-->
 		  <!--mnav begin-->
 		  <div id="mnav">
 		    <h2 :class="{'open':isOpen}"><a href="/" class="mlogo">瞄了眼</a><span class="navicon" @click="changeIcon"></span></h2>
 		    <dl class="list_dl" v-if="navList" v-show="isOpen">
 		     <template v-for="nav in navList">
-			      <dt class="list_dt"> 
-			      	  <a @click="clickNav(nav)" :href="nav.linkUrl">{{nav.title}}</a> 
+			      <dt class="list_dt">
+			      	  <a @click="clickNav(nav)" :href="nav.linkUrl">{{nav.title}}</a>
 			      </dt>
 			      <dd class="list_dd" v-if="nav.childrens" v-show="nav.active">
 			        <ul>
@@ -52,9 +51,9 @@
 			      </dd>
 		       </template>
 		    </dl>
-		    
+
 		  </div>
-		  <!--mnav end--> 
+		  <!--mnav end-->
 	</div>
 </body>
 
