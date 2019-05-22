@@ -475,7 +475,23 @@ div#mceu_55 {
                 error: function (data) {}
             });
         }
-		var initMarkdowm=function(){
+        /**
+         * 将以base64的图片url数据转换为Blob
+         * @param urlData
+         *            用url方式表示的base64图片数据
+         */
+         convertBase64UrlToBlob=function(urlData){
+            var bytes=window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
+            //处理异常,将ascii码小于0的转换为大于0
+            var ab = new ArrayBuffer(bytes.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < bytes.length; i++) {
+                ia[i] = bytes.charCodeAt(i);
+            }
+
+            return new Blob( [ab] , {type : 'image/png'});
+        }
+        var initMarkdowm=function(){
 			var _this = this
 			testEditor = editormd("test-editormd", {
                 width: "100%",
@@ -509,7 +525,48 @@ div#mceu_55 {
                 imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL : "/qiniu/editormdupload",
                 onload : function() {
-                    console.log('onload', this);
+                    this.editor.on("paste", function(){//图片截图黏贴
+                        console.clear();
+                        var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+                        for (var index in items) {
+                            var item = items[index];
+                            if (item.kind === 'file') {
+                                var blob = item.getAsFile();
+                                var reader = new FileReader();
+                                // data url!
+                                reader.readAsDataURL(blob);
+                                reader.onload = function (event) {
+                                    var base64 = event.target.result;
+                                    var file=_this.convertBase64UrlToBlob(base64);
+                                    var form = new FormData();
+                                    // 文件对象
+                                    form.append("file", file);
+                                    $.ajax({
+                                        data: form,
+                                        type: "POST",
+                                        url: '/qiniu/upload',
+                                        processData:false,
+                                        cache: false,//上传文件无需缓存
+                                        processData: false,//用于对data参数进行序列化处理 这里必须false
+                                        contentType: false, //必须
+                                        success: function (res) {
+                                            if(res.success==1){
+                                                //新一行的图片显示
+                                                testEditor.insertValue("\n![](" + res.results[0].url + ")");
+                                            }
+                                        },
+                                        error: function (data) {
+
+                                        }
+                                    });
+                                };
+                            }
+                        }
+                    });
+                   /* $('#test-editormd').on("paste", function(){
+                        console.clear();
+                        console.log("on() => Override settings.onpreviewscroll =>", this, this.id, event, (new Date).getTime());
+                    });*/
                     //this.fullscreen();
                     //this.unwatch();
                     //this.watch().fullscreen();
@@ -634,6 +691,7 @@ div#mceu_55 {
  		initArticleModel:initArticleModel,
  		submitArticle:submitArticle,
  		initMarkdowm:initMarkdowm,
+		convertBase64UrlToBlob:convertBase64UrlToBlob,
 	    handleScroll() {
 	      this.width = this.$el.getBoundingClientRect().width;
 	      var offsetTop = this.$el.getBoundingClientRect().top;
