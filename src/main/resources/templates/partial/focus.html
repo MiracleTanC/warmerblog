@@ -3,7 +3,7 @@
 
 <body>
     <div th:fragment="focus">
-       <div ref="followUs" v-bind:class="[scrollTop>followUsPosition ? 'gd' : '', 'guanzhu']" id="follow-us">
+       <div ref="followUs" :class="[scrollTop>followUsPosition ? 'gd' : '', 'guanzhu']" id="follow-us">
 		      <h2 class="hometitle">关注我们 么么哒！</h2>
 		      <ul>
 		        <li class="qq"><a href="/" target="_blank"><span>QQ号</span>1130196938</a></li>

@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="partial/layout" lang="zh">
+<head>
+    <style type="text/css">
+        input:-webkit-autofill,
+        textarea:-webkit-autofill,
+        select:-webkit-autofill {
+            background-color: #fff;
+            -webkit-box-shadow: 0 0 0 1000px white inset;
+        }
+
+        input[type=text]:focus, input[type=password]:focus, textarea:focus {
+            /*background-color: #fff;
+              -webkit-box-shadow: 0 0 0 1000px white inset;*/
+        }
+
+        button, button:focus, button:active, button:link {
+            -webkit-appearance: none;
+            outline: none;
+        }
+
+        ol, ul, li {
+            list-style: none;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: normal;
+            font-size: 100%;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        a {
+            text-decoration: none;
+            outline: none;
+            cursor: pointer;
+            color: #333;
+        }
+
+        a:link, a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        a:active {
+            text-decoration: none;
+        }
+
+        .clearboth {
+            clear: both;
+        }
+
+        .dib {
+            display: inline-block;
+        }
+
+        .fl {
+            float: left;
+        }
+
+        .fr {
+            float: right;
+        }
+
+        .ml5 {
+            margin-left: 5px;
+        }
+
+        .ml10 {
+            margin-left: 10px;
+        }
+
+        .mt20 {
+            margin-top: 13px;
+        }
+
+        .mt50 {
+            margin-top: 20px;
+        }
+
+        .mt10 {
+            margin-top: 10px;
+        }
+
+        .ml20 {
+            margin-left: 20px;
+        }
+
+        .div-h, .ty-p {
+            line-height: 1.5;
+        }
+
+        .color9 {
+            color: #999;
+        }
+
+        .color-blue {
+            color: #00a0e8;
+        }
+
+        .p16 {
+            padding: 16px;
+        }
+
+        .p24 {
+            padding: 24px;
+        }
+
+        .bgf7 {
+            padding: 10px;
+            background: #f7f7f7;
+        }
+
+        .bg999 {
+            padding: 10px;
+            background: #999;
+        }
+
+        .ty-relative {
+            position: relative;
+        }
+
+        .fs14 {
+            font-size: 14px;
+        }
+
+        .fw {
+            font-weight: 600;
+        }
+
+
+
+    </style>
+</head>
+<body>
+<div layout:fragment="main">
+    <div style="min-height: calc(100vh - 0px);margin-top: 100px;">
+        <warmer-transfer  :sourcedata="sourcedata" sourcetitle="源列表" :targetdata="targetdata" targettitle="目标列表"></warmer-transfer>
+    </div>
+</div>
+<div layout:fragment="js">
+    <script th:inline="javascript" th:src="@{/js/components/warmer-transfer.js}" type="text/javascript"></script>
+    <script th:inline="javascript" type="text/javascript">
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                sourcedata: [
+                    {id: 1, name: "HTML5", isSelected: false},
+                    {id: 2, name: "CSS3", isSelected: false},
+                    {id: 3, name: "Angular", isSelected: false},
+                    {id: 4, name: "Vue", isSelected: false},
+                    {id: 5, name: "Linux", isSelected: false},
+                    {id: 6, name: "JavaScript", isSelected: false},
+                    {id: 7, name: "springboot", isSelected: false},
+                    {id: 8, name: "java", isSelected: false},
+                    {id: 9, name: "mysql", isSelected: false},
+                    {id: 10, name: "postgresql", isSelected: false},
+                    {id: 11, name: "redis", isSelected: false},
+                    {id: 12, name: "Neo4j", isSelected: false},
+                    {id: 13, name: "spark", isSelected: false},
+                    {id: 14, name: "doubbo", isSelected: false},
+                ],
+                targetdata:[{id: 11, name: "redis", isSelected: false},
+                    {id: 12, name: "Neo4j", isSelected: false},]
+            },
+            mounted() {
+
+            },
+            created() {
+
+            },
+            computed: {
+
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</div>
+</body>
+</html>
