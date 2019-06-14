@@ -1,36 +1,24 @@
 package warmer.star.blog.web;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import com.alibaba.fastjson.JSONObject;
-
 import warmer.star.blog.config.QiniuUploadService;
 import warmer.star.blog.config.WebAppConfig;
 import warmer.star.blog.util.FileResponse;
 import warmer.star.blog.util.FileResult;
 import warmer.star.blog.util.ImageUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -182,4 +170,29 @@ public class FileController extends BaseController {
             return res;
 
         }
+	@RequestMapping("/qiniu/batchupload")
+	@ResponseBody
+	public FileResponse batchupload (@RequestParam(value = "file", required = true) MultipartFile[]  files, HttpServletRequest request,HttpServletResponse response) throws Exception{
+		FileResponse res = new FileResponse();
+		List<FileResult> fre = new ArrayList<FileResult>();
+		for (MultipartFile file : files) {
+			String fileName = file.getOriginalFilename();
+			String url="http://"+qiniuUploadService.uploadImage(file,fileName);
+			FileResult fileResult = new FileResult();
+			if (StringUtils.isNotBlank(url)) {
+				String success = "上传成功";
+				fileResult.setMessage(success);
+				fileResult.setName(fileName);
+				fileResult.setStatus(0);
+				fileResult.setUrl(url);
+				fre.add(fileResult);
+			}
+		}
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");// 解决IFrame拒绝的问题
+		res.setSuccess(1);
+		res.setMessage("ok");
+		res.setResults(fre);
+		return res;
+
+	}
 }

@@ -708,7 +708,7 @@ div#mceu_55 {
                     contentType: false, //必须
 			        success: function (res) {
 			        	if(res.success==1){
-				    		  for(var i=0;i<res.results.count;i++){
+				    		  for(var i=0;i<res.results.length;i++){
 				    			  app.submitForm.coverImageList.push(res.results[i].url);
 				    		  }
 							}else{
