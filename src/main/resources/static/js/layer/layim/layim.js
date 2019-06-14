@@ -23,7 +23,7 @@ var config = {
     },
     user: { //当前用户信息
         name: '游客',
-        face: 'img/a1.jpg'
+        face: 'bg/a1.jpg'
     },
 
     //自动回复内置文案，也可动态读取数据库配置
@@ -227,7 +227,7 @@ xxim.popchat = function(param){
     log.html = '<div class="layim_chatbox" id="layim_chatbox">'
             +'<h6>'
             +'<span class="layim_move"></span>'
-            +'    <a href="'+ param.url +'" class="layim_face" target="_blank"><img src="'+ param.face +'" ></a>'
+            +'    <a href="'+ param.url +'" class="layim_face" target="_blank"><bg src="'+ param.face +'" ></a>'
             +'    <a href="'+ param.url +'" class="layim_names" target="_blank">'+ param.name +'</a>'
             +'    <span class="layim_rightbtn">'
             +'        <i class="layer_setmin">—</i>'
@@ -313,7 +313,7 @@ xxim.tabchat = function(param){
     xxim.chatbox.find('#layim_area'+ keys).addClass('layim_chatthis').siblings().removeClass('layim_chatthis');
     xxim.chatbox.find('#layim_group'+ keys).addClass('layim_groupthis').siblings().removeClass('layim_groupthis');
 
-    xxim.chatbox.find('.layim_face>img').attr('src', param.face);
+    xxim.chatbox.find('.layim_face>bg').attr('src', param.face);
     xxim.chatbox.find('.layim_face, .layim_names').attr('href', param.href);
     xxim.chatbox.find('.layim_names').text(param.name);
 
@@ -364,7 +364,7 @@ xxim.getGroups = function(param){
             var ii = 0, lens = datas.data.length;
             if(lens > 0){
                 for(; ii < lens; ii++){
-                    str += '<li data-id="'+ datas.data[ii].id +'" type="one"><img src="'+ datas.data[ii].face +'" class="xxim_oneface"><span class="xxim_onename">'+ datas.data[ii].name +'</span></li>';
+                    str += '<li data-id="'+ datas.data[ii].id +'" type="one"><bg src="'+ datas.data[ii].face +'" class="xxim_oneface"><span class="xxim_onename">'+ datas.data[ii].name +'</span></li>';
                 }
             } else {
                 str = '<li class="layim_errors">没有群员</li>';
@@ -411,9 +411,9 @@ xxim.transmit = function(){
                             if(type === 'me'){
                                 return '<span class="layim_chattime">'+ param.time +'</span>'
                                        +'<span class="layim_chatname">'+ param.name +'</span>'
-                                       +'<img src="'+ param.face +'" >';
+                                       +'<bg src="'+ param.face +'" >';
                             } else {
-                                return '<img src="'+ param.face +'" >'
+                                return '<bg src="'+ param.face +'" >'
                                        +'<span class="layim_chatname">'+ param.name +'</span>'
                                        +'<span class="layim_chattime">'+ param.time +'</span>';
                             }
@@ -561,7 +561,7 @@ xxim.getDates = function(index){
                             +'<ul class="xxim_chatlist">';
                         item = datas.data[i].item;
                         for(var j = 0; j < item.length; j++){
-                            str += '<li data-id="'+ item[j].id +'" class="xxim_childnode" type="'+ (index === 0 ? 'one' : 'group') +'"><img src="'+ item[j].face +'" class="xxim_oneface"><span class="xxim_onename">'+ item[j].name +'</span></li>';
+                            str += '<li data-id="'+ item[j].id +'" class="xxim_childnode" type="'+ (index === 0 ? 'one' : 'group') +'"><bg src="'+ item[j].face +'" class="xxim_oneface"><span class="xxim_onename">'+ item[j].name +'</span></li>';
                         }
                         str += '</ul></li>';
                     }
@@ -569,7 +569,7 @@ xxim.getDates = function(index){
                     str += '<li class="xxim_liston">'
                         +'<ul class="xxim_chatlist">';
                     for(; i < myflen; i++){
-                        str += '<li data-id="'+ datas.data[i].id +'" class="xxim_childnode" type="one"><img src="'+ datas.data[i].face +'"  class="xxim_oneface"><span  class="xxim_onename">'+ datas.data[i].name +'</span><em class="xxim_time">'+ datas.data[i].time +'</em></li>';
+                        str += '<li data-id="'+ datas.data[i].id +'" class="xxim_childnode" type="one"><bg src="'+ datas.data[i].face +'"  class="xxim_oneface"><span  class="xxim_onename">'+ datas.data[i].name +'</span><em class="xxim_time">'+ datas.data[i].time +'</em></li>';
                     }
                     str += '</ul></li>';
                 }

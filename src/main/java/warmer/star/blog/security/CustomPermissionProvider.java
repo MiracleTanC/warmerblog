@@ -1,4 +1,4 @@
-package warmer.star.blog.auth;
+package warmer.star.blog.security;
 
 import java.io.Serializable;
 import java.util.Collection;

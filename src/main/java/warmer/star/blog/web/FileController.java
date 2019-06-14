@@ -74,7 +74,7 @@ public class FileController extends BaseController {
 					fileResult.setMessage(success);
 					fileResult.setName(root_fileName);
 					fileResult.setStatus(0);
-					String src="/img/download/";
+					String src="/bg/download/";
 					fileResult.setUrl(src + file_name);
 					fre.add(fileResult);
 				}

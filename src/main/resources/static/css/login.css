@@ -28,11 +28,8 @@ input {
 	display: block;
 }
 .content {
-	position: relative;
+	/*position: relative;*/
 	width: 100%;
-	height: 100%;
-	background-color: #eee;
-	background: url(/images/login_bgx.gif);
 }
 
 a, a:visited {
@@ -84,7 +81,7 @@ a, button {
 	width: 300px;
 	padding: 28px 50px 38px;
 	background-color: #fff;
-	background-color: rgba(255,255,255,.9);
+	background-color: rgba(255,255,255,.5);
 }
 
 .baseLogin {
@@ -107,6 +104,7 @@ a, button {
 	padding: 4px 8px;
 	border: 1px solid #ddd;
 	z-index: 1;
+	border-radius: 4px;
 }
 
 .baseLogin .verification > input {
@@ -218,6 +216,7 @@ li {
 	color: #292929;
 	float: left;
 	height: 45px;
+	border-radius: 5px;
 }
 
 .register {
@@ -259,4 +258,176 @@ li {
 .gray-disable {
 	color: #fff;
 	cursor: auto;
+}
+.baseLogin .sns-login {
+	font-size: 0;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.baseLogin .sns-login .sns:first-child {
+	margin-left: 0;
+}
+
+.baseLogin .sns-login .mail-login {
+	background-image: url(//s3b.pstatp.com/toutiao/resource/ntoutiao_web/static/image/login/svg/icon_mail_pc_d9c3ec7.svg),none;
+}
+
+.baseLogin .sns-login .weibo-login {
+	background-image: url(//s3a.pstatp.com/toutiao/resource/ntoutiao_web/static/image/login/svg/icon_weibo_pc_e5a8191.svg),none;
+}
+.baseLogin .sns-login .github-login {
+	background-image: url(/images/github.png),none;
+}
+.baseLogin .sns-login .qq-login {
+	background-image: url(/images/qq.png),none;
+}
+
+.baseLogin .sns-login .wechat-login {
+	background-image: url(/images/wechat.png),none;
+}
+
+.baseLogin .sns-login .sns {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	margin-left: 24px;
+	cursor: pointer;
+	background-repeat: no-repeat;
+}
+/*最外层容器样式*/
+.wrap {
+	position: relative;
+	position: absolute;
+	right: 5%;
+	top: 50px;
+	width: 100px;
+	height: 100px;
+	margin: auto;
+	/*改变左右上下,图片方块移动*/
+
+}
+
+/*包裹所有容器样式*/
+.cube {
+	width: 100px;
+	height: 100px;
+	margin: 0 auto;
+	transform-style: preserve-3d;
+	transform: rotateX(-30deg) rotateY(-80deg);
+	-webkit-animation: rotate 20s infinite;
+	/*匀速*/
+	animation-timing-function: linear;
+}
+
+@-webkit-keyframes rotate {
+	from {
+		transform: rotateX(0deg) rotateY(0deg);
+	}
+	to {
+		transform: rotateX(360deg) rotateY(360deg);
+	}
+}
+
+.cube div {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	opacity: 0.8;
+	transition: all .4s;
+}
+
+/*定义所有图片样式*/
+.pic {
+	width: 100px;
+	height: 100px;
+}
+
+.cube .out_front {
+	transform: rotateY(0deg) translateZ(50px);
+}
+
+.cube .out_back {
+	transform: translateZ(-50px) rotateY(180deg);
+}
+
+.cube .out_left {
+	transform: rotateY(90deg) translateZ(50px);
+}
+
+.cube .out_right {
+	transform: rotateY(-90deg) translateZ(50px);
+}
+
+.cube .out_top {
+	transform: rotateX(90deg) translateZ(50px);
+}
+
+.cube .out_bottom {
+	transform: rotateX(-90deg) translateZ(50px);
+}
+
+/*定义小正方体样式*/
+.cube span {
+	display: block;
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	top: 25px;
+	left: 25px;
+}
+
+.cube .in_pic {
+	width: 50px;
+	height: 50px;
+}
+
+.cube .in_front {
+	transform: rotateY(0deg) translateZ(25px);
+}
+
+.cube .in_back {
+	transform: translateZ(-25px) rotateY(180deg);
+}
+
+.cube .in_left {
+	transform: rotateY(90deg) translateZ(25px);
+}
+
+.cube .in_right {
+	transform: rotateY(-90deg) translateZ(25px);
+}
+
+.cube .in_top {
+	transform: rotateX(90deg) translateZ(25px);
+}
+
+.cube .in_bottom {
+	transform: rotateX(-90deg) translateZ(25px);
+}
+
+/*鼠标移入后样式*/
+.cube:hover .out_front {
+	transform: rotateY(0deg) translateZ(100px);
+}
+
+.cube:hover .out_back {
+	transform: translateZ(-100px) rotateY(180deg);
+}
+
+.cube:hover .out_left {
+	transform: rotateY(90deg) translateZ(100px);
+}
+
+.cube:hover .out_right {
+	transform: rotateY(-90deg) translateZ(100px);
+}
+
+.cube:hover .out_top {
+	transform: rotateX(90deg) translateZ(100px);
+}
+
+.cube:hover .out_bottom {
+	transform: rotateX(-90deg) translateZ(100px);
 }

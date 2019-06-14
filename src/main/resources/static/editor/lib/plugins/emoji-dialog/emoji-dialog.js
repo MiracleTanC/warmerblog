@@ -205,13 +205,13 @@
                                     src     = (src === "moon") ? "waxing_gibbous_moon" : src;
                                     
                                     src     = exports.emoji.path + src + exports.emoji.ext;
-                                    img     = "<img src=\"" + src + "\" width=\"24\" class=\"emoji\" title=\"&#58;" + emoji + "&#58;\" alt=\"&#58;" + emoji + "&#58;\" />";
+                                    img     = "<bg src=\"" + src + "\" width=\"24\" class=\"emoji\" title=\"&#58;" + emoji + "&#58;\" alt=\"&#58;" + emoji + "&#58;\" />";
                                     row += "<a href=\"javascript:;\" value=\":" + emoji + ":\" title=\":" + emoji + ":\" class=\"" + classPrefix + "emoji-btn\">" + img + "</a>";
                                 }
                                 else if (type === "twemoji")
                                 {
                                     var twemojiSrc = exports.twemoji.path + emoji + exports.twemoji.ext;
-                                    img = "<img src=\"" + twemojiSrc + "\" width=\"24\" title=\"twemoji-" + emoji + "\" alt=\"twemoji-" + emoji + "\" class=\"emoji twemoji\" />";
+                                    img = "<bg src=\"" + twemojiSrc + "\" width=\"24\" title=\"twemoji-" + emoji + "\" alt=\"twemoji-" + emoji + "\" class=\"emoji twemoji\" />";
                                     row += "<a href=\"javascript:;\" value=\":tw-" + emoji + ":\" title=\":tw-" + emoji + ":\" class=\"" + classPrefix + "emoji-btn\">" + img + "</a>";
                                 }
                                 else if (type === "font-awesome")

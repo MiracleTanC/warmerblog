@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<title>scrollReveal.js</title>
+<meta charset="utf-8">
+<style>
+* { margin: 0; padding: 0;}
+.dowebok { font-family: "Microsoft Yahei";}
+.dowebok h1 { margin: 60px 0 30px; font-size: 60px; font-weight: 500; text-align: center;}
+.dowebok-explain { margin-bottom: 80px; font-size: 14px; text-align: center;}
+.dowebok .list { width: 1064px; margin: 0 auto; overflow: hidden; zoom: 1;}
+.dowebok .list ul { float: left; width: 246px; margin: 0 10px; list-style-type: none;}
+.dowebok .list li { margin-bottom: 20px;}
+.dowebok .list img { width: 100%; border-radius: 5px; vertical-align: top;}
+.dowebok .vad { margin: 50px 0 5px; padding-bottom: 150px; font-family: Consolas,arial,宋体; text-align:center;}
+.dowebok .vad a { display: inline-block; height: 36px; line-height: 36px; margin: 0 5px; padding: 0 50px; font-size: 14px; text-align:center; color:#eee; text-decoration: none; background-color: #222;}
+.dowebok .vad a:hover { color: #fff; background-color: #000;}
+.dowebok .thead { width: 728px; height: 90px; margin: 0 auto; border-bottom: 40px solid transparent;}
+</style>
+</head>
+
+<body class="dowebok">
+<div class="list"> 
+	<ul>
+		<li class="sc" data-scroll-reveal="enter top"><img src="/images/photos/1.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter right after 0.5s"><img src="/images/photos/2.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter bottom over 1s and move 300px after 0.3s"><img src="/images/photos/3.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 0.5s and move 200px"><img src="/images/photos/4.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter bottom over 1s and move 100px"><img src="/images/photos/5.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter bottom over 1s and move 300px after 0.3s"><img src="/images/photos/6.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 3s after 0.5s"><img src="/images/photos/7.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter left"><img src="/images/photos/8.jpg" alt=""></li>
+	</ul>
+	<ul>
+		<li class="sc" data-scroll-reveal="enter top"><img src="/images/photos/9.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter left"><img src="/images/photos/10.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top"><img src="/images/photos/11.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 3s after 0.5s"><img src="/images/photos/12.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter bottom over 1s and move 100px"><img src="/images/photos/13.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 0.5s and move 200px"><img src="/images/photos/14.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 3s after 0.5s"><img src="/images/photos/15.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter right after 0.5s"><img src="/images/photos/16.jpg" alt=""></li>
+	</ul>
+	<ul>
+		<li class="sc" data-scroll-reveal="enter top over 3s after 0.5s"><img src="/images/photos/17.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter left"><img src="/images/photos/18.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter right after 0.5s"><img src="/images/photos/19.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top"><img src="/images/photos/20.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter bottom over 1s and move 100px"><img src="/images/photos/21.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 0.5s and move 200px"><img src="/images/photos/22.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter bottom over 1s and move 300px after 0.3s"><img src="/images/photos/23.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter right after 0.5s"><img src="/images/photos/24.jpg" alt=""></li>
+	</ul>
+	<ul>
+		<li class="sc" data-scroll-reveal="enter left"><img src="/images/photos/25.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 3s after 0.5s"><img src="/images/photos/26.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter bottom over 1s and move 100px"><img src="/images/photos/27.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 0.5s and move 200px"><img src="/images/photos/28.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 3s after 0.5s"><img src="/images/photos/29.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter left"><img src="/images/photos/30.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter top over 3s after 0.5s"><img src="/images/photos/31.jpg" alt=""></li>
+		<li class="sc" data-scroll-reveal="enter bottom over 1s and move 100px"><img src="/images/photos/32.jpg" alt=""></li>
+	</ul>
+</div>
+<script src="/js/scrollReveal2.js"></script>
+<script type="text/javascript">
+    if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+        (function(){
+            window.scrollReveal = new scrollReveal({reset: true});
+        })();
+    };
+</script>
+
+
+</body>
+</html>

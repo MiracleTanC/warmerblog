@@ -79,7 +79,7 @@ left: 812px !important;
 	background: rgba(198, 226, 255,0.2);
 	display:none;
 }
-.node_pd{	
+.node_pd{
 	padding:4px;
     font-size: 13px;
     font-family: -webkit-body;
@@ -113,6 +113,10 @@ left: 812px !important;
 		padding: 0 22px;
 		border-bottom: 1px solid #ededed;
 	}
+	.menu{
+		height: 50px !important;
+		line-height: 50px !important;
+	}
 </style>
 <link href="https://cdn.bootcss.com/jquery-jsonview/1.2.3/jquery.jsonview.min.css" rel="stylesheet">
 <link th:href="@{/wangeditor/wangEditor.css}" rel="stylesheet"/>
@@ -126,7 +130,6 @@ left: 812px !important;
     <el-scrollbar class="mind-l">
       <div class="ml-m">
         <h2 class="ml-ht">图谱列表</h2>
-        <h3 style="color:red">大家测试的数据不用删除，留着后来的同学方便使用，谢谢</h3>
         <div class="ml-a-box" style="min-height:280px">
           <el-button type="info"style="margin: 2px 0 4px 2px;" plain size="small" @click="createdomain">新建图谱</el-button>
           <a @click="matchdomaingraph(m,$event)" v-for="m in pageModel.nodeList" href="javascript:void(0)">
@@ -282,7 +285,7 @@ left: 812px !important;
 			      <el-input v-model="graphEntity.name" style="width:324px"></el-input>
 			    </el-form-item>
 			    <el-form-item label="选择颜色" label-width="120px">
-			      <el-color-picker id="colorpicker" 
+			      <el-color-picker id="colorpicker"
 					  v-model="graphEntity.color" :predefine="predefineColors">
 					</el-color-picker>
 			    </el-form-item>
@@ -366,7 +369,7 @@ left: 812px !important;
 		           <div class="mb-con" v-show="operatetype!==1">
 		              	<el-input v-model="batchcreate.relation"></el-input>
 		              	<div class="mb-label">（只能添加一个）</div>
-		            </div> 
+		            </div>
 	          </div>
 	          <div v-show="operatetype!=1" class="mb-m">
 	            <div class="mb-label">子节点名称</div>
@@ -394,28 +397,28 @@ left: 812px !important;
                 <use xlink:href="#icon-jiedian"></use>
             </svg>
 			<span class="pl-15">添加节点</span>
-        </li> 
-	    <li  class="el-dropdown-menu__item" @click="btnquickaddnode"> 
+        </li>
+	    <li  class="el-dropdown-menu__item" @click="btnquickaddnode">
 	    	<svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-add-rd"></use>
             </svg>
 			<span class="pl-15">快速添加</span>
-        </li> 
+        </li>
     </ul>
     <!-- 连线按钮组 -->
     <ul class="el-dropdown-menu el-popper linkmenubar" id="link_menubar" style="display: none;">
-    	<li  class="el-dropdown-menu__item" @click="updatelinkName"> 
+    	<li  class="el-dropdown-menu__item" @click="updatelinkName">
 	    	<svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-editor"></use>
             </svg>
 			<span class="pl-15">编辑</span>
-        </li> 
-	    <li  class="el-dropdown-menu__item" @click="deletelink"> 
+        </li>
+	    <li  class="el-dropdown-menu__item" @click="deletelink">
 	    	<svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-shanchu"></use>
             </svg>
 			<span class="pl-15">删除</span>
-        </li> 
+        </li>
     </ul>
   	<!-- 富文本展示 -->
     <div id="richContainer" style="display: none;width: 400px">
@@ -434,7 +437,7 @@ left: 812px !important;
                 </el-scrollbar>
             </div>
         </div>
-         
+
   </div>
 	</div>
 </body>
@@ -453,6 +456,6 @@ left: 812px !important;
         this.domainid = domainid;
     }
 	</script>
-	<script th:inline="javascript" type="text/javascript" th:src="@{/js/kgbuilder.js}"></script> 
+	<script th:inline="javascript" type="text/javascript" th:src="@{/js/kgbuilder.js}"></script>
 </div>
 </html>

@@ -7,7 +7,9 @@
 	<resultMap id="usermodel" type="warmer.star.blog.model.User">
         <id column="id" property="id" jdbcType="INTEGER"></id>
         <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="opendid" property="opendid" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="sourcetype" property="sourcetype" jdbcType="INTEGER"/>
         <result column="expired" property="expired" jdbcType="BOOLEAN"/>
         <result column="locked" property="locked" jdbcType="BOOLEAN"/>
         <result column="credential" property="credential" jdbcType="BOOLEAN"/>
@@ -33,13 +35,21 @@
     <select id="getUser" parameterType="String" resultMap="usermodel">
         SELECT * from user where username = #{username}
     </select>
+    <select id="getByOpenId" parameterType="String" resultMap="usermodel">
+        SELECT * from user where OpenId = #{openId}
+    </select>
 	<select id="getUserInfo" parameterType="String" resultMap="userInfoModel">
         SELECT * from userinfo where username = #{username}
     </select>
     <select id="allUser" resultMap="usermodel">
         select * from user
     </select>
-
+    <insert id="addUser" parameterType="warmer.star.blog.model.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()  as id
+        </selectKey>
+        insert user (username,password,createTime,openid,sourcetype) values (#{username},#{password},#{createTime},#{openid},#{sourcetype})
+    </insert>
 
     <update id="updateAvatar">
         update userinfo set avatar = #{url} where username = #{username}
@@ -49,7 +59,9 @@
     <update id="updatePassword">
         update user set password = #{password} where username = #{username}
     </update>
-
+    <insert id="addUserInfo">
+        insert userinfo (userId,username,nickname,avatar,phone,email,address,wechat,wechatQrCode,qq,workExperience) values (#{userId},#{username},#{nickname},#{avatar},#{phone},#{email},#{address},#{wechat},#{wechatQrCode},#{qq},#{workExperience})
+     </insert>
     <update id="updateUserInfo">
         update userinfo set nickname = #{nickname},phone = #{phone},email = #{email},signature = #{signature},
         address = #{address},wechat = #{wechat},wechatQrCode = #{wechatQrCode},qq = #{qq} ,workExperience = #{workExperience} where userId = #{userId}

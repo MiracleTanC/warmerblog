@@ -13,7 +13,7 @@ import org.thymeleaf.context.Context;
 
 import warmer.star.blog.util.EmailSenderUtil;
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = BlogApplication.class)
+@SpringBootTest(classes = Application.class)
 @WebAppConfiguration
 public class TestMailSender {
 	@Autowired
@@ -56,7 +56,7 @@ public class TestMailSender {
 	//@Test
 	public void sendInlineResourceMail() {
 	    String rscId = "warmer008";
-	    String content="<html><body>你好,测试一下发送图片,这是有图片的邮件：<img src=\'cid:" + rscId + "\' >,请你注意查收</body></html>";
+	    String content="<html><body>你好,测试一下发送图片,这是有图片的邮件：<bg src=\'cid:" + rscId + "\' >,请你注意查收</body></html>";
 	    //String imgPath = "F:\\Images\\jpg\\1.jpg";
 	    String imgPath = "C:\\Users\\Tan\\Desktop\\images\\miao.png";
 

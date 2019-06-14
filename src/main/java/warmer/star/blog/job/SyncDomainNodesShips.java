@@ -21,7 +21,7 @@ public class SyncDomainNodesShips {
 	@Autowired
 	private KnowledgegraphService kgservice;
 	
-	@Scheduled(cron = "0 0/10 * * * ? ")//每10分钟
+	@Scheduled(cron = "0 0/30 * * * ? ")//每10分钟
 	public void SyncNodesAndShips() {
 		logger.info("开始同步信息:同步节点和关系数量");
 		try {

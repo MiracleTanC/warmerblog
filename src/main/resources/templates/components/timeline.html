@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <title>timeline</title>
+    <meta charset="utf-8">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
+    <style>
+        header {
+            background: #3F51B5;
+            color: #FFFFFF;
+            padding: 150px 0;
+        }
+        section {
+            padding: 100px 0;
+
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+        body {
+            font-family: 'Roboto';
+            font-size: 17px;
+            font-weight: 400;
+            background-color: #eee;
+        }
+
+        h1 {
+            font-size: 200%;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 400;
+        }
+
+        header {
+            background: #3F51B5;
+            color: #FFFFFF;
+            padding: 150px 0;
+        }
+        .timeline {
+            position: relative;
+        }
+        .timeline::before {
+            content: '';
+            background: #C5CAE9;
+            width: 5px;
+            height: 95%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            width: 100%;
+            margin-bottom: 70px;
+        }
+        .timeline-item::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .timeline-img {
+            width: 30px;
+            height: 30px;
+            background: #3F51B5;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            margin-top: 25px;
+            margin-left: -15px;
+        }
+        .timeline-item:nth-child(even) .timeline-content {
+            float: right;
+            padding: 40px 30px 10px 30px;
+        }
+        .timeline-card {
+            padding: 0 !important;
+        }
+        .timeline-content {
+            position: relative;
+            width: 45%;
+            padding: 10px 30px;
+            border-radius: 4px;
+            background: #f5f5f5;
+            box-shadow: 0 20px 25px -15px rgba(0, 0, 0, 0.3);
+        }
+        .timeline-content::after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            width: 0;
+            height: 0;
+            top: 30px;
+            right: -15px;
+            border-width: 10px 0 10px 15px;
+            border-color: transparent transparent transparent #f5f5f5;
+        }
+        .timeline-item .timeline-img-header {
+            background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)), url(https://picsum.photos/1000/800/?random) center center no-repeat;
+            background-size: cover;
+        }
+        .timeline-img-header {
+            height: 200px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .timeline-item:nth-child(even) .timeline-content .date {
+            right: auto;
+            left: 0;
+        }
+        .date {
+            background: #FF4081;
+            display: inline-block;
+            color: #FFFFFF;
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .timeline-card p {
+            padding: 0 20px;
+        }
+        p {
+            margin: 0 0 10px;
+        }
+        .timeline-card a {
+            margin-left: 20px;
+        }
+        a {
+            background: #3F51B5;
+            color: #FFFFFF;
+            padding: 8px 20px;
+            text-transform: uppercase;
+            font-size: 14px;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            display: inline-block;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.6);
+        }
+        @media (min-width: 768px) {
+            .container {
+                width: 750px;
+            }
+        }
+        @media (min-width: 1200px){
+            .container {
+                width: 1170px;
+            }
+        }
+        .container {
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+            display: table;
+            content: " ";
+        }
+        .bplist {
+            width: 100%;
+            overflow: hidden;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .bplist li {
+            float: left;
+            width:  30%;
+            overflow: hidden;
+            margin: 1px;
+        }
+        .bplist li img {
+            width: 100%;
+            height: 110px;
+            -webkit-transition: all 0.6s ease;
+            -moz-transition: all 0.6s ease;
+            -o-transition: all 0.6s ease;
+            -ms-transition: all 0.6s ease;
+            transition: all 0.6s ease;
+        }
+        .singleimg{
+            width:  100% !important;
+        }
+        .singleimg img {
+            width: 100%;
+            min-height: 300px !important;
+            max-height: 400px !important;
+            -webkit-transition: all 0.6s ease;
+            -moz-transition: all 0.6s ease;
+            -o-transition: all 0.6s ease;
+            -ms-transition: all 0.6s ease;
+            transition: all 0.6s ease;
+        }
+        img {
+            border: 0;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <div class="container text-center">
+        <h1>Vertical Timeline</h1>
+        <p>Sava Lazic</p>
+    </div>
+</header>
+
+<section class="timeline">
+    <div class="container">
+        <div class="timeline-item">
+            <div class="timeline-img"></div>
+
+            <div class="timeline-content js--fadeInLeft">
+                <h2>Title</h2>
+                <div class="date">1 MAY 2016</div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsa ratione omnis alias cupiditate saepe atque totam aperiam sed nulla voluptatem recusandae dolor, nostrum excepturi amet in dolores. Alias, ullam.</p>
+                <ul class="bplist">
+                    <li><img src="/images/photos/1.jpg" class="pic"/></li>
+                    <li><img src="/images/photos/2.jpg" class="pic"/></li>
+                    <li><img src="/images/photos/3.jpg" class="pic"/></li>
+                    <li><img src="/images/photos/4.jpg" class="pic"/></li>
+                    <li><img src="/images/photos/5.jpg" class="pic"/></li>
+                    <li><img src="/images/photos/6.jpg" class="pic"/></li>
+                    <li><img src="/images/photos/7.jpg" class="pic"/></li>
+                    <li><img src="/images/photos/8.jpg" class="pic"/></li>
+                    <li><img src="/images/photos/9.jpg" class="pic"/></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="timeline-item">
+
+
+
+            <div class="timeline-content timeline-card js--fadeInRight">
+                <div class="timeline-img-header">
+                    <span>Card Title</span>
+                </div>
+                <div class="date">25 MAY 2016</div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsa ratione omnis alias cupiditate saepe atque totam aperiam sed nulla voluptatem recusandae dolor, nostrum excepturi amet in dolores. Alias, ullam.</p>
+                <ul class="bplist">
+                    <li class="singleimg"><img src="/images/photos/1.jpg" class="pic"/></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="timeline-item">
+
+            <div class="timeline-img"></div>
+
+            <div class="timeline-content js--fadeInLeft">
+                <div class="date">3 JUN 2016</div>
+                <h2>Quote</h2>
+                <blockquote>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta explicabo debitis omnis dolor iste fugit totam quasi inventore!</blockquote>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+
+            <div class="timeline-img"></div>
+
+            <div class="timeline-content js--fadeInRight">
+                <h2>Title</h2>
+                <div class="date">22 JUN 2016</div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsa ratione omnis alias cupiditate saepe atque totam aperiam sed nulla voluptatem recusandae dolor, nostrum excepturi amet in dolores. Alias, ullam.</p>
+                <a class="bnt-more" href="javascript:void(0)">More</a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+
+            <div class="timeline-img"></div>
+
+            <div class="timeline-content timeline-card js--fadeInLeft">
+                <div class="timeline-img-header">
+                    <h2>Card Title</h2>
+                </div>
+                <div class="date">10 JULY 2016</div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsa ratione omnis alias cupiditate saepe atque totam aperiam sed nulla voluptatem recusandae dolor, nostrum excepturi amet in dolores. Alias, ullam.</p>
+
+            </div>
+        </div>
+
+        <div class="timeline-item">
+
+            <div class="timeline-img"></div>
+
+            <div class="timeline-content timeline-card js--fadeInRight">
+                <div class="timeline-img-header">
+                    <h2>Card Title</h2>
+                </div>
+                <div class="date">30 JULY 2016</div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsa ratione omnis alias cupiditate saepe atque totam aperiam sed nulla voluptatem recusandae dolor, nostrum excepturi amet in dolores. Alias, ullam.</p>
+                <a class="bnt-more" href="javascript:void(0)">More</a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+
+            <div class="timeline-img"></div>
+
+            <div class="timeline-content js--fadeInLeft">
+                <div class="date">5 AUG 2016</div>
+                <h2>Quote</h2>
+                <blockquote>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta explicabo debitis omnis dolor iste fugit totam quasi inventore!</blockquote>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+
+            <div class="timeline-img"></div>
+
+            <div class="timeline-content timeline-card js--fadeInRight">
+                <div class="timeline-img-header">
+                    <h2>Card Title</h2>
+                </div>
+                <div class="date">19 AUG 2016</div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsa ratione omnis alias cupiditate saepe atque totam aperiam sed nulla voluptatem recusandae dolor, nostrum excepturi amet in dolores. Alias, ullam.</p>
+                <a class="bnt-more" href="javascript:void(0)">More</a>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+
+            <div class="timeline-img"></div>
+
+            <div class="timeline-content js--fadeInLeft">
+                <div class="date">1 SEP 2016</div>
+                <h2>Title</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsa ratione omnis alias cupiditate saepe atque totam aperiam sed nulla voluptatem recusandae dolor, nostrum excepturi amet in dolores. Alias, ullam.</p>
+                <a class="bnt-more" href="javascript:void(0)">More</a>
+            </div>
+        </div>
+
+
+
+    </div>
+</section>
+<script src="/js/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script type="text/javascript">
+    $(function(){
+
+        window.sr = ScrollReveal();
+
+        if ($(window).width() < 768) {
+            if ($('.timeline-content').hasClass('js--fadeInLeft')) {
+                $('.timeline-content').removeClass('js--fadeInLeft').addClass('js--fadeInRight');
+            }
+            sr.reveal('.js--fadeInRight', {
+                origin: 'right',
+                distance: '300px',
+                easing: 'ease-in-out',
+                duration: 800,
+            });
+        } else {
+            sr.reveal('.js--fadeInLeft', {
+                origin: 'left',
+                distance: '300px',
+                easing: 'ease-in-out',
+                duration: 800,
+            });
+            sr.reveal('.js--fadeInRight', {
+                origin: 'right',
+                distance: '300px',
+                easing: 'ease-in-out',
+                duration: 800,
+            });
+
+        }
+    });
+
+</script>
+</body>
+</html>

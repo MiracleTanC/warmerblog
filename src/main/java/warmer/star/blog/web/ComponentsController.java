@@ -9,10 +9,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ComponentsController extends BaseController {
 
 	@RequestMapping("/transfer")
-	public String index(Model model) {
-
-		return "transfer/index";
+	public String transfer(Model model) {
+		return "components/transfer";
 	}
-
-
+	@RequestMapping("/scrollreveal")
+	public String scrollreveal(Model model) {
+		return "components/scrollreveal";
+	}
+	@RequestMapping("/magicphoto")
+	public String magicphoto(Model model) {
+		return "components/magicphoto";
+	}
+	@RequestMapping("/timeline")
+	public String timeline(Model model) {
+		return "components/timeline";
+	}
 }

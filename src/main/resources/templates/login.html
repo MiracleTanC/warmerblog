@@ -2,9 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 <title>暖暖动听 | 后台</title>
-<link th:href="@{/css/login.css}" rel="stylesheet" />
+	<link rel="stylesheet" href="/css/vegas.min.css">
+	<link th:href="@{/css/login.css}" rel="stylesheet" />
 <style type="text/css">
+	.mr{
+		margin-right: 10px;
+	}
+	.errorinfo{
+		margin-bottom: 12px;
+		color: red;
+		position: absolute;
+		top: 280px;
+		left: 50%;
+		margin-left: -80px;
+		z-index: 9;
+	}
 </style>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
@@ -13,42 +28,99 @@
 <body>
 	<div id="app" class="y-wrap">
 		<div class="content">
-			<a class="logo-wrap" href="/"> <img src="/images/logo/logo-0.png" />
-			</a>
+			<div class="wrap">
+				<!--    /*包裹所有元素的容器*/-->
+				<div class="cube">
+					<!--前面图片 -->
+					<div class="out_front">
+						<img src="/images/photos/1.jpg" class="pic"/>
+					</div>
+					<!--后面图片 -->
+					<div class="out_back">
+						<img src="/images/photos/2.jpg" class="pic"/>
+					</div>
+					<!--左图片 -->
+					<div class="out_left">
+						<img src="/images/photos/3.jpg" class="pic"/>
+					</div>
+					<div class="out_right">
+						<img src="/images/photos/4.jpg" class="pic"/>
+					</div>
+					<div class="out_top">
+						<img src="/images/photos/5.jpg" class="pic"/>
+					</div>
+					<div class="out_bottom">
+						<img src="/images/photos/6.jpg" class="pic"/>
+					</div>
+					<!--小正方体 -->
+					<span class="in_front">
+                <img src="/images/photos/7.jpg" class="in_pic"/>
+            </span>
+					<span class="in_back">
+                 <img src="/images/photos/8.jpg" class="in_pic"/>
+            </span>
+					<span class="in_left">
+                <img src="/images/photos/9.jpg" class="in_pic"/>
+            </span>
+					<span class="in_right">
+                <img src="/images/photos/10.jpg" class="in_pic"/>
+            </span>
+					<span class="in_top">
+                <img src="/images/photos/11.jpg" class="in_pic"/>
+            </span>
+					<span class="in_bottom">
+                <img src="/images/photos/12.jpg" class="in_pic"/>
+            </span>
+				</div>
+			</div>
+			<a class="logo-wrap" href="/"> <img src="/images/logo/logo-0.png" /></a>
 			<div class="slogan-wrap">
 				<img src="/images/logo/login_bg.png" alt="">
 			</div>
-			<div style="margin-bottom: 12px; color: red;" th:if="${param.error}"
-				th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message == 'Bad credentials' ? '用户名或密码错误' : session.SPRING_SECURITY_LAST_EXCEPTION.message}"></div>
+			<div class="errorinfo" th:if="${param.error}"
+				th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message == 'Bad credentials' ? '用户名或密码错误' : session.SPRING_SECURITY_LAST_EXCEPTION.message}">
+			</div>
 			<div class="loginBox">
-				<img class="logo-l" src="/images/logo/logo-3.jpg" />
+				<a href="/"><img class="logo-l" src="/images/logo/logo-3.jpg"/></a>
 				<div class="login-type">
-					<div captcha="" hidesns="">
-						<div class="baseLogin">
-							<form th:action="@{/login}" th:method="post">
-								<input type='hidden' name='_csrf' v-model="form._csrf" /> <input
-									type='hidden' name='return' v-model="form.returnurl" />
-								<div class="input-field">
-									<input type="text" name="username" v-model="form.username"
-										autocomplete="off" spellcheck="false" placeholder="用户名">
-								</div>
-								<div class="input-field verification">
-									<div id="embed-captcha"></div>
+					<div class="baseLogin">
+						<form th:action="@{/login}" th:method="post">
+							<input type='hidden' name='_csrf' v-model="form._csrf" /> <input
+								type='hidden' name='return' v-model="form.returnurl" />
+							<div class="input-field">
+								<input type="text" name="username" v-model="form.username"
+									   autocomplete="off" spellcheck="false" placeholder="用户名">
+							</div>
+							<div class="input-field verification">
+								<div id="embed-captcha"></div>
 
-								</div>
-								<div class="input-field phone-code">
-									<input type="password" name="password" v-model="form.password"
-										autocomplete="off" spellcheck="false" placeholder="密码">
-								</div>
-								<input type="submit" name="submitBtn" class="action-btn"
-									value="登录">
-							</form>
-						</div>
+							</div>
+							<div class="input-field phone-code">
+								<input type="password" name="password" v-model="form.password"
+									   autocomplete="off" spellcheck="false" placeholder="密码">
+							</div>
+							<input type="submit" name="submitBtn" class="action-btn"
+								   value="登录">
+						</form>
+						<ul class="sns-login">
+							<a class="mr" href="javascript:void(0);"><li class="sns wechat-login" > <span>微信</span> </li></a>
+							<a class="mr" href="javascript:void(0);"><li class="sns qq-login" ><span>QQ</span></li></a>
+							<a class="mr" href="/login/github"><li class="sns github-login" > <span>Github</span> </li></a>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<script src="/js/vegas.min.js"></script>
+	<script src="/js/loginvega.js"></script>
+	<script type="text/javascript">
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+	</script>
 	<script th:inline="javascript">
 		var vm = new Vue({
 			el : '#app',
@@ -61,7 +133,7 @@
 				}
 			},
 			methods : {
-				
+
 			}
 		})
 	</script>

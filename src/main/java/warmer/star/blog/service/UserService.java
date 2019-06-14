@@ -9,6 +9,8 @@ public interface UserService {
 
     User getUserByUsername(String username);
 
+    User getByOpenId(String openId);
+
     UserInfo getUserInfo(String username);
 
     void updateAvatar(String url, String username);

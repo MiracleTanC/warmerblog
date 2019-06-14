@@ -12,16 +12,17 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @MapperScan("warmer.star.blog.mapper")
 
-public class BlogApplication extends SpringBootServletInitializer{//war包tomcat模式
+public class Application extends SpringBootServletInitializer{//war包tomcat模式
 	public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(BlogApplication.class);  
-        application.setBannerMode(Banner.Mode.CONSOLE);
+        SpringApplication application = new SpringApplication(Application.class);
+        //application.setBannerMode(Banner.Mode.CONSOLE);
+        application.setBannerMode(Banner.Mode.OFF);
         application.run(args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(BlogApplication.class);
+		return application.sources(Application.class);
 	}
 }
 /*public class BlogApplication {//jar 直接启动模式

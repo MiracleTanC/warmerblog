@@ -1,4 +1,4 @@
-/*! @license ScrollReveal v4.0.0-beta.31
+/*! @license ScrollReveal v4.0.5
 
 	Copyright 2018 Fisssion LLC.
 
@@ -29,7 +29,7 @@ var defaults = {
 		z: 0
 	},
 	scale: 1,
-	cleanup: true,
+	cleanup: false,
 	container: document.documentElement,
 	desktop: true,
 	mobile: true,
@@ -48,15 +48,33 @@ var defaults = {
 	beforeReveal: function beforeReveal() {}
 }
 
-var noop = {
-	clean: function clean() {},
-	destroy: function destroy() {},
-	reveal: function reveal() {},
-	sync: function sync() {},
-	get noop() {
-		return true
+function failure() {
+	document.documentElement.classList.remove('sr');
+
+	return {
+		clean: function clean() {},
+		destroy: function destroy() {},
+		reveal: function reveal() {},
+		sync: function sync() {},
+		get noop() {
+			return true
+		}
 	}
 }
+
+function success() {
+	document.documentElement.classList.add('sr');
+
+	if (document.body) {
+		document.body.style.height = '100%';
+	} else {
+		document.addEventListener('DOMContentLoaded', function () {
+			document.body.style.height = '100%';
+		});
+	}
+}
+
+var mount = { success: success, failure: failure }
 
 /*! @license is-dom-node v1.0.4
 
@@ -126,7 +144,7 @@ function isDomNodeList(x) {
 				(x.length === 0 || isDomNode(x[0]))
 }
 
-/*! @license Tealight v0.3.0
+/*! @license Tealight v0.3.6
 
 	Copyright 2018 Fisssion LLC.
 
@@ -149,21 +167,21 @@ function isDomNodeList(x) {
 	SOFTWARE.
 
 */
-function index(target, context) {
-	if ( context === void 0 ) { context = document; }
+function tealight(target, context) {
+  if ( context === void 0 ) { context = document; }
 
-	if (target instanceof Array) { return target.filter(isDomNode) }
-	if (isDomNode(target)) { return [target] }
-	if (isDomNodeList(target)) { return Array.prototype.slice.call(target) }
-	if (typeof target === 'string') {
-		try {
-			var query = context.querySelectorAll(target);
-			return Array.prototype.slice.call(query)
-		} catch (err) {
-			return []
-		}
-	}
-	return []
+  if (target instanceof Array) { return target.filter(isDomNode); }
+  if (isDomNode(target)) { return [target]; }
+  if (isDomNodeList(target)) { return Array.prototype.slice.call(target); }
+  if (typeof target === "string") {
+    try {
+      var query = context.querySelectorAll(target);
+      return Array.prototype.slice.call(query);
+    } catch (err) {
+      return [];
+    }
+  }
+  return [];
 }
 
 function isObject(x) {
@@ -213,7 +231,7 @@ function rinse() {
 	 * Take stock of active element IDs.
 	 */
 	try {
-		each(index('[data-sr-id]'), function (node) {
+		each(tealight('[data-sr-id]'), function (node) {
 			var id = parseInt(node.getAttribute('data-sr-id'));
 			elementIds.active.push(id);
 		});
@@ -278,7 +296,7 @@ function clean(target) {
 
 	var dirty;
 	try {
-		each(index(target), function (node) {
+		each(tealight(target), function (node) {
 			var id = node.getAttribute('data-sr-id');
 			if (id !== null) {
 				dirty = true;
@@ -292,14 +310,14 @@ function clean(target) {
 			}
 		});
 	} catch (e) {
-		return logger.call(this, 'Clean failed.', e.stack || e.message)
+		return logger.call(this, 'Clean failed.', e.message)
 	}
 
 	if (dirty) {
 		try {
 			rinse.call(this);
 		} catch (e) {
-			return logger.call(this, 'Clean failed.', e.stack || e.message)
+			return logger.call(this, 'Clean failed.', e.message)
 		}
 	}
 }
@@ -311,7 +329,7 @@ function destroy() {
 	 * Remove all generated styles and element ids
 	 */
 	each(this.store.elements, function (element) {
-		element.node.setAttribute('style', element.styles.inline);
+		element.node.setAttribute('style', element.styles.inline.generated);
 		element.node.removeAttribute('data-sr-id');
 	});
 
@@ -336,9 +354,9 @@ function destroy() {
 	};
 }
 
-/*! @license Rematrix v0.2.2
+/*! @license Rematrix v0.3.0
 
-	Copyright 2018 Fisssion LLC.
+	Copyright 2018 Julian Lloyd.
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
@@ -448,11 +466,10 @@ function multiply(m, x) {
  * matrix passed in, but will return the identity matrix as a
  * fallback.
  *
- * **Tip:** In virtually all cases, this method is used to convert
- * a CSS matrix (retrieved as a `string` from computed styles) to
- * its equivalent array format.
+ * > **Tip:** This method is used to convert a CSS matrix (retrieved as a
+ * `string` from computed styles) to its equivalent array format.
  *
- * @param  {string} source - String containing a valid CSS `matrix` or `matrix3d` property.
+ * @param  {string} source - `matrix` or `matrix3d` CSS Transform value.
  * @return {array}
  */
 function parse(source) {
@@ -952,7 +969,7 @@ function sequence(element, pristine) {
 
 function Sequence(interval) {
 	var i = Math.abs(interval);
-	if (typeof i === 'number' && !isNaN(i)) {
+	if (!isNaN(i)) {
 		this.id = nextUniqueId();
 		this.interval = Math.max(i, 16);
 		this.members = [];
@@ -969,9 +986,9 @@ function Sequence(interval) {
 function SequenceModel(seq, prop, store) {
 	var this$1 = this;
 
-	this.head = []; // Elements before the body with a falsey prop.
-	this.body = []; // Elements with a truthy prop.
-	this.foot = []; // Elements after the body with a falsey prop.
+	this.head = [];
+	this.body = [];
+	this.foot = [];
 
 	each(seq.members, function (id, index) {
 		var element = store.elements[id];
@@ -1022,9 +1039,11 @@ function initialize() {
 		if (element.visible) {
 			styles.push(element.styles.opacity.computed);
 			styles.push(element.styles.transform.generated.final);
+			element.revealed = true;
 		} else {
 			styles.push(element.styles.opacity.generated);
 			styles.push(element.styles.transform.generated.initial);
+			element.revealed = false;
 		}
 
 		element.node.setAttribute('style', styles.filter(function (s) { return s !== ''; }).join(' '));
@@ -1094,7 +1113,7 @@ function reveal(target, options, syncing) {
 			sequence$$1 = new Sequence(interval);
 		}
 
-		var nodes = index(target);
+		var nodes = tealight(target);
 		if (!nodes.length) {
 			throw new Error('Invalid reveal target.')
 		}
@@ -1129,7 +1148,7 @@ function reveal(target, options, syncing) {
 				return elementBuffer // skip elements that are disabled
 			}
 
-			var containerNode = index(config.container)[0];
+			var containerNode = tealight(config.container)[0];
 			if (!containerNode) {
 				throw new Error('Invalid container.')
 			}
@@ -1176,7 +1195,7 @@ function reveal(target, options, syncing) {
 			element.node.setAttribute('data-sr-id', element.id);
 		});
 	} catch (e) {
-		return logger.call(this, 'Reveal failed.', e.stack || e.message)
+		return logger.call(this, 'Reveal failed.', e.message)
 	}
 
 	/**
@@ -1280,7 +1299,7 @@ var polyfill$1 = (function () {
 	}
 })();
 
-var index$1 = window.requestAnimationFrame ||
+var index = window.requestAnimationFrame ||
 	window.webkitRequestAnimationFrame ||
 	window.mozRequestAnimationFrame ||
 	polyfill$1;
@@ -1332,7 +1351,11 @@ function getScrolled(container) {
 }
 
 function isElementVisible(element) {
+	if ( element === void 0 ) element = {};
+
 	var container = this.store.containers[element.containerId];
+	if (!container) { return }
+
 	var viewFactor = Math.max(0, Math.min(1, element.config.viewFactor));
 	var viewOffset = element.config.viewOffset;
 
@@ -1368,7 +1391,7 @@ function delegate(
 	if ( event === void 0 ) event = { type: 'init' };
 	if ( elements === void 0 ) elements = this.store.elements;
 
-	index$1(function () {
+	index(function () {
 		var stale = event.type === 'init' || event.type === 'resize';
 
 		each(this$1.store.containers, function (container) {
@@ -1420,14 +1443,18 @@ function transitionSupported() {
 	return 'transition' in style || 'WebkitTransition' in style
 }
 
-var version = "4.0.0-beta.31";
+var version = "4.0.5";
 
-var _config;
-var _debug;
-var _instance;
+var boundDelegate;
+var boundDestroy;
+var boundReveal;
+var boundClean;
+var boundSync;
+var config;
+var debug;
+var instance;
 
 function ScrollReveal(options) {
-	var this$1 = this;
 	if ( options === void 0 ) options = {};
 
 	var invokedWithoutNew =
@@ -1440,56 +1467,42 @@ function ScrollReveal(options) {
 
 	if (!ScrollReveal.isSupported()) {
 		logger.call(this, 'Instantiation failed.', 'This browser is not supported.');
-		return noop
+		return mount.failure()
 	}
 
-	/**
-	 * Here we use `buffer` to validate our configuration, before
-	 * assigning the contents to the private variable `_config`.
-	 */
 	var buffer;
-	{
-		try {
-			buffer = _config
-				? deepAssign({}, _config, options)
-				: deepAssign({}, defaults, options);
-		} catch (e) {
-			logger.call(
-				this,
-				'Instantiation failed.',
-				'Invalid configuration.',
-				e.message
-			);
-			return noop
-		}
-
-		try {
-			var container = index(buffer.container)[0];
-			if (!container) {
-				throw new Error('Invalid container.')
-			}
-			if ((!buffer.mobile && isMobile()) || (!buffer.desktop && !isMobile())) {
-				throw new Error('This device is disabled.')
-			}
-		} catch (e) {
-			logger.call(this, 'Instantiation failed.', e.message);
-			return noop
-		}
-
-		_config = buffer;
+	try {
+		buffer = config
+			? deepAssign({}, config, options)
+			: deepAssign({}, defaults, options);
+	} catch (e) {
+		logger.call(this, 'Invalid configuration.', e.message);
+		return mount.failure()
 	}
 
-	/**
-	 * Modify the DOM to reflect successful instantiation.
-	 */
-	document.documentElement.classList.add('sr');
-	if (document.body) {
-		document.body.style.height = '100%';
-	} else {
-		document.addEventListener('DOMContentLoaded', function () {
-			document.body.style.height = '100%';
-		});
+	try {
+		var container = tealight(buffer.container)[0];
+		if (!container) {
+			throw new Error('Invalid container.')
+		}
+	} catch (e) {
+		logger.call(this, e.message);
+		return mount.failure()
 	}
+
+	config = buffer;
+
+	if ((!config.mobile && isMobile()) || (!config.desktop && !isMobile())) {
+		logger.call(
+			this,
+			'This device is disabled.',
+			("desktop: " + (config.desktop)),
+			("mobile: " + (config.mobile))
+		);
+		return mount.failure()
+	}
+
+	mount.success();
 
 	this.store = {
 		containers: {},
@@ -1500,28 +1513,30 @@ function ScrollReveal(options) {
 
 	this.pristine = true;
 
-	Object.defineProperty(this, 'delegate', { get: function () { return delegate.bind(this$1); } });
-	Object.defineProperty(this, 'destroy', { get: function () { return destroy.bind(this$1); } });
-	Object.defineProperty(this, 'reveal', { get: function () { return reveal.bind(this$1); } });
-	Object.defineProperty(this, 'clean', { get: function () { return clean.bind(this$1); } });
-	Object.defineProperty(this, 'sync', { get: function () { return sync.bind(this$1); } });
+	boundDelegate = boundDelegate || delegate.bind(this);
+	boundDestroy = boundDestroy || destroy.bind(this);
+	boundReveal = boundReveal || reveal.bind(this);
+	boundClean = boundClean || clean.bind(this);
+	boundSync = boundSync || sync.bind(this);
 
-	Object.defineProperty(this, 'defaults', { get: function () { return _config; } });
+	Object.defineProperty(this, 'delegate', { get: function () { return boundDelegate; } });
+	Object.defineProperty(this, 'destroy', { get: function () { return boundDestroy; } });
+	Object.defineProperty(this, 'reveal', { get: function () { return boundReveal; } });
+	Object.defineProperty(this, 'clean', { get: function () { return boundClean; } });
+	Object.defineProperty(this, 'sync', { get: function () { return boundSync; } });
+
+	Object.defineProperty(this, 'defaults', { get: function () { return config; } });
 	Object.defineProperty(this, 'version', { get: function () { return version; } });
 	Object.defineProperty(this, 'noop', { get: function () { return false; } });
 
-	return _instance ? _instance : (_instance = this)
+	return instance ? instance : (instance = this)
 }
 
-/**
- * Static members are available immediately during instantiation,
- * so debugging and browser support details are handled here.
- */
 ScrollReveal.isSupported = function () { return transformSupported() && transitionSupported(); };
 
 Object.defineProperty(ScrollReveal, 'debug', {
-	get: function () { return _debug || false; },
-	set: function (value) { return (_debug = typeof value === 'boolean' ? value : _debug); }
+	get: function () { return debug || false; },
+	set: function (value) { return (debug = typeof value === 'boolean' ? value : debug); }
 });
 
 ScrollReveal();

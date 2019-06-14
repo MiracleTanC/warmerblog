@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = BlogApplication.class)
+@SpringBootTest(classes = Application.class)
 @WebAppConfiguration
 public class TestSyncDomainNodes {
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());

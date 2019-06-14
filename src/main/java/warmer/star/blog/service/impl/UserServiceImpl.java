@@ -1,18 +1,17 @@
 package warmer.star.blog.service.impl;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import warmer.star.blog.mapper.UserMapper;
 import warmer.star.blog.model.User;
 import warmer.star.blog.model.UserInfo;
 import warmer.star.blog.service.UserService;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Service
 @Transactional
@@ -24,6 +23,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
         return userMapper.getUser(username);
+    }
+
+    @Override
+    public User getByOpenId(String openId) {
+        return userMapper.getByOpenId(openId);
     }
 
     @Override

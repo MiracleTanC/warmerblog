@@ -1,4 +1,4 @@
-package warmer.star.blog.auth;
+package warmer.star.blog.security;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;

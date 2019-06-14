@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = BlogApplication.class)
+@SpringBootTest(classes = Application.class)
 @WebAppConfiguration
 public class TestRespairArticleTags {
 

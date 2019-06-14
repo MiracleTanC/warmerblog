@@ -32,8 +32,8 @@ public class MailConfig {
 	@Value("${tcmail.mail.password}")
 	private String password;
 
-	@Value("${tcmail.mail.auth}")
-	private String auth;
+	@Value("${tcmail.mail.security}")
+	private String security;
 	@Bean(name = "JavaMailSender")
 	public JavaMailSender getSender() {
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
@@ -45,7 +45,7 @@ public class MailConfig {
 		
 		Properties props = new Properties();
         props.setProperty("mail.smtp.host", this.host);
-        props.setProperty("mail.smtp.auth", this.auth);
+        props.setProperty("mail.smtp.security", this.security);
         javax.mail.Session session = javax.mail.Session.getDefaultInstance(props,new Authenticator(){
             @Override
             protected PasswordAuthentication getPasswordAuthentication(){

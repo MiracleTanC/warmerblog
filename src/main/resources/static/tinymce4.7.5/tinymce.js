@@ -2867,13 +2867,13 @@
 			}, N = function(e, t) {
 				var n, r, o, i;
 				for (n = (e = Lo(e)).length, t = Lo(t); n--;) for (r = x[e[n]], o = 0, i = t.length; o < i; o++) r.attributes[t[o]] = {}, r.attributesOrder.push(t[o])
-			}, r = _o[p] ? _o[p] : (g = "id accesskey class dir lang style tabindex title role", h = "address blockquote div dl fieldset form h1 h2 h3 h4 h5 h6 hr menu ol p pre table ul", v = "a abbr b bdo br button cite code del dfn em embed i iframe img input ins kbd label map noscript object q s samp script select small span strong sub sup textarea u var #text #comment", "html4" !== p && (g += " contenteditable contextmenu draggable dropzone hidden spellcheck translate", h += " article aside details dialog figure header footer hgroup section nav", v += " audio canvas command datalist mark meter output picture progress time wbr video ruby bdi keygen"), "html5-strict" !== p && (g += " xml:lang", v = [v, C = "acronym applet basefont big font strike tt"].join(" "), Do(Lo(C), function(e) {
+			}, r = _o[p] ? _o[p] : (g = "id accesskey class dir lang style tabindex title role", h = "address blockquote div dl fieldset form h1 h2 h3 h4 h5 h6 hr menu ol p pre table ul", v = "a abbr b bdo br button cite code del dfn em embed i iframe bg input ins kbd label map noscript object q s samp script select small span strong sub sup textarea u var #text #comment", "html4" !== p && (g += " contenteditable contextmenu draggable dropzone hidden spellcheck translate", h += " article aside details dialog figure header footer hgroup section nav", v += " audio canvas command datalist mark meter output picture progress time wbr video ruby bdi keygen"), "html5-strict" !== p && (g += " xml:lang", v = [v, C = "acronym applet basefont big font strike tt"].join(" "), Do(Lo(C), function(e) {
 				w(e, "", v)
 			}), h = [h, b = "center dir isindex noframes"].join(" "), y = [h, v].join(" "), Do(Lo(b), function(e) {
 				w(e, "", y)
-			})), y = y || [h, v].join(" "), w("html", "manifest", "head body"), w("head", "", "base command link meta noscript script style title"), w("title hr noscript br"), w("base", "href target"), w("link", "href rel media hreflang type sizes hreflang"), w("meta", "name http-equiv content charset"), w("style", "media type scoped"), w("script", "src async defer type charset"), w("body", "onafterprint onbeforeprint onbeforeunload onblur onerror onfocus onhashchange onload onmessage onoffline ononline onpagehide onpageshow onpopstate onresize onscroll onstorage onunload", y), w("address dt dd div caption", "", y), w("h1 h2 h3 h4 h5 h6 pre p abbr code var samp kbd sub sup i b u bdo span legend em strong small s cite dfn", "", v), w("blockquote", "cite", y), w("ol", "reversed start type", "li"), w("ul", "", "li"), w("li", "value", y), w("dl", "", "dt dd"), w("a", "href target rel media hreflang type", v), w("q", "cite", v), w("ins del", "cite datetime", y), w("img", "src sizes srcset alt usemap ismap width height"), w("iframe", "src name width height", y), w("embed", "src type width height"), w("object", "data type typemustmatch name usemap form width height", [y, "param"].join(" ")), w("param", "name value"), w("map", "name", [y, "area"].join(" ")), w("area", "alt coords shape href target rel media hreflang type"), w("table", "border", "caption colgroup thead tfoot tbody tr" + ("html4" === p ? " col" : "")), w("colgroup", "span", "col"), w("col", "span"), w("tbody thead tfoot", "", "tr"), w("tr", "", "td th"), w("td", "colspan rowspan headers", y), w("th", "colspan rowspan headers scope abbr", y), w("form", "accept-charset action autocomplete enctype method name novalidate target", y), w("fieldset", "disabled form name", [y, "legend"].join(" ")), w("label", "form for", v), w("input", "accept alt autocomplete checked dirname disabled form formaction formenctype formmethod formnovalidate formtarget height list max maxlength min multiple name pattern readonly required size src step type value width"), w("button", "disabled form formaction formenctype formmethod formnovalidate formtarget name type value", "html4" === p ? y : v), w("select", "disabled form multiple name required size", "option optgroup"), w("optgroup", "disabled label", "option"), w("option", "disabled label selected value"), w("textarea", "cols dirname disabled form maxlength name readonly required rows wrap"), w("menu", "type label", [y, "li"].join(" ")), w("noscript", "", y), "html4" !== p && (w("wbr"), w("ruby", "", [v, "rt rp"].join(" ")), w("figcaption", "", y), w("mark rt rp summary bdi", "", v), w("canvas", "width height", y), w("video", "src crossorigin poster preload autoplay mediagroup loop muted controls width height buffered", [y, "track source"].join(" ")), w("audio", "src crossorigin preload autoplay mediagroup loop muted controls buffered volume", [y, "track source"].join(" ")), w("picture", "", "img source"), w("source", "src srcset type media sizes"), w("track", "kind src srclang label default"), w("datalist", "", [v, "option"].join(" ")), w("article section nav aside header footer", "", y), w("hgroup", "", "h1 h2 h3 h4 h5 h6"), w("figure", "", [y, "figcaption"].join(" ")), w("time", "datetime", v), w("dialog", "open", y), w("command", "type label icon disabled checked radiogroup command"), w("output", "for form name", v), w("progress", "value max", v), w("meter", "value min max low high optimum", v), w("details", "open", [y, "summary"].join(" ")), w("keygen", "autofocus challenge disabled form keytype name")), "html5-strict" !== p && (N("script", "language xml:space"), N("style", "xml:space"), N("object", "declare classid code codebase codetype archive standby align border hspace vspace"), N("embed", "align name hspace vspace"), N("param", "valuetype type"), N("a", "charset name rev shape coords"), N("br", "clear"), N("applet", "codebase archive code object alt name width height align hspace vspace"), N("img", "name longdesc align border hspace vspace"), N("iframe", "longdesc frameborder marginwidth marginheight scrolling align"), N("font basefont", "size color face"), N("input", "usemap align"), N("select", "onchange"), N("textarea"), N("h1 h2 h3 h4 h5 h6 div p legend caption", "align"), N("ul", "type compact"), N("li", "type"), N("ol dl menu dir", "compact"), N("pre", "width xml:space"), N("hr", "align noshade size width"), N("isindex", "prompt"), N("table", "summary width frame rules cellspacing cellpadding align bgcolor"), N("col", "width align char charoff valign"), N("colgroup", "width align char charoff valign"), N("thead", "align char charoff valign"), N("tr", "align char charoff valign bgcolor"), N("th", "axis align char charoff valign nowrap bgcolor width height"), N("form", "accept"), N("td", "abbr axis scope align char charoff valign nowrap bgcolor width height"), N("tfoot", "align char charoff valign"), N("tbody", "align char charoff valign"), N("area", "nohref"), N("body", "background bgcolor text link vlink alink")), "html4" !== p && (N("input button select textarea", "autofocus"), N("input textarea", "placeholder"), N("a", "download"), N("link script img", "crossorigin"), N("iframe", "sandbox seamless allowfullscreen")), Do(Lo("a form meter progress dfn"), function(e) {
+			})), y = y || [h, v].join(" "), w("html", "manifest", "head body"), w("head", "", "base command link meta noscript script style title"), w("title hr noscript br"), w("base", "href target"), w("link", "href rel media hreflang type sizes hreflang"), w("meta", "name http-equiv content charset"), w("style", "media type scoped"), w("script", "src async defer type charset"), w("body", "onafterprint onbeforeprint onbeforeunload onblur onerror onfocus onhashchange onload onmessage onoffline ononline onpagehide onpageshow onpopstate onresize onscroll onstorage onunload", y), w("address dt dd div caption", "", y), w("h1 h2 h3 h4 h5 h6 pre p abbr code var samp kbd sub sup i b u bdo span legend em strong small s cite dfn", "", v), w("blockquote", "cite", y), w("ol", "reversed start type", "li"), w("ul", "", "li"), w("li", "value", y), w("dl", "", "dt dd"), w("a", "href target rel media hreflang type", v), w("q", "cite", v), w("ins del", "cite datetime", y), w("img", "src sizes srcset alt usemap ismap width height"), w("iframe", "src name width height", y), w("embed", "src type width height"), w("object", "data type typemustmatch name usemap form width height", [y, "param"].join(" ")), w("param", "name value"), w("map", "name", [y, "area"].join(" ")), w("area", "alt coords shape href target rel media hreflang type"), w("table", "border", "caption colgroup thead tfoot tbody tr" + ("html4" === p ? " col" : "")), w("colgroup", "span", "col"), w("col", "span"), w("tbody thead tfoot", "", "tr"), w("tr", "", "td th"), w("td", "colspan rowspan headers", y), w("th", "colspan rowspan headers scope abbr", y), w("form", "accept-charset action autocomplete enctype method name novalidate target", y), w("fieldset", "disabled form name", [y, "legend"].join(" ")), w("label", "form for", v), w("input", "accept alt autocomplete checked dirname disabled form formaction formenctype formmethod formnovalidate formtarget height list max maxlength min multiple name pattern readonly required size src step type value width"), w("button", "disabled form formaction formenctype formmethod formnovalidate formtarget name type value", "html4" === p ? y : v), w("select", "disabled form multiple name required size", "option optgroup"), w("optgroup", "disabled label", "option"), w("option", "disabled label selected value"), w("textarea", "cols dirname disabled form maxlength name readonly required rows wrap"), w("menu", "type label", [y, "li"].join(" ")), w("noscript", "", y), "html4" !== p && (w("wbr"), w("ruby", "", [v, "rt rp"].join(" ")), w("figcaption", "", y), w("mark rt rp summary bdi", "", v), w("canvas", "width height", y), w("video", "src crossorigin poster preload autoplay mediagroup loop muted controls width height buffered", [y, "track source"].join(" ")), w("audio", "src crossorigin preload autoplay mediagroup loop muted controls buffered volume", [y, "track source"].join(" ")), w("picture", "", "bg source"), w("source", "src srcset type media sizes"), w("track", "kind src srclang label default"), w("datalist", "", [v, "option"].join(" ")), w("article section nav aside header footer", "", y), w("hgroup", "", "h1 h2 h3 h4 h5 h6"), w("figure", "", [y, "figcaption"].join(" ")), w("time", "datetime", v), w("dialog", "open", y), w("command", "type label icon disabled checked radiogroup command"), w("output", "for form name", v), w("progress", "value max", v), w("meter", "value min max low high optimum", v), w("details", "open", [y, "summary"].join(" ")), w("keygen", "autofocus challenge disabled form keytype name")), "html5-strict" !== p && (N("script", "language xml:space"), N("style", "xml:space"), N("object", "declare classid code codebase codetype archive standby align border hspace vspace"), N("embed", "align name hspace vspace"), N("param", "valuetype type"), N("a", "charset name rev shape coords"), N("br", "clear"), N("applet", "codebase archive code object alt name width height align hspace vspace"), N("img", "name longdesc align border hspace vspace"), N("iframe", "longdesc frameborder marginwidth marginheight scrolling align"), N("font basefont", "size color face"), N("input", "usemap align"), N("select", "onchange"), N("textarea"), N("h1 h2 h3 h4 h5 h6 div p legend caption", "align"), N("ul", "type compact"), N("li", "type"), N("ol dl menu dir", "compact"), N("pre", "width xml:space"), N("hr", "align noshade size width"), N("isindex", "prompt"), N("table", "summary width frame rules cellspacing cellpadding align bgcolor"), N("col", "width align char charoff valign"), N("colgroup", "width align char charoff valign"), N("thead", "align char charoff valign"), N("tr", "align char charoff valign bgcolor"), N("th", "axis align char charoff valign nowrap bgcolor width height"), N("form", "accept"), N("td", "abbr axis scope align char charoff valign nowrap bgcolor width height"), N("tfoot", "align char charoff valign"), N("tbody", "align char charoff valign"), N("area", "nohref"), N("body", "background bgcolor text link vlink alink")), "html4" !== p && (N("input button select textarea", "autofocus"), N("input textarea", "placeholder"), N("a", "download"), N("link script bg", "crossorigin"), N("iframe", "sandbox seamless allowfullscreen")), Do(Lo("a form meter progress dfn"), function(e) {
 				x[e] && delete x[e].children[e]
-			}), delete x.caption.children.table, delete x.script, _o[p] = x, x), !1 === e.verify_html && (e.valid_elements = "*[*]"), t = Mo(e.valid_styles), n = Mo(e.invalid_styles, "map"), u = Mo(e.valid_classes, "map"), o = B("whitespace_elements", "pre script noscript style textarea video audio iframe object code"), i = B("self_closing_elements", "colgroup dd dt li option p td tfoot th thead tr"), a = B("short_ended_elements", "area base basefont br col frame hr img input isindex link meta param embed source wbr track"), s = B("boolean_attributes", "checked compact declare defer disabled ismap multiple nohref noresize noshade nowrap readonly selected autoplay loop controls"), l = B("non_empty_elements", "td th iframe video audio object script pre code", a), f = B("move_caret_before_on_enter_elements", "table", l), d = B("text_block_elements", "h1 h2 h3 h4 h5 h6 p div address pre form blockquote center dir fieldset header footer article section hgroup aside nav figure"), c = B("block_elements", "hr table tbody thead tfoot th tr td li ol ul caption dl dt dd noscript menu isindex option datalist select optgroup figcaption", d), m = B("text_inline_elements", "span strong b em i font strike u var cite dfn code mark q sup sub samp"), Do((e.special || "script noscript noframes noembed title style textarea xmp").split(" "), function(e) {
+			}), delete x.caption.children.table, delete x.script, _o[p] = x, x), !1 === e.verify_html && (e.valid_elements = "*[*]"), t = Mo(e.valid_styles), n = Mo(e.invalid_styles, "map"), u = Mo(e.valid_classes, "map"), o = B("whitespace_elements", "pre script noscript style textarea video audio iframe object code"), i = B("self_closing_elements", "colgroup dd dt li option p td tfoot th thead tr"), a = B("short_ended_elements", "area base basefont br col frame hr bg input isindex link meta param embed source wbr track"), s = B("boolean_attributes", "checked compact declare defer disabled ismap multiple nohref noresize noshade nowrap readonly selected autoplay loop controls"), l = B("non_empty_elements", "td th iframe video audio object script pre code", a), f = B("move_caret_before_on_enter_elements", "table", l), d = B("text_block_elements", "h1 h2 h3 h4 h5 h6 p div address pre form blockquote center dir fieldset header footer article section hgroup aside nav figure"), c = B("block_elements", "hr table tbody thead tfoot th tr td li ol ul caption dl dt dd noscript menu isindex option datalist select optgroup figcaption", d), m = B("text_inline_elements", "span strong b em i font strike u var cite dfn code mark q sup sub samp"), Do((e.special || "script noscript noframes noembed title style textarea xmp").split(" "), function(e) {
 				_[e] = new RegExp("</" + e + "[^>]*>", "gi")
 			});
 			var R = function(e) {
@@ -3801,7 +3801,7 @@
 		hi = vo.isBr,
 		vi = vo.isText,
 		yi = vo.matchNodeNames("script style textarea"),
-		bi = vo.matchNodeNames("img input textarea hr iframe video audio object"),
+		bi = vo.matchNodeNames("bg input textarea hr iframe video audio object"),
 		Ci = vo.matchNodeNames("table"),
 		xi = mi.isCaretContainer,
 		wi = function(e) {
@@ -8767,7 +8767,7 @@
 					preview: !1,
 					defaultBlock: "div"
 				}, {
-					selector: "img,table",
+					selector: "bg,table",
 					collapsed: !1,
 					styles: {
 						"float": "left"
@@ -8821,7 +8821,7 @@
 					preview: "font-family font-size",
 					defaultBlock: "div"
 				}, {
-					selector: "img,table",
+					selector: "bg,table",
 					collapsed: !1,
 					styles: {
 						"float": "right"
@@ -9614,7 +9614,7 @@
 				sw: [0, 1, -1, 1]
 			};
 			var k = ".mce-content-body";
-			t.contentStyles.push(k + " div.mce-resizehandle {position: absolute;border: 1px solid black;box-sizing: content-box;background: #FFF;width: 7px;height: 7px;z-index: 10000}" + k + " .mce-resizehandle:hover {background: #000}" + k + " img[data-mce-selected]," + k + " hr[data-mce-selected] {outline: 1px solid black;resize: none}" + k + " .mce-clonedresizable {position: absolute;" + (me.gecko ? "" : "outline: 1px dashed black;") + "opacity: .5;filter: alpha(opacity=50);z-index: 10000}" + k + " .mce-resize-helper {background: #555;background: rgba(0,0,0,0.75);border-radius: 3px;border: 1px;color: white;display: none;font-family: sans-serif;font-size: 12px;white-space: nowrap;line-height: 14px;margin: 5px 10px;padding: 5px;position: absolute;z-index: 10001}");
+			t.contentStyles.push(k + " div.mce-resizehandle {position: absolute;border: 1px solid black;box-sizing: content-box;background: #FFF;width: 7px;height: 7px;z-index: 10000}" + k + " .mce-resizehandle:hover {background: #000}" + k + " bg[data-mce-selected]," + k + " hr[data-mce-selected] {outline: 1px solid black;resize: none}" + k + " .mce-clonedresizable {position: absolute;" + (me.gecko ? "" : "outline: 1px dashed black;") + "opacity: .5;filter: alpha(opacity=50);z-index: 10000}" + k + " .mce-resize-helper {background: #555;background: rgba(0,0,0,0.75);border-radius: 3px;border: 1px;color: white;display: none;font-family: sans-serif;font-size: 12px;white-space: nowrap;line-height: 14px;margin: 5px 10px;padding: 5px;position: absolute;z-index: 10001}");
 			var T = function(e) {
 					return e && ("IMG" === e.nodeName || t.dom.is(e, "figure.image"))
 				},
@@ -9627,7 +9627,7 @@
 				},
 				B = function(e) {
 					var n = t.settings.object_resizing;
-					return !1 !== n && !me.iOS && ("string" != typeof n && (n = "table,img,figure.image,div"), "false" !== e.getAttribute("data-mce-resize") && e !== t.getBody() && _r.is(Hn.fromDom(e), n))
+					return !1 !== n && !me.iOS && ("string" != typeof n && (n = "table,bg,figure.image,div"), "false" !== e.getAttribute("data-mce-resize") && e !== t.getBody() && _r.is(Hn.fromDom(e), n))
 				},
 				R = function(e) {
 					var i, C, x, w;
@@ -9699,9 +9699,9 @@
 								if (e === t) return !0
 							} while (e = e.parentNode)
 						};
-					p || t.removed || (C(b.select("img[data-mce-selected],hr[data-mce-selected]"), function(e) {
+					p || t.removed || (C(b.select("bg[data-mce-selected],hr[data-mce-selected]"), function(e) {
 						e.removeAttribute("data-mce-selected")
-					}), r = "mousedown" === n.type ? n.target : e.getNode(), o(r = b.$(r).closest("table,img,figure.image,hr")[0], S) && (F(), o(e.getStart(!0), r) && o(e.getEnd(!0), r)) ? O(r) : P())
+					}), r = "mousedown" === n.type ? n.target : e.getNode(), o(r = b.$(r).closest("table,bg,figure.image,hr")[0], S) && (F(), o(e.getStart(!0), r) && o(e.getEnd(!0), r)) ? O(r) : P())
 				},
 				L = function(e) {
 					return _h(function(e, t) {
@@ -10938,7 +10938,7 @@
 						})
 					}
 				})
-			}), e.contentStyles.push("img:-moz-broken {-moz-force-broken-image-icon:1;min-width:24px;min-height:24px}"), me.mac && e.on("keydown", function(t) {
+			}), e.contentStyles.push("bg:-moz-broken {-moz-force-broken-image-icon:1;min-width:24px;min-height:24px}"), me.mac && e.on("keydown", function(t) {
 				!Mp.metaKeyPressed(t) || t.shiftKey || 37 !== t.keyCode && 39 !== t.keyCode || (t.preventDefault(), e.selection.getSel().modify("move", 37 === t.keyCode ? "backward" : "forward", "lineboundary"))
 			}), b()), {
 				refreshContentEditable: function() {},
@@ -11690,7 +11690,7 @@
 		},
 		init: function(e) {
 			var t, n, r = this;
-			n = Ot.makeMap("area base basefont br col frame hr img input isindex link meta param embed source wbr track colgroup option tbody tfoot thead tr script noscript style textarea video audio iframe object menu", " ");
+			n = Ot.makeMap("area base basefont br col frame hr bg input isindex link meta param embed source wbr track colgroup option tbody tfoot thead tr script noscript style textarea video audio iframe object menu", " ");
 			var o = function(e) {
 					var t = e.id;
 					return t || (t = (t = e.name) && !Rb.get(t) ? e.name : Rb.uniqueId(), e.setAttribute("id", t)), t
@@ -20923,7 +20923,7 @@ function() {
 			return !!I(t) && (a = t, i = n, (r = e).undoManager.extra(function() {
 				i(r, a)
 			}, function() {
-				r.insertContent('<img src="' + a + '">')
+				r.insertContent('<bg src="' + a + '">')
 			}), !0);
 			var r, a, i
 		},
@@ -21053,8 +21053,8 @@ function() {
 						h = void 0;
 					(g = v.findFirst(function(e) {
 						return e.base64() === f
-					})) ? h = g : (h = v.create(d, r, f, m), v.add(h)), b('<img src="' + h.blobUri() + '">', !1)
-				} else b('<img src="' + c + '">', !1)
+					})) ? h = g : (h = v.create(d, r, f, m), v.add(h)), b('<bg src="' + h.blobUri() + '">', !1)
+				} else b('<bg src="' + c + '">', !1)
 			}
 			function D(t, n) {
 				var r = t.clipboardData || t.dataTransfer;
@@ -21335,7 +21335,7 @@ function() {
 			return "mce-pagebreak"
 		},
 		c = function() {
-			return '<img src="' + a.transparentSrc + '" class="mce-pagebreak" data-mce-resize="false" data-mce-placeholder />'
+			return '<bg src="' + a.transparentSrc + '" class="mce-pagebreak" data-mce-resize="false" data-mce-placeholder />'
 		},
 		o = function(e) {
 			var a = n(e),
@@ -21751,7 +21751,7 @@ function() {
 				v = o(e);
 			return n.width = n.width || 300, n.height = n.height || 150, r.each(n, function(t, r) {
 				n[r] = e.dom.encode(t)
-			}), "iframe" === n.type ? (g = (f = n).allowFullscreen ? ' allowFullscreen="1"' : "", '<iframe src="' + f.source1 + '" width="' + f.width + '" height="' + f.height + '"' + g + "></iframe>") : "application/x-shockwave-flash" === n.source1mime ? (h = '<object data="' + (d = n).source1 + '" width="' + d.width + '" height="' + d.height + '" type="application/x-shockwave-flash">', d.poster && (h += '<img src="' + d.poster + '" width="' + d.width + '" height="' + d.height + '" />'), h += "</object>") : -1 !== n.source1mime.indexOf("audio") ? (l = n, (m = w) ? m(l) : '<audio controls="controls" src="' + l.source1 + '">' + (l.source2 ? '\n<source src="' + l.source2 + '"' + (l.source2mime ? ' type="' + l.source2mime + '"' : "") + " />\n" : "") + "</audio>") : "script" === n.type ? '<script src="' + n.source1 + '"><\/script>' : (s = n, (u = v) ? u(s) : '<video width="' + s.width + '" height="' + s.height + '"' + (s.poster ? ' poster="' + s.poster + '"' : "") + ' controls="controls">\n<source src="' + s.source1 + '"' + (s.source1mime ? ' type="' + s.source1mime + '"' : "") + " />\n" + (s.source2 ? '<source src="' + s.source2 + '"' + (s.source2mime ? ' type="' + s.source2mime + '"' : "") + " />\n" : "") + "</video>")
+			}), "iframe" === n.type ? (g = (f = n).allowFullscreen ? ' allowFullscreen="1"' : "", '<iframe src="' + f.source1 + '" width="' + f.width + '" height="' + f.height + '"' + g + "></iframe>") : "application/x-shockwave-flash" === n.source1mime ? (h = '<object data="' + (d = n).source1 + '" width="' + d.width + '" height="' + d.height + '" type="application/x-shockwave-flash">', d.poster && (h += '<bg src="' + d.poster + '" width="' + d.width + '" height="' + d.height + '" />'), h += "</object>") : -1 !== n.source1mime.indexOf("audio") ? (l = n, (m = w) ? m(l) : '<audio controls="controls" src="' + l.source1 + '">' + (l.source2 ? '\n<source src="' + l.source2 + '"' + (l.source2mime ? ' type="' + l.source2mime + '"' : "") + " />\n" : "") + "</audio>") : "script" === n.type ? '<script src="' + n.source1 + '"><\/script>' : (s = n, (u = v) ? u(s) : '<video width="' + s.width + '" height="' + s.height + '"' + (s.poster ? ' poster="' + s.poster + '"' : "") + ' controls="controls">\n<source src="' + s.source1 + '"' + (s.source1mime ? ' type="' + s.source1mime + '"' : "") + " />\n" + (s.source2 ? '<source src="' + s.source2 + '"' + (s.source2mime ? ' type="' + s.source2mime + '"' : "") + " />\n" : "") + "</video>")
 		},
 		O = {},
 		P = function(e) {
@@ -21862,9 +21862,9 @@ function() {
 			}
 		},
 		V = function(e, t) {
-			var r = e.dom.select("img[data-mce-object]");
+			var r = e.dom.select("bg[data-mce-object]");
 			e.insertContent(t), function(e, t) {
-				var r, i, a = e.dom.select("img[data-mce-object]");
+				var r, i, a = e.dom.select("bg[data-mce-object]");
 				for (r = 0; r < t.length; r++) for (i = a.length - 1; i >= 0; i--) t[r] === a[i] && a.splice(i, 1);
 				e.selection.select(a[0])
 			}(e, r), e.nodeChanged()
@@ -22110,7 +22110,7 @@ function() {
 			e.addButton("media", {
 				tooltip: "Insert/edit media",
 				cmd: "mceMedia",
-				stateSelector: ["img[data-mce-object]", "span[data-mce-object]", "div[data-ephox-embed-iri]"]
+				stateSelector: ["bg[data-mce-object]", "span[data-mce-object]", "div[data-ephox-embed-iri]"]
 			}), e.addMenuItem("media", {
 				icon: "media",
 				text: "Media",
@@ -22996,7 +22996,7 @@ function() {
 		n = function(e) {
 			e.settings.inline_styles = !1, e.on("init", function() {
 				var n, i, a, o;
-				n = e, i = "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img", a = t.explode(n.settings.font_size_style_values), o = n.schema, n.formatter.register({
+				n = e, i = "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,bg", a = t.explode(n.settings.font_size_style_values), o = n.schema, n.formatter.register({
 					alignleft: {
 						selector: i,
 						attributes: {
@@ -23346,7 +23346,7 @@ function() {
 			if (r) {
 				var o = r[1],
 					s = r[2].substr(1).split(".").join(" "),
-					u = i.makeMap("a,img");
+					u = i.makeMap("a,bg");
 				return r[1] ? (n = {
 					title: t
 				}, e.schema.getTextBlockElements()[o] ? n.block = o : e.schema.getBlockElements()[o] || u[o.toLowerCase()] ? n.selector = o : n.inline = o) : r[2] && (n = {
@@ -25242,7 +25242,7 @@ function() {
 				}
 			},
 			isEditableImage: function(t, e) {
-				return t.dom.is(e, "img:not([data-mce-object],[data-mce-placeholder])") && (Wt(t, e) || qt(t, e) || t.settings.imagetools_proxy)
+				return t.dom.is(e, "bg:not([data-mce-object],[data-mce-placeholder])") && (Wt(t, e) || qt(t, e) || t.settings.imagetools_proxy)
 			},
 			cancelTimedUpload: Xt
 		},
@@ -25837,7 +25837,7 @@ function() {
 				icon: "image",
 				tooltip: "Insert/edit image",
 				onclick: N(e).open,
-				stateSelector: "img:not([data-mce-object],[data-mce-placeholder]),figure.image"
+				stateSelector: "bg:not([data-mce-object],[data-mce-placeholder]),figure.image"
 			}), e.addMenuItem("image", {
 				icon: "image",
 				text: "Image",
@@ -26220,8 +26220,8 @@ function() {
 			var o;
 			return o = '<table role="list" class="mce-grid">', e.each(i, function(i) {
 				o += "<tr>", e.each(i, function(e) {
-					var i = t + "/img/smiley-" + e + ".gif";
-					o += '<td><a href="#" data-mce-url="' + i + '" data-mce-alt="' + e + '" tabindex="-1" role="option" aria-label="' + e + '"><img src="' + i + '" style="width: 18px; height: 18px" role="presentation" /></a></td>'
+					var i = t + "/bg/smiley-" + e + ".gif";
+					o += '<td><a href="#" data-mce-url="' + i + '" data-mce-alt="' + e + '" tabindex="-1" role="option" aria-label="' + e + '"><bg src="' + i + '" style="width: 18px; height: 18px" role="presentation" /></a></td>'
 				}), o += "</tr>"
 			}), o += "</table>"
 		},
@@ -27638,14 +27638,14 @@ function() {
 			var e = function(t, e) {
 					o = o.replace(t, e)
 				};
-			return e(/<a.*?href=\"(.*?)\".*?>(.*?)<\/a>/gi, "[url=$1]$2[/url]"), e(/<font.*?color=\"(.*?)\".*?class=\"codeStyle\".*?>(.*?)<\/font>/gi, "[code][color=$1]$2[/color][/code]"), e(/<font.*?color=\"(.*?)\".*?class=\"quoteStyle\".*?>(.*?)<\/font>/gi, "[quote][color=$1]$2[/color][/quote]"), e(/<font.*?class=\"codeStyle\".*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[code][color=$1]$2[/color][/code]"), e(/<font.*?class=\"quoteStyle\".*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[quote][color=$1]$2[/color][/quote]"), e(/<span style=\"color: ?(.*?);\">(.*?)<\/span>/gi, "[color=$1]$2[/color]"), e(/<font.*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[color=$1]$2[/color]"), e(/<span style=\"font-size:(.*?);\">(.*?)<\/span>/gi, "[size=$1]$2[/size]"), e(/<font>(.*?)<\/font>/gi, "$1"), e(/<img.*?src=\"(.*?)\".*?\/>/gi, "[img]$1[/img]"), e(/<span class=\"codeStyle\">(.*?)<\/span>/gi, "[code]$1[/code]"), e(/<span class=\"quoteStyle\">(.*?)<\/span>/gi, "[quote]$1[/quote]"), e(/<strong class=\"codeStyle\">(.*?)<\/strong>/gi, "[code][b]$1[/b][/code]"), e(/<strong class=\"quoteStyle\">(.*?)<\/strong>/gi, "[quote][b]$1[/b][/quote]"), e(/<em class=\"codeStyle\">(.*?)<\/em>/gi, "[code][i]$1[/i][/code]"), e(/<em class=\"quoteStyle\">(.*?)<\/em>/gi, "[quote][i]$1[/i][/quote]"), e(/<u class=\"codeStyle\">(.*?)<\/u>/gi, "[code][u]$1[/u][/code]"), e(/<u class=\"quoteStyle\">(.*?)<\/u>/gi, "[quote][u]$1[/u][/quote]"), e(/<\/(strong|b)>/gi, "[/b]"), e(/<(strong|b)>/gi, "[b]"), e(/<\/(em|i)>/gi, "[/i]"), e(/<(em|i)>/gi, "[i]"), e(/<\/u>/gi, "[/u]"), e(/<span style=\"text-decoration: ?underline;\">(.*?)<\/span>/gi, "[u]$1[/u]"), e(/<u>/gi, "[u]"), e(/<blockquote[^>]*>/gi, "[quote]"), e(/<\/blockquote>/gi, "[/quote]"), e(/<br \/>/gi, "\n"), e(/<br\/>/gi, "\n"), e(/<br>/gi, "\n"), e(/<p>/gi, ""), e(/<\/p>/gi, "\n"), e(/&nbsp;|\u00a0/gi, " "), e(/&quot;/gi, '"'), e(/&lt;/gi, "<"), e(/&gt;/gi, ">"), e(/&amp;/gi, "&"), o
+			return e(/<a.*?href=\"(.*?)\".*?>(.*?)<\/a>/gi, "[url=$1]$2[/url]"), e(/<font.*?color=\"(.*?)\".*?class=\"codeStyle\".*?>(.*?)<\/font>/gi, "[code][color=$1]$2[/color][/code]"), e(/<font.*?color=\"(.*?)\".*?class=\"quoteStyle\".*?>(.*?)<\/font>/gi, "[quote][color=$1]$2[/color][/quote]"), e(/<font.*?class=\"codeStyle\".*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[code][color=$1]$2[/color][/code]"), e(/<font.*?class=\"quoteStyle\".*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[quote][color=$1]$2[/color][/quote]"), e(/<span style=\"color: ?(.*?);\">(.*?)<\/span>/gi, "[color=$1]$2[/color]"), e(/<font.*?color=\"(.*?)\".*?>(.*?)<\/font>/gi, "[color=$1]$2[/color]"), e(/<span style=\"font-size:(.*?);\">(.*?)<\/span>/gi, "[size=$1]$2[/size]"), e(/<font>(.*?)<\/font>/gi, "$1"), e(/<img.*?src=\"(.*?)\".*?\/>/gi, "[bg]$1[/bg]"), e(/<span class=\"codeStyle\">(.*?)<\/span>/gi, "[code]$1[/code]"), e(/<span class=\"quoteStyle\">(.*?)<\/span>/gi, "[quote]$1[/quote]"), e(/<strong class=\"codeStyle\">(.*?)<\/strong>/gi, "[code][b]$1[/b][/code]"), e(/<strong class=\"quoteStyle\">(.*?)<\/strong>/gi, "[quote][b]$1[/b][/quote]"), e(/<em class=\"codeStyle\">(.*?)<\/em>/gi, "[code][i]$1[/i][/code]"), e(/<em class=\"quoteStyle\">(.*?)<\/em>/gi, "[quote][i]$1[/i][/quote]"), e(/<u class=\"codeStyle\">(.*?)<\/u>/gi, "[code][u]$1[/u][/code]"), e(/<u class=\"quoteStyle\">(.*?)<\/u>/gi, "[quote][u]$1[/u][/quote]"), e(/<\/(strong|b)>/gi, "[/b]"), e(/<(strong|b)>/gi, "[b]"), e(/<\/(em|i)>/gi, "[/i]"), e(/<(em|i)>/gi, "[i]"), e(/<\/u>/gi, "[/u]"), e(/<span style=\"text-decoration: ?underline;\">(.*?)<\/span>/gi, "[u]$1[/u]"), e(/<u>/gi, "[u]"), e(/<blockquote[^>]*>/gi, "[quote]"), e(/<\/blockquote>/gi, "[/quote]"), e(/<br \/>/gi, "\n"), e(/<br\/>/gi, "\n"), e(/<br>/gi, "\n"), e(/<p>/gi, ""), e(/<\/p>/gi, "\n"), e(/&nbsp;|\u00a0/gi, " "), e(/&quot;/gi, '"'), e(/&lt;/gi, "<"), e(/&gt;/gi, ">"), e(/&amp;/gi, "&"), o
 		},
 		i = function(o) {
 			o = t.trim(o);
 			var e = function(t, e) {
 					o = o.replace(t, e)
 				};
-			return e(/\n/gi, "<br />"), e(/\[b\]/gi, "<strong>"), e(/\[\/b\]/gi, "</strong>"), e(/\[i\]/gi, "<em>"), e(/\[\/i\]/gi, "</em>"), e(/\[u\]/gi, "<u>"), e(/\[\/u\]/gi, "</u>"), e(/\[url=([^\]]+)\](.*?)\[\/url\]/gi, '<a href="$1">$2</a>'), e(/\[url\](.*?)\[\/url\]/gi, '<a href="$1">$1</a>'), e(/\[img\](.*?)\[\/img\]/gi, '<img src="$1" />'), e(/\[color=(.*?)\](.*?)\[\/color\]/gi, '<font color="$1">$2</font>'), e(/\[code\](.*?)\[\/code\]/gi, '<span class="codeStyle">$1</span>&nbsp;'), e(/\[quote.*?\](.*?)\[\/quote\]/gi, '<span class="quoteStyle">$1</span>&nbsp;'), o
+			return e(/\n/gi, "<br />"), e(/\[b\]/gi, "<strong>"), e(/\[\/b\]/gi, "</strong>"), e(/\[i\]/gi, "<em>"), e(/\[\/i\]/gi, "</em>"), e(/\[u\]/gi, "<u>"), e(/\[\/u\]/gi, "</u>"), e(/\[url=([^\]]+)\](.*?)\[\/url\]/gi, '<a href="$1">$2</a>'), e(/\[url\](.*?)\[\/url\]/gi, '<a href="$1">$1</a>'), e(/\[img\](.*?)\[\/img\]/gi, '<bg src="$1" />'), e(/\[color=(.*?)\](.*?)\[\/color\]/gi, '<font color="$1">$2</font>'), e(/\[code\](.*?)\[\/code\]/gi, '<span class="codeStyle">$1</span>&nbsp;'), e(/\[quote.*?\](.*?)\[\/quote\]/gi, '<span class="quoteStyle">$1</span>&nbsp;'), o
 		};
 	o.add("bbcode", function() {
 		return {

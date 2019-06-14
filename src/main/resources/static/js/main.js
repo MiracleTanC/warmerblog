@@ -2,7 +2,7 @@
     var toTop = ($('#sidebar').height() - $(window).height()) + 60;
     // Caption
     $('.article-entry').each(function(i) {
-        $(this).find('img').each(function() {
+        $(this).find('bg').each(function() {
             if (this.alt) {
                 $(this).after('<span class="caption">' + this.alt + '</span>');
             }

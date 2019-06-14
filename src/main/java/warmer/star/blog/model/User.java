@@ -1,19 +1,11 @@
 package warmer.star.blog.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 
 public class User implements Serializable {
-	    /**  
-	* @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)  
-	*/  
+
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
@@ -21,6 +13,10 @@ public class User implements Serializable {
     private String username;    //用户名
 
     private String password;    //密码
+
+    private String openid;
+
+    private Integer sourcetype;
 
     private boolean expired; //过期
 
@@ -108,17 +104,19 @@ public class User implements Serializable {
         return enabled;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", expired=" + expired +
-                ", locked=" + locked +
-                ", credential=" + credential +
-                ", enabled=" + enabled +
-                ", createTime=" + createTime +
-                '}';
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public Integer getSourcetype() {
+        return sourcetype;
+    }
+
+    public void setSourcetype(Integer sourcetype) {
+        this.sourcetype = sourcetype;
     }
 }

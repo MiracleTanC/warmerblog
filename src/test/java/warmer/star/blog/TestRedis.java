@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = BlogApplication.class)
+@SpringBootTest(classes = Application.class)
 @WebAppConfiguration
 public class TestRedis {
 
