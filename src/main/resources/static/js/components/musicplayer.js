@@ -20,6 +20,18 @@ Vue.component('warmer-musicplayer-view', {
     filters: {
 
     },
+    watch:{
+        musicList:{
+            handler:function(val,oldval){
+                if(val.length>0){
+                    //自动播放第一首
+                    var firstMusic=val[0];
+                    this.playMusic(firstMusic,0);
+                }
+            },
+            deep:true//对象内部的属性监听
+        }
+    },
     computed: {
 
     },
@@ -28,13 +40,6 @@ Vue.component('warmer-musicplayer-view', {
     },
     mounted() {
         this.musicAudio=this.$refs.musicAudio;
-        this.$watch("musicList", function () {//监听data变化决定是否加载该组件
-            if(this.musicList.length>0){
-                //自动播放第一首
-                var firstMusic=this.musicList[0];
-                this.playMusic(firstMusic,0);
-            }
-        },{immediate:true})//deep:true是深度监控  deep，默认值是 false，代表是否深度监听。 immediate:true代表如果在 wacth 里声明了之后，就会立即先去执行里面的handler方法，如果为 false就跟我们以前的效果一样，不会在绑定的时候就执行。
     },
     methods: {
         initMusic(){
@@ -63,22 +68,26 @@ Vue.component('warmer-musicplayer-view', {
         play(){
             if(this.musicAudio.paused){
                 this.musicAudio.play();//播放
-                this.musicPlayState=false;//播放图标
-                this.$refs.titleRun.stop();//走马灯开启
+                this.musicPlayState=true;//播放图标
+                this.$refs.titleRun.start();//走马灯开启
                 if(this.musicList.length>0&&this.musicAudio.src===''){//默认播放第一首
                     this.currentMusic=this.musicList[0];
                     this.musicAudio.src=this.currentMusic.url;
                 }
             }else{
-                this.musicPlayState=true;//暂停播放图标
+                this.musicPlayState=false;//暂停播放图标
                 this.musicAudio.pause();//暂停
-                this.$refs.titleRun.start();//走马灯关闭
+                this.$refs.titleRun.stop();//走马灯关闭
             }
         },
         playMusic(m,index){
             this.currentMusic=m;
             this.currentMusicIndex=index;
             this.musicAudio.src=this.currentMusic.url;
+            if (this.musicAudio.paused) { //判读是否播放
+                this.musicAudio.paused=false;
+                this.musicAudio.play(); //没有就播放
+            }
         },
         prevMusic(){
             if(this.currentMusicIndex<=0){
@@ -88,6 +97,7 @@ Vue.component('warmer-musicplayer-view', {
             }
             this.currentMusic=this.musicList[this.currentMusicIndex];
             this.musicAudio.src=this.currentMusic.url;
+            this.musicAudio.play();
         },
         showMusicPanel(){
             this.musicPanelShowState=!this.musicPanelShowState;
@@ -103,12 +113,13 @@ Vue.component('warmer-musicplayer-view', {
             }
             this.currentMusic=this.musicList[this.currentMusicIndex];
             this.musicAudio.src=this.currentMusic.url;
+            this.musicAudio.play();
         }
     },
     template:
         `
         <div ref="musicplayer">
-			<audio ref="musicAudio"></audio>
+			<audio ref="musicAudio" @ended="nextMusic"></audio>
 			<div @click="showMusicPanel" :class="[musicPlayState ? 'rotate' : '', 'audio_icon']"></div>
 			<div class="m_player" v-show="musicPanelShowState">
 				<!-- 主体 -->
