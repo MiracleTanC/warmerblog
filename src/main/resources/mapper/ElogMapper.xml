@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.ElogMapper">
+    <resultMap id="eLog" type="warmer.star.blog.model.ELog">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+		<collection property="eLogFiles" column="id" javaType="ArrayList" ofType="warmer.star.blog.model.ELogFile" select="warmer.star.blog.mapper.ElogMapper.getElogFileById"></collection>
+      </resultMap>
+	<resultMap id="eLogFile" type="warmer.star.blog.model.ELogFile">
+		<id column="eLogId" property="eLogId" jdbcType="INTEGER"></id>
+		<result column="fileurl" property="fileurl" jdbcType="VARCHAR"/>
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<select id="getElogFileById" resultMap="eLogFile">
+		select *  from eLogFile where eLogId=#{eLogId}
+	</select>
+	<select id="getAll" resultMap="eLog">
+		select * from eLog
+	</select>
+	<delete id="deleteElog">
+		delete from eLog where id=#{eLogId}
+	</delete>
+	<delete id="deleteElogFile">
+		delete from eLogFile where eLogId=#{eLogId}
+	</delete>
+     <insert id="addELog"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		 <selectKey resultType="int" order="AFTER" keyProperty="id">
+			 SELECT LAST_INSERT_ID()  as id
+		 </selectKey>
+		  insert into eLog (content,createTime,updateTime)
+		  values (#{content},#{createTime},#{updateTime})
+	</insert>
+	<insert id="addElogFile">
+		  insert into eLogFile (eLogId,fileurl,createTime,updateTime)
+		  values (#{eLogId},#{fileurl},#{createTime},#{updateTime})
+	</insert>
+</mapper>

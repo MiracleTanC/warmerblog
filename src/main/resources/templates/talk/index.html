@@ -5,6 +5,7 @@
 <head>
     <title>tag</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/emoji/css/emoji.css}">
     <style type="text/css">
         .emoticons {
             width: 100%;
@@ -21,7 +22,7 @@
             margin-bottom: 10px;
         }
 
-        .emoticons .publisher textarea {
+        .emoticons .publisher .text-area {
             width: 100%;
             height: 140px;
             padding: 5px 10px;
@@ -57,66 +58,30 @@
             line-height: 24px;
         }
 
-        .widget-layer {
-            position: relative;
-            width: 410px;
-            margin-top: 8px;
-            background: #fff;
-            border: 1px solid #dbdbdb;
-            border-radius: 2px;
+        .emojicontainer {
+            margin-top: 40px;
+            padding: 20px;
         }
 
-        .widget-layer:before {
-            position: absolute;
-            top: -16px;
-            left: 2px;
-            display: block;
-            content: '';
-            width: 0;
-            height: 0;
-            border: 8px solid transparent;
-            border-bottom-color: #dbdbdb;
-        }
-
-        .widget-layer:after {
-            position: absolute;
-            top: -15px;
-            left: 2px;
-            display: block;
-            content: '';
-            width: 0;
-            height: 0;
-            border: 8px solid transparent;
-            border-bottom-color: #f0f0f0;
-        }
-
-        .widget-layer .widget-tool {
-            height: 28px;
-            background: #f0f0f0;
-        }
-
-        .widget-layer .widget-close {
-            float: right;
-            width: 28px;
-            height: 28px;
-            line-height: 28px;
-            text-align: center;
-            font-family: Arial;
-        }
-
-        .widget-layer ul {
-            width: 372px;
-            margin: 0 auto;
+        .emojicontainer ul {
+            width: 60%;
             padding: 15px 5px 20px;
             overflow: hidden;
+            list-style: none;
+            border: 1px solid #F0F1F1;
+            border-radius: 5px;
+            margin: 0 20px;
+            -webkit-box-shadow:0px 3px 3px #c8c8c8 ;
+            -moz-box-shadow:0px 3px 3px #c8c8c8 ;
+            box-shadow:0px 3px 3px #c8c8c8 ;
         }
 
-        .widget-layer li {
+        .emojicontainer li {
             position: relative;
             z-index: 8;
             float: left;
-            width: 22px;
-            height: 22px;
+            width: 30px;
+            height: 30px;
             padding: 4px;
             margin-left: -1px;
             margin-top: -1px;
@@ -124,18 +89,13 @@
             cursor: pointer;
         }
 
-        .widget-layer li:hover {
+        .emojicontainer li:hover {
             z-index: 9;
             border-color: #eb7350;
         }
-
-        ul {
-            list-style: none
-        }
-
-        li {
-            margin: 0;
-            padding: 0 !important;
+        .large{
+            -webkit-transform:scale(1.5);
+            transform:scale(1.5)
         }
 
         .fl {
@@ -214,23 +174,30 @@
     </style>
 </head>
 <body>
-<div layout:fragment="content" style="padding:0 30px">
+<div layout:fragment="content" style="padding:0 30px" @click="chooseclose($event)">
     <div style="width: 60%;margin: auto;padding: 20px;border: 1px solid red">
         <div class="emoticons">
             <div class="publisher">
-                <p><textarea ref='content' name="content"></textarea></p>
-                <span class="sns expression fl trigger"></span>
+                <p><textarea class="text-area" ref='content' v-model="content"  contenteditable="true"></textarea></p>
+                <span class="sns expression fl" id="choose" @click="choose"></span>
                 <input ref='upload' name="file" multiple="multiple" @change="uploadFile(this);" accept="image/*"
                        type="file" style="display: none">
                 <span class="sns picture fl" @click="picture"></span>
                 <span class="sns send fr" @click="send"></span>
                 <span class="sns view fr format"></span>
+                <div id="emojicontainer" class="emojicontainer" v-show="emojishow&&emojiimageList.length>0">
+                    <ul>
+                        <li v-for="m in emojiimageList">
+                            <span @click="select(m)"  :class="'emoji emoji_'+m"></span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div id="result" class="result"></div>
+            <div id="result" class="result" v-html="contentFormatStr"></div>
             <div class="imgcontainer" v-show="imageList.length>0">
                 <ul>
                     <li v-for="m in imageList">
-                        <img :src="m"/>
+                        <img  :src="m"/>
                     </li>
                 </ul>
             </div>
@@ -238,32 +205,56 @@
     </div>
 </div>
 <div layout:fragment="jscontent">
-    <script type="text/javascript" th:src="@{/js/jquery.emoticons.js}"></script>
     <script type="text/javascript">
-        $(function () {
-            $.emoticons({
-                'activeCls': 'trigger-active'
-            }, function (api) {
-                var $content = $('textarea[name="content"]');
-                var $result = $('#result');
-                $('.format').click(function () {
-                    $result.html(api.format($content.val()));
-                });
-
-            });
-        })
-
         var app = new Vue({
             el: '#app',
             data: {
                 loading: false,
                 imageList: [],
+                content: '',
+                contentFormatStr: '',
+                emojishow:false,
+                emojiItems:[],
+                emojiimageList:['angry', 'anguished', "astonished", "disappointed",
+                    "blush", "bowtie", "zan", "cold_sweat", "confounded", "confused",
+                    "cry", "crying_cat_face",
+                    "relieved", "satisfied", "point_up_2",
+                    "relaxed", "scream", "scream_cat", "see_no_evil",
+                    "dizzy_face", "expressionless", "fearful",
+                    "flushed", "frowning", "full_moon_with_face",
+                    "grin", "grinning", "heart_eyes", "heart_eyes_cat",
+                    "hushed", "innocent", "joy", "joy_cat",
+                    "kissing", "kissing_cat", "kissing_heart",
+                    "neutral_face", "open_mouth", "pensive", "persevere",
+                    "rage", "pouting_cat", "sleeping", "sleepy", "smile",
+                    "kissing_smiling_eyes", "laughing", "mask", "smile_cat", "smiling_imp", "smirk",
+                    "smiley", "smirk_cat", "sob", "stuck_out_tongue", "v", "weary", "wink", "worried", "yum",
+                    "sweat_smile", "sweat", "triumph", "unamused",
+                    "heart", "heavy_exclamation_mark",
+                    "stuck_out_tongue_closed_eyes", "stuck_out_tongue_winking_eye", "sun_with_face",
+                    "sunglasses", "tired_face",
+                    "pill", "point_up", "point_down",
+                    "point_left", "point_right", "poop", "pray", "raised_hands",
+                    "tada","balloon", "bicyclist", "beer",
+                    "bomb", "bouquet", "broken_heart", "clap", "crown", "fire", "ghost", "gift", "gift_heart"],
             },
             created() {
-
+                var _this=this;
+                _this.emojiimageList.forEach(function(m){
+                    var tag='<span class="emoji emoji_'+m+'"></span>';
+                    _this.emojiItems.push(tag);
+                })
             },
             mounted() {
 
+            },
+            watch:{
+                content:{
+                    handler:function(val,oldval){
+                        this.contentFormatStr=this.contentformat(val);
+                    },
+                    deep:true//对象内部的属性监听
+                }
             },
             methods: {
                 uploadFile() {
@@ -285,46 +276,39 @@
                         /*  */
                     }
                 },
+                choose() {
+                    this.emojishow=!this.emojishow;
+                },
+                chooseclose(event){
+                    if(event.target.id!=="choose"&&event.target.className.indexOf("emoji")==-1){
+                        this.emojishow=false;
+                    }
+                },
+                select(m){
+                    this.content+='['+m+']';
+                },
                 picture() {
                     this.$refs.upload.click();
                 },
                 send(){
-                    var _this=this;
-                    var data={};
-                    $.ajax({
-                        url: "/talk/save",
-                        type: "post",
-                        data: data,
-                        success: function (res) {
-                            if(res.code==200){
-                                _this.uploadImage();
-                            }
-                        },
-                        error: function (res) {
-                            _this.$message.error(res.message);
-                        }
-                    });
-
-                },
-                uploadImage() {
-                    var _this=this;
+                    var _this = this;
                     var fd = new FormData();
-                    for (var i = 0; i <  _this.imageList.length; i++) {
-                        var f=_this.convertBase64UrlToBlob(_this.imageList[i]);
+                    fd.append('content', _this.content);
+                    for (var i = 0; i < _this.imageList.length; i++) {
+                        var f = _this.convertBase64UrlToBlob(_this.imageList[i]);
                         fd.append('file', f);
                     }
                     $.ajax({
-                        url: "/qiniu/upload",
+                        url: "/talk/save",
                         type: "post",
-                        dataType:"json",
+                        dataType: "json",
                         data: fd,
-                        contentType: false,
-                        processData: false,
+                        contentType: false,//不设置内容类型
+                        processData: false,//不处理数据
                         mimeType: "multipart/form-data",
                         success: function (res) {
-                            if(res.success==1&&res.results.length==_this.imageList.length){
-                                app.$message({
-                                    showClose: true,
+                            if (res.code == 0) {
+                                _this.$message({
                                     message: "操作成功",
                                     type: 'success'
                                 });
@@ -337,6 +321,24 @@
                 },
                 view() {
 
+                },
+                checkExist(item){
+                    return this.emojiItems.indexOf(item)>-1;
+                },
+                contentformat(str){
+                    var list = str.match(/\[*\w*\]/g);
+                    var filter = /[\[\]]/g;
+                    if(list){
+                        for(var i=0;i<list.length;i++){
+                            var item=list[i];
+                            var title= item.replace(filter,'');
+                            var tag='<span class="emoji emoji_'+title+'"></span>';
+                            if(this.checkExist(tag)){
+                                str=str.replace(item,tag);
+                            }
+                        }
+                    }
+                    return str;
                 },
                 convertBase64UrlToBlob(urlData) {
                     var bytes = window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
