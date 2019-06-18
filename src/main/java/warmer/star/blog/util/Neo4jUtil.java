@@ -259,6 +259,7 @@ public class Neo4jUtil {
                                 rships.put("uuid", uuid);
                                 rships.put("sourceid", sourceid);
                                 rships.put("targetid", targetid);
+								shipids.add(uuid);
                                 if (rships != null && !rships.isEmpty()) {
                                     ships.add(rships);
                                 }
@@ -269,6 +270,7 @@ public class Neo4jUtil {
                             Map<String, Object> startNodemap = path.start().asMap();
                             String startNodeuuid = String.valueOf(path.start().id());
                             if (!uuids.contains(startNodeuuid)) {
+								rss=new HashMap<String, Object>();
                                 for (Entry<String, Object> entry : startNodemap.entrySet()) {
                                     String key = entry.getKey();
                                     rss.put(key, entry.getValue());
@@ -279,9 +281,11 @@ public class Neo4jUtil {
                                     ents.add(rss);
                                 }
                             }
+
                             Map<String, Object> endNodemap = path.end().asMap();
                             String endNodeuuid = String.valueOf(path.end().id());
                             if (!uuids.contains(endNodeuuid)) {
+								rss=new HashMap<String, Object>();
                                 for (Entry<String, Object> entry : endNodemap.entrySet()) {
                                     String key = entry.getKey();
                                     rss.put(key, entry.getValue());
@@ -292,11 +296,30 @@ public class Neo4jUtil {
                                     ents.add(rss);
                                 }
                             }
+							Iterator<Node> allNodes = path.nodes().iterator();
+							while (allNodes.hasNext()) {
+								Node next = allNodes.next();
+								String uuid = String.valueOf(next.id());
+								if (!uuids.contains(uuid)) {
+									rss=new HashMap<String, Object>();
+									Map<String, Object> map = next.asMap();
+									for (Entry<String, Object> entry : map.entrySet()) {
+										String key = entry.getKey();
+										rss.put(key, entry.getValue());
+									}
+									rss.put("uuid", uuid);
+									uuids.add(uuid);
+									if (rss != null && !rss.isEmpty()) {
+										ents.add(rss);
+									}
+								}
+							}
                             Iterator<Relationship> reships = path.relationships().iterator();
                             while (reships.hasNext()) {
                                 Relationship next = reships.next();
                                 String uuid = String.valueOf(next.id());
                                 if (!shipids.contains(uuid)) {
+									rships=new HashMap<String, Object>();
                                     String sourceid = String.valueOf(next.startNodeId());
                                     String targetid = String.valueOf(next.endNodeId());
                                     Map<String, Object> map = next.asMap();
@@ -307,6 +330,7 @@ public class Neo4jUtil {
                                     rships.put("uuid", uuid);
                                     rships.put("sourceid", sourceid);
                                     rships.put("targetid", targetid);
+									shipids.add(uuid);
                                     if (rships != null && !rships.isEmpty()) {
                                         ships.add(rships);
                                     }
@@ -330,6 +354,7 @@ public class Neo4jUtil {
                                     rships.put("uuid", uuid);
                                     rships.put("sourceid", sourceid);
                                     rships.put("targetid", targetid);
+									shipids.add(uuid);
                                     if (rships != null && !rships.isEmpty()) {
                                         ships.add(rships);
                                     }
