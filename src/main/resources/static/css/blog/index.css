@@ -140,6 +140,12 @@
 .guanzhu .wxgzh span { background: #199872; }
 .guanzhu a span { color: #FFF }
 .guanzhu ul li:hover span { width: 120px; }
+.qqgroup{
+    padding: 0px !important ;margin: 0 auto;display: block; clear: both;
+}
+ .qqgroup a{
+     float: left;margin-left: 25px
+ }
 /*gd*/
 .gd { width: 300px; top: 100px; z-index: 999; position: fixed; _position: absolute; _top:expression(documentElement.scrollTop + 0 + "px");
 _margin-top: 100px; }
