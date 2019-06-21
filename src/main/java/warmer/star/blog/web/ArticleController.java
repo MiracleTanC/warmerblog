@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import warmer.star.blog.dto.ArticleItem;
@@ -46,7 +47,7 @@ public class ArticleController extends BaseController {
 
     @RequestMapping("/getArticlelist")
     @ResponseBody
-    public R getArticlelist(ArticleQueryItem query) {
+    public R getArticlelist(@RequestBody ArticleQueryItem query) {
         PageHelper.startPage(query.getPageIndex(), query.getPageSize(), true);
         // 获取文章列表
         List<ArticleItem> articleList = articleService.getArticleList(query);

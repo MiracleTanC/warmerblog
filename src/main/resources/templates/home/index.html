@@ -3,10 +3,11 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="partial/layout" lang="zh">
 <head>
-    <style type="text/css">
+    <style type="text/css" scoped>
         text {
             cursor: pointer;
         }
+
     </style>
 </head>
 <body>
@@ -31,52 +32,59 @@
             </div>
         </div>
     </div>
+
     <div class="blogcontainer">
         <div class="blogsbox">
             <warmer-record-view :data="articleList" :showmore="showMore" :loading="loading"></warmer-record-view>
         </div>
         <!--blogsbox end-->
         <div class="sidebar">
-            <div class="zhuanti">
-                <h2 class="hometitle">系列专题</h2>
-                <ul v-if="recommendArticlelist">
-                    <li v-for="article in recommendArticlelist">
-                        <i v-if="article.coverImageList&&article.coverImageList.length>0">
-                            <img :src="article.coverImageList[0].coverImage">
-                        </i>
-                        <p>
-                            {{article.title}} <span><a :href="['/detail/'+article.id]" target="_blank">阅读</a></span>
-                        </p>
-                    </li>
-
-                </ul>
+            <div class="cate">
+                <div class="sidecloumn"><div><h2 class="hometitle">分类</h2></div></div>
+                <el-tree ref="mycatetree" node-key="id"
+                         :load="loadCategory"
+                         @check="treeNodeClick"
+                         :check-on-click-node="true"
+                         lazy
+                         :props="treeData"
+                         show-checkbox
+                         class="e-tree">
+                </el-tree>
             </div>
             <div class="tuijian">
-                <h2 class="hometitle">点击排名</h2>
-                <ul class="sidenews" v-if="topReadArticlelist">
-                    <li v-for="article in topReadArticlelist">
-                        <i v-if="article.coverImageList&&article.coverImageList.length>0">
-                            <img :src="article.coverImageList[0].coverImage">
-                        </i>
-                        <p>
-                            <a :href="['/detail/'+article.id]" target="_blank">{{article.title}} </a>
-                        </p>
-                        <span class="action-icon action-icon-view">{{article.showCount}}</span>
-                        <span class="action-icon action-icon-time"
-                              style="display: inline-block;">{{article.createTime}}</span>
-                    </li>
-
-                </ul>
+                <div class="sidecloumn"><div><h2 class="hometitle">动态</h2></div></div>
+                <template>
+                    <el-tabs v-model="tabActiveName" type="card">
+                        <el-tab-pane label="推荐" name="first">
+                            <ul class="sidenews" v-if="recommendArticlelist">
+                                <li v-for="article in recommendArticlelist">
+                                    <a :href="['/detail/'+article.id]" target="_blank">{{article.title}} </a>
+                                </li>
+                            </ul>
+                        </el-tab-pane>
+                        <el-tab-pane label="热门" name="second">
+                            <ul class="sidenews" v-if="topReadArticlelist">
+                                <li v-for="article in topReadArticlelist">
+                                    <a :href="['/detail/'+article.id]" target="_blank">{{article.title}} </a>
+                                </li>
+                            </ul>
+                        </el-tab-pane>
+                        <el-tab-pane label="吐槽" name="third">
+                            <img style="width: 100%" src="/images/fouren.jpg">
+                        </el-tab-pane>
+                    </el-tabs>
+                </template>
             </div>
-            <div class="cloud">
-                <h2 class="hometitle">标签云</h2>
+            <div class="cloud sidecloumn">
+                <div><h2 class="hometitle">标签云</h2></div>
                 <ul v-if="tagList" id="tagcontainer"></ul>
             </div>
-            <div class="links">
-                <h2 class="hometitle">友情链接</h2>
+            <div class="links sidecloumn">
+                <div><h2 class="hometitle">友情链接</h2></div>
                 <ul v-if="partnerList">
-                    <li v-for="partner in partnerList"><a :href="partner.siteUrl" :alt="partner.siteDesc"
-                                                          target="_blank">{{partner.siteName}}</a></li>
+                    <li v-for="partner in partnerList">
+                        <a :href="partner.siteUrl" :alt="partner.siteDesc" target="_blank">{{partner.siteName}}</a>
+                    </li>
                 </ul>
             </div>
             <!-- 设置固定关注我们 -->
@@ -87,8 +95,6 @@
 <div layout:fragment="js">
     <script th:src="@{/js/d3.v4.min.js}" src="https://d3js.org/d3.v4.min.js" type="text/javascript"></script>
     <script src="https://cdn.bootcss.com/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
-    <!--<script src="https://unpkg.com/scrollreveal"></script>-->
-
     <script th:inline="javascript" th:src="@{/js/scrollreveal.js}" type="text/javascript"></script>
     <script th:inline="javascript" th:src="@{/js/components/apprecordview.js}" type="text/javascript"></script>
     <script type="text/javascript">
@@ -99,7 +105,8 @@
                     pageIndex: 1,
                     pageSize: 10,
                     title: '',
-                    tag: ''
+                    tag: '',
+                    categoryCodes:[]
                 },
                 showMore: true,
                 loading: true,
@@ -109,7 +116,14 @@
                 bannerList: [],
                 scrollReveal: ScrollReveal(),
                 partnerList: [],
-                tagList: []
+                tagList: [],
+                parentId:0,
+                treeData:{
+                    label: 'name',
+                    children: 'zones',
+                    isLeaf:'isLeaf'
+                },
+                tabActiveName:'first'
             },
             mounted() {
                 // 缓存指针
@@ -129,8 +143,6 @@
                         }
                     },true);
                 })
-
-
             },
             created() {
                 this.initData();
@@ -141,6 +153,41 @@
                 this.initTagList();
             },
             methods: {
+                treeNodeClick(node){
+                    var tree = this.$refs.mycatetree;
+                    var nodes = tree.store.getCheckedNodes();
+                    var arraycodes = [];
+                    for (var i = 0; i < nodes.length; i++) {
+                        var tem = nodes[i].code;
+                        arraycodes.push(tem);
+                    }
+                    this.queryForm.categoryCodes = arraycodes;
+                    this.articleList = [];
+                    this.queryForm.pageIndex=1;
+                    this.initData();
+                },
+                loadCategory(node, resolve) {
+                    var _this = this;
+                    if(node.level==0){
+                        _this.parentId=0;
+                    }else{
+                        _this.parentId=node.data.id;
+                    }
+                    var param = {parentId:_this.parentId};
+                    $.ajax({
+                        data: param,
+                        type: "POST",
+                        url: "/getTreelist",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                resolve(result.data);
+                                _this.parentId = 0;
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                },
                 initData() {
                     var _this = this;
                     _this.scrollDisable = true;
@@ -150,7 +197,9 @@
                         type: "POST",
                         url: "/getArticlelist",
                         //url: "/getEsArticlelist",//启用es时用这个
-                        data: param,
+                        data: JSON.stringify(param),
+                        dataType: "json",
+                        contentType:"application/json",
                         success: function (result) {
                             if (result.code == 0) {
                                 _this.loading = false;

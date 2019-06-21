@@ -48,7 +48,7 @@
         <selectKey resultType="int" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID()  as id
         </selectKey>
-        insert user (username,password,createTime,openid,sourcetype) values (#{username},#{password},#{createTime},#{openid},#{sourcetype})
+        insert into user (username,password,createTime,openid,sourcetype) values (#{username},#{password},#{createTime},#{openid},#{sourcetype})
     </insert>
 
     <update id="updateAvatar">

@@ -15,6 +15,7 @@ Vue.component('warmer-musicplayer-view', {
             musicPlayState:true,
             musicPlayListShowState:false,
             errorImg : 'this.src="/images/music/a1.png"',
+            firstscroll:false,
         };
     },
     filters: {
@@ -25,8 +26,12 @@ Vue.component('warmer-musicplayer-view', {
             handler:function(val,oldval){
                 if(val.length>0){
                     //自动播放第一首
+                    var _this=this;
                     var firstMusic=val[0];
-                    this.playMusic(firstMusic,0);
+                    //this.$refs.palya.click();
+                    this.currentMusic=firstMusic;
+                    this.currentMusicIndex=0;
+                    this.musicAudio.src=this.currentMusic.url;
                 }
             },
             deep:true//对象内部的属性监听
@@ -39,7 +44,15 @@ Vue.component('warmer-musicplayer-view', {
         this.initMusic();
     },
     mounted() {
-        this.musicAudio=this.$refs.musicAudio;
+        var _this = this;
+        _this.musicAudio=_this.$refs.musicAudio;
+        window.addEventListener('scroll', () => {
+            if(!_this.firstscroll){
+                _this.play();
+                _this.firstscroll=true;
+            }
+
+        }, true);
     },
     methods: {
         initMusic(){
@@ -86,7 +99,11 @@ Vue.component('warmer-musicplayer-view', {
             this.musicAudio.src=this.currentMusic.url;
             if (this.musicAudio.paused) { //判读是否播放
                 this.musicAudio.paused=false;
-                this.musicAudio.play(); //没有就播放
+                this.musicAudio.onloadeddata = function(){
+                    console.log('播放');
+                    this.musicAudio.play(); //没有就播放
+                };
+
             }
         },
         prevMusic(){
@@ -119,7 +136,8 @@ Vue.component('warmer-musicplayer-view', {
     template:
         `
         <div ref="musicplayer">
-			<audio ref="musicAudio" @ended="nextMusic"></audio>
+            
+			<audio ref="musicAudio" @ended="nextMusic" autoplay="true"></audio>
 			<div @click="showMusicPanel" :class="[musicPlayState ? 'rotate' : '', 'audio_icon']"></div>
 			<div class="m_player" v-show="musicPanelShowState">
 				<!-- 主体 -->
@@ -133,7 +151,7 @@ Vue.component('warmer-musicplayer-view', {
 					<!-- 暂停 上一首 下一首 -->
 					<div class="bar_op">
 						<strong class="prev_bt" title="上一首" @click="prevMusic"></strong>
-						<strong :class="[musicPlayState ? 'pause_bt' : 'play_bt','tc']" title="播放"@click="play"></strong>
+						<a ref="palya" @click="play" href="javascript:;"><strong  :class="[musicPlayState ? 'pause_bt' : 'play_bt','tc']" title="播放"@click="play"></strong></a>
 						<strong class="next_bt" title="下一首" @click="nextMusic"></strong>
 					</div>
 					<div style="margin-left: 110px;margin-top: -15px;">

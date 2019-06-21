@@ -1,10 +1,10 @@
 package warmer.star.blog.model;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import warmer.star.blog.enums.ArticleStatus;
 import warmer.star.blog.util.DateTimeHelper;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 public class Article implements Serializable {
@@ -14,6 +14,7 @@ public class Article implements Serializable {
     private String title;   //标题
     private String content;  //内容
     private String abstractContent; //摘要内容
+    private String categoryCode; //摘要内容
     private String publishTime; //显示时间
     private String coverImage; //封面图片
     private String articleTags; //文章标签
@@ -190,6 +191,11 @@ public class Article implements Serializable {
 		this.articleType = articleType;
 	}
 
+    public String getCategoryCode() {
+        return categoryCode;
+    }
 
-
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode;
+    }
 }

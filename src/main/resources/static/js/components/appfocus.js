@@ -60,7 +60,6 @@ Vue.component('warmer-appfocus-view', {
             else {
                 this.currentindex++;
             }
-            console.log(this.currentindex);
         },
         mouseenter() {
             clearInterval(this.timer);

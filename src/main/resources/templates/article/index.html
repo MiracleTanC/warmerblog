@@ -121,26 +121,22 @@
 <div layout:fragment="jscontent">
     <script type="text/javascript">
         var getList = function () {
-            var params = new URLSearchParams();
-            params.append('pageIndex', this.listQuery.pageIndex);
-            params.append('pageSize', this.listQuery.pageSize);
-            params.append('status', this.listQuery.status);
-            params.append('title', this.listQuery.title);
-            params.append('categoryId', this.listQuery.categoryId);
-            params.append('sort', this.listQuery.sort);
-            axios.post('/getArticlelist', params)
-                .then(function (response) {
-                    console.log(response);
-                    var result = response.data;
+            var _this=this;
+            var param=_this.listQuery;
+            $.ajax({
+                type: "POST",
+                url: "/getArticlelist",
+                data: JSON.stringify(param),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (result) {
                     if (result.code == 0) {
-                        app.list = result.data.rows;
-                        app.total = result.data.totalCount;
-                        app.listLoading = false;
+                        _this.list = result.data.rows;
+                        _this.total = result.data.totalCount;
+                        _this.listLoading = false;
                     }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                }
+            });
         }
         var loadCategoryOptions = function () {
             $.ajax({
@@ -174,6 +170,7 @@
                     status: '',
                     title: '',
                     categoryId: '',
+                    categoryCodes: [],
                     sort: '1'
                 },
                 status: [{name: '草稿', code: 'draft', value: '0'}, {

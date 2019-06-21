@@ -12,7 +12,7 @@ public class CategorySubmitItem implements Serializable {
     private String name; //分类名
 
     private String code;   //分类别名
-
+	private String parentcode;
     private Integer sort;
     public Integer status;
     public Integer getStatus() {
@@ -86,5 +86,11 @@ public class CategorySubmitItem implements Serializable {
 
 	private Integer parentId;
 
-   
+	public String getParentcode() {
+		return parentcode;
+	}
+
+	public void setParentcode(String parentcode) {
+		this.parentcode = parentcode;
+	}
 }
