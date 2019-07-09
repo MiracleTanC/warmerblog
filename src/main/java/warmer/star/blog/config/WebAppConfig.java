@@ -17,8 +17,6 @@ public class WebAppConfig{
      */
     @Value("${file.location}")
     private String location;
-    @Value("${file.serverurl}")
-    private String serverurl;
 
     public String getLocation() {
         return location;
@@ -36,19 +34,5 @@ public class WebAppConfig{
         //设置总上传数据总大小
         factory.setMaxRequestSize("100MB");
         return factory.createMultipartConfig();
-    }
-
-    /**
-     * @return the serverurl
-     */
-    public String getServerurl() {
-        return serverurl;
-    }
-
-    /**
-     * @param serverurl the serverurl to set
-     */
-    public void setServerurl(String serverurl) {
-        this.serverurl = serverurl;
     }
 }
