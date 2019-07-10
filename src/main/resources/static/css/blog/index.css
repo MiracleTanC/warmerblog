@@ -64,7 +64,7 @@
 .sidecloumn div{padding: 0px;box-shadow:unset}
 .sidecloumn div:hover ::after { width: 70px; }
 .cate ,.tuijian,.links,.cloud,.guanzhu{
-    padding: 20px 25px; margin-bottom: 2px;-webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+    padding: 20px 25px; /*margin-bottom: 2px;*/-webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
 }
 /*//////////////sidebar//////////////////*/
 /* zhuanti */

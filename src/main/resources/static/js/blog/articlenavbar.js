@@ -46,13 +46,14 @@
         var className = 'item_h'+useIndex;
         $(item).attr("id","wow"+id);
         $(item).addClass("wow_head");
-        $("#AnchorContent").css('max-height', ($(window).height() - 180) + 'px'); 
+        $("#AnchorContent").css('max-height', ($(window).height() - 300) + 'px');
         $("#AnchorContent").css('min-width', ($(window).height()*0.25) + 'px');
         $("#AnchorContent").css('max-width', ($(window).height()*0.25)+80 + 'px');
-        $("#AnchorContent").css('overflow', 'hidden');
+        $("#AnchorContent").css('overflow-x', 'hidden');
+        $("#AnchorContent").css('overflow-y', 'auto');
         $("#AnchorContent").css('text-overflow', 'ellipsis');
         $("#AnchorContent").css('white-space', 'nowrap');
-        $("#AnchorContent").append('<li><a class="nav_item '+className+' anchor-link" onclick="return false;" href="#" link="#wow'+id+'">'+$(this).text()+'</a></li>');
+        $("#AnchorContent").append('<li><a class="nav_item '+className+' anchor-link" onclick="return false;" href="#" title="'+$(this).text()+'" link="#wow'+id+'">'+$(this).text()+'</a></li>');
     });
 
     $("#AnchorContentToggle").click(function(){
