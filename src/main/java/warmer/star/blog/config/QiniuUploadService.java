@@ -1,12 +1,11 @@
 package warmer.star.blog.config;
 
+import com.qiniu.util.Auth;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.qiniu.util.Auth;
-
+import warmer.star.blog.util.QiniuFileResultItem;
 import warmer.star.blog.util.QiniuUtil;
 import warmer.star.blog.util.UploadUtil;
 
@@ -33,5 +32,10 @@ public class QiniuUploadService {
     	UploadUtil qiniuUtil = new QiniuUtil(this.bucketHostName, this.bucketName,auth);
         //return qiniuUtil.uploadFile(image,fileName);
         return qiniuUtil.uploadFile(this.prefixName,image);
+    }
+    public QiniuFileResultItem getQiniuFileList(String marker, int limit) throws FileUploadException {
+        Auth auth = Auth.create(this.accesskey, this.secretKey);
+        UploadUtil qiniuUtil = new QiniuUtil(this.bucketHostName, this.bucketName,auth);
+        return qiniuUtil.getFileList(marker,limit);
     }
 }

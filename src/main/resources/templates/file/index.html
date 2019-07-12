@@ -1,0 +1,99 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="partial/layoutAdmin">
+<head>
+    <title>我的资源</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+        .filecon {
+            width: 15%;
+            float: left;
+            margin: 5px;
+            padding: 2px;
+            list-style: none;
+        }
+
+        .file img,video,audio{
+            width: 100%;
+            height: 150px;
+        }
+        .filedetail img,video,audio{
+            width: 100%;
+        }
+        .dp{
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <ul class="file" v-show="data">
+        <li class="filecon" v-for="item in data" @click="handlePreview(item)">
+            <img v-show="item.mimeType.indexOf('image')>-1" :src="item.url"/>
+            <img v-show="item.mimeType.indexOf('audio')>-1" src="/images/music.gif"/></audio>
+            <video v-show="item.mimeType.indexOf('video')>-1" :src="item.url"/></video>
+            <div>
+                <div>大小：{{item.fsize}}</div>
+                <div>类型：{{item.mimeType}}</div>
+                <div>上传时间：{{item.putTime}}</div>
+            </div>
+        </li>
+    </ul>
+    <el-dialog class="filedetail" :visible.sync="dialogVisible">
+        <img v-show="currentItem&&currentItem.mimeType.indexOf('image')>-1" :src="currentItem.url"/>
+        <audio class="dp" autoplay loop v-show="currentItem&&currentItem.mimeType.indexOf('audio')>-1" :src="currentItem.url"/></audio>
+        <video class="dp" v-show="currentItem&&currentItem.mimeType.indexOf('video')>-1" :src="currentItem.url"/></video>
+    </el-dialog>
+</div>
+<div layout:fragment="jscontent">
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                dataListLoading: false,
+                dialogVisible:false,
+                query: {
+                    marker: '',
+                    limit: 24
+                },
+                currentItem:{mimeType:'',ur:''},
+                data: []
+            },
+            created: function () {
+                this.getDataList();
+            },
+            methods: {
+                handleRemove(){
+
+                },
+                handlePreview(item) {
+                    this.dialogVisible = true;
+                    this.currentItem=item;
+                },
+                getDataList() {
+                    var _this = this;
+                    _this.dataListLoading = true;
+                    var data = {marker: _this.query.marker, limit: _this.query.limit};
+                    $.ajax({
+                        data: JSON.stringify(data),
+                        type: "POST",
+                        url: '/qiniu/filelist',
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function (result) {
+                            if (result.code == 200) {
+                                _this.data = result.data.items;
+                                _this.dataListLoading = false;
+                                _this.query.marker = result.data.marker;
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+</div>
+</body>
+
+</html>

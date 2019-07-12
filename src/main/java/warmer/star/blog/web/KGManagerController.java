@@ -418,7 +418,7 @@ public class KGManagerController extends BaseController {
 			}
 			String savePath = config.getLocation();
 			String csvKey = "tc" + System.currentTimeMillis() + ".csv";
-			String csvPath = savePath+"/" + csvKey;
+			String csvPath = savePath+ csvKey;
 			CSVUtil.createCsvFile(list, csvPath);
 			String serverUrl=request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 			String csvUrl = "http://"+serverUrl+ "/kg/download/" + csvKey;

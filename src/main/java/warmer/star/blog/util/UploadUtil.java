@@ -1,9 +1,9 @@
 package warmer.star.blog.util;
 
-import java.io.File;
-
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 public interface UploadUtil {
 	String uploadFile(MultipartFile multipartFile) throws FileUploadException;
@@ -29,5 +29,5 @@ public interface UploadUtil {
 	String uploadFile(byte[] data, String fileName) throws FileUploadException;
 
 	String uploadFile(byte[] data, String fileName, String filePath) throws FileUploadException;
-
+	QiniuFileResultItem getFileList(String marker, int limit);
 }

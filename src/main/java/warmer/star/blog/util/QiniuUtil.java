@@ -1,8 +1,15 @@
 package warmer.star.blog.util;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.qiniu.common.QiniuException;
+import com.qiniu.common.Zone;
+import com.qiniu.http.Response;
+import com.qiniu.storage.BucketManager;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.storage.model.DefaultPutRet;
+import com.qiniu.storage.model.FileInfo;
+import com.qiniu.storage.model.FileListing;
+import com.qiniu.util.Auth;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -10,13 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.qiniu.common.QiniuException;
-import com.qiniu.common.Zone;
-import com.qiniu.http.Response;
-import com.qiniu.storage.Configuration;
-import com.qiniu.storage.UploadManager;
-import com.qiniu.storage.model.DefaultPutRet;
-import com.qiniu.util.Auth;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class QiniuUtil implements UploadUtil { 
@@ -29,6 +33,7 @@ public class QiniuUtil implements UploadUtil {
     private Auth auth;
 
     private UploadManager uploadManager = null;
+    private BucketManager bucketManager;
 
     /**
      * 构造函数
@@ -44,6 +49,7 @@ public class QiniuUtil implements UploadUtil {
       //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
         this.uploadManager= new UploadManager(cfg);
+        this.bucketManager=new BucketManager(auth,cfg);
     }
 
     public String generate(){
@@ -275,5 +281,39 @@ public class QiniuUtil implements UploadUtil {
         }
         return bucketHostName + (key.startsWith("/") ? key : "/" + key);
     }
-
+    @Override
+    public QiniuFileResultItem getFileList(String marker, int limit){
+        QiniuFileResultItem result=new QiniuFileResultItem();
+        List<QiniuFileModel> res=new ArrayList<>();
+        FileListing fileList=new FileListing();
+        //文件名前缀
+        String prefix = "";
+        //每次迭代的长度限制，最大1000，推荐值 1000
+        if(limit<=0)limit=100;
+        //指定目录分隔符，列出所有公共前缀（模拟列出目录效果）。缺省值为空字符串
+        String delimiter = "";
+        //列举空间文件列表
+        try {
+            fileList = bucketManager.listFiles(this.bucketName, prefix, marker,limit, delimiter);
+            result.setMarker(fileList.marker);
+            if(fileList!=null&&fileList.items.length>0){
+                //处理获取的file list结果
+                for (FileInfo item : fileList.items) {
+                    QiniuFileModel mo=new QiniuFileModel();
+                    mo.setKey(item.key);
+                    mo.setHash(item.hash);
+                    mo.setFsize(item.fsize);
+                    mo.setMimeType(item.mimeType);
+                    mo.setPutTime(item.putTime);
+                    mo.setEndUser(item.endUser);
+                    mo.setUrl(String.format("http://%s/%s",this.bucketHostName,item.key));
+                    res.add(mo);
+                }
+            }
+            result.setItems(res);
+        } catch (QiniuException e) {
+            e.printStackTrace();
+        }
+        return  result;
+    }
 }
