@@ -2,6 +2,7 @@ package warmer.star.blog.mapper;
 
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import warmer.star.blog.dto.ArticleItem;
 import warmer.star.blog.dto.ArticleQueryItem;
 import warmer.star.blog.dto.ArticleSubmitItem;
@@ -10,6 +11,7 @@ import warmer.star.blog.model.ArticleFile;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface ArticleMapper {
     List<ArticleItem> getArticleList(ArticleQueryItem queryItem);
     List<ArticleItem> getRecommendArticleList();

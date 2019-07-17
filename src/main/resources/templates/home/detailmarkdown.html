@@ -3,246 +3,8 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="partial/layout" lang="zh">
 <head>
-    <style type="text/css">
-        .comment-list {
-            padding-top: 20px;
-        }
-
-        .note .post .comment-list .new-comment {
-            position: relative;
-            margin-left: 48px;
-        }
-
-        form {
-            margin: 0 0 20px;
-        }
-
-        .comment-list .avatar {
-            margin-right: 5px;
-            width: 38px;
-            height: 38px;
-            vertical-align: middle;
-            display: inline-block;
-            float: left;
-        }
-
-        .avatar {
-            width: 24px;
-            height: 24px;
-            display: block;
-            cursor: pointer;
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            border: 1px solid #ddd;
-            border-radius: 50%;
-            vertical-align: middle;
-        }
-
-        .comment-list .new-comment textarea {
-            padding: 10px 15px;
-            width: calc(60vw - 85px);
-            height: 80px;
-            font-size: 13px;
-            border: 1px solid #dcdcdc;
-            border-radius: 4px;
-            background-color: hsla(0, 0%, 71%, .1);
-            resize: none;
-            display: inline-block;
-            vertical-align: top;
-            outline-style: none;
-        }
-
-        .comment-list .new-comment .write-function-block {
-            height: 50px;
-        }
-
-        .emoji-modal-wrap {
-            position: relative;
-        }
-
-        .comment-list .new-comment .emoji {
-            float: left;
-            margin-top: 14px;
-        }
-
-        .comment-list .new-comment .emoji i {
-            font-size: 20px;
-            color: #969696;
-        }
-
-        .comment-list .new-comment .hint {
-            float: left;
-            margin: 20px 0 0 20px;
-            font-size: 13px;
-            color: #969696;
-        }
-
-        .comment-list .new-comment .btn-send {
-            float: right;
-            width: 35px;
-            margin: 10px 0;
-            padding: 8px 18px;
-            font-size: 16px;
-            border: none;
-            border-radius: 10px;
-            color: #fff !important;
-            background-color: #42c02e;
-            cursor: pointer;
-            outline: none;
-            display: block;
-        }
-
-        .comment-list .new-comment .cancel {
-            float: right;
-            margin: 18px 30px 0 0;
-            font-size: 16px;
-            color: #969696;
-        }
-
-        .comments-placeholder {
-            padding: 20px 0 30px;
-        }
-
-        .comment-list .author {
-            margin-bottom: 15px;
-        }
-
-        .comments-placeholder .author .avatar {
-            cursor: default !important;
-            margin-right: 5px;
-            width: 38px;
-            height: 38px;
-            background-color: #eaeaea;
-            border-radius: 50%;
-        }
-
-        .comment-list .info {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .comments-placeholder .text {
-            width: 100%;
-            height: 16px;
-            margin: 0 0 8px !important;
-            background-color: #eaeaea;
-            animation: loading 1s ease-in-out infinite;
-            -webkit-animation: loading 1s ease-in-out infinite;
-            -moz-animation: loading 1s ease-in-out infinite;
-            -o-animation: loading 1s ease-in-out infinite;
-            -ms-animation: loading 1s ease-in-out infinite;
-        }
-
-        .comments-placeholder .tool-group {
-            margin: 0;
-            padding-top: 6px;
-            color: #eaeaea;
-            font-size: 15px;
-        }
-
-        .comments-placeholder .tool-group i {
-            margin-right: 5px;
-            vertical-align: middle;
-        }
-
-        .comments-placeholder .tool-group .zan {
-            height: 14px;
-            width: 40px;
-            margin-right: 10px;
-        }
-
-        .comments-placeholder .tool-group div {
-            display: inline-block;
-            vertical-align: middle;
-            background-color: #eaeaea;
-        }
-
-        .comments-placeholder .tool-group i {
-            margin-right: 5px;
-            vertical-align: middle;
-        }
-
-        .comment-list .normal-comment-list {
-            margin-top: 30px;
-        }
-
-        .comment-list .top-title {
-            padding-bottom: 20px;
-            font-size: 17px;
-            font-weight: 700;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .comment-list .normal-comment-list .top-title .close-btn {
-            margin-left: 10px;
-            font-size: 12px;
-            color: #969696;
-        }
-
-        .comment-list .normal-comment-list .no-comment {
-            width: 226px;
-            height: 92px;
-            margin: 30px auto 20px;
-            background: url(/images/icon_comment_no.png) no-repeat;
-            background-size: contain;
-        }
-
-         .comment-list .normal-comment-list .text {
-            margin-bottom: 50px;
-            text-align: center;
-            font-size: 12px;
-            color: #969696;
-        }
-
-        .expression {
-            position: relative;
-            display: inline-block;
-            margin-top: 10px;
-            width: 40px;
-            height: 40px;
-            margin-left: 24px;
-            cursor: pointer;
-            background-repeat: no-repeat;
-            background-image: url(/images/expression.png), none;
-        }
-
-        .fl {
-            float: left;
-        }
-        .emojicontainer ul {
-            width: 60%;
-            padding: 15px 5px 20px;
-            overflow: hidden;
-            list-style: none;
-            border: 1px solid #F0F1F1;
-            border-radius: 5px;
-            margin: 0 20px;
-            -webkit-box-shadow:0px 3px 3px #c8c8c8 ;
-            -moz-box-shadow:0px 3px 3px #c8c8c8 ;
-            box-shadow:0px 3px 3px #c8c8c8 ;
-        }
-
-        .emojicontainer li {
-            position: relative;
-            z-index: 8;
-            float: left;
-            width: 22px;
-            height: 22px;
-            padding: 4px;
-            margin-left: -1px;
-            margin-top: -1px;
-            border: 1px solid #e8e8e8;
-            cursor: pointer;
-        }
-
-        .emojicontainer li:hover {
-            z-index: 9;
-            border-color: #eb7350;
-        }
-    </style>
+    <style type="text/css"></style>
+    <link rel="stylesheet" th:href="@{/css/warmercomment.css}">
     <link rel="stylesheet" th:href="@{/emoji/css/emoji.css}">
     <link th:href="@{/editor/css/editormd.css}" rel="stylesheet"/>
     <link th:href="@{/editor/css/editormd.preview.min.css}" rel="stylesheet"/>
@@ -275,80 +37,7 @@
                     <textarea class="news_con">{{articleItem.content}}</textarea>
                 </div>
             </div>
-            <div style="padding: 20px">
-                <div id="comment-list" class="comment-list">
-                    <div @click="chooseclose($event)">
-                        <form class="new-comment">
-                            <a class="avatar">
-                                <img src="//upload.jianshu.io/users/upload_avatars/13381354/d0afebae-d62c-4c78-a538-093647bd833e?imageMogr2/auto-orient/strip|imageView2/1/w/114/h/114/format/webp">
-                            </a>
-                            <textarea placeholder="写下你的评论..." v-model="content"  contenteditable="true"></textarea>
-                            <div class="write-function-block">
-                                <div class="emoji-modal-wrap">
-                                    <span class="expression fl" @click="choose" id="choose"></span>
-                                </div>
-                                <div class="hint">Ctrl+Enter 发表</div>
-                                <a class="btn btn-send">发送</a>
-                                <a class="cancel">取消</a>
-                            </div>
-                        </form>
-                        <div  class="emojicontainer emojic" v-show="emojishow&&emojiimageList.length>0">
-                            <ul class="emojic">
-                                <li v-for="m in emojiimageList" class="emojic">
-                                    <span @click="select(m)"  :class="'emoji emoji_'+m"></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div> <!---->
-                    <div class="comments-placeholder" style="display: none;">
-                        <div class="author">
-                            <div class="avatar"></div>
-                            <div class="info">
-                                <div class="name"></div>
-                                <div class="meta"></div>
-                            </div>
-                        </div>
-                        <div class="text"></div>
-                        <div class="text animation-delay"></div>
-                        <div class="tool-group">
-                            <i class="iconfont ic-zan-active"></i>
-                            <div class="zan"></div>
-                            <i class="iconfont ic-list-comments"></i>
-                            <div class="zan"></div>
-                        </div>
-                    </div>
-                    <div id="normal-comment-list" class="normal-comment-list">
-                        <div><!---->
-                            <div>
-                                <div class="top-title"><span>评论</span>
-                                    <a class="close-btn" style="display: none;">关闭评论</a>
-                                </div>
-                                <div class="no-comment"></div>
-                                <div class="text">
-                                    智慧如你，不想<a style="color: orangered">发表一点想法</a>咩~
-                                </div>
-                            </div> <!---->
-                            <div class="comments-placeholder" style="display: none;">
-                                <div class="author">
-                                    <div class="avatar"></div>
-                                    <div class="info">
-                                        <div class="name"></div>
-                                        <div class="meta"></div>
-                                    </div>
-                                </div>
-                                <div class="text"></div>
-                                <div class="text animation-delay"></div>
-                                <div class="tool-group"><i class="iconfont ic-zan-active"></i>
-                                    <div class="zan"></div>
-                                    <i class="iconfont ic-list-comments"></i>
-                                    <div class="zan"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!---->
-                    <div><!----></div>
-                </div>
-            </div>
+            <warmer-comment-view v-bind:data="articleItem"></warmer-comment-view>
         </div>
     </div>
     <div class="sidebardetail" v-show="RelvantArticle.length>0">
@@ -379,11 +68,10 @@
     <script th:src="@{/editor/lib/raphael.min.js}"></script>
     <!-- <script th:src="@{/editor/lib/sequence-diagram.min.js}"></script> -->
     <script th:src="@{/editor/lib/underscore.min.js}"></script>
-    <!--	<script th:src="@{/js/changyan.js}" type="text/javascript"></script>-->
+    <script th:src="@{/js/components/appcommentview.js}" type="text/javascript"></script>
     <script th:src="@{/js/blog/articlenavbar.js}" type="text/javascript"></script>
     <script th:inline="javascript" th:src="@{/js/components/musicplayer.js}" type="text/javascript"></script>
     <script th:inline="javascript" type="text/javascript">
-
         var app = new Vue({
             el: '#app',
             data: {
@@ -414,32 +102,6 @@
                 scrollTop: 0,
                 defaultfollowUsPosition: 0,
                 followUsPosition: 0,
-                emojishow:false,
-                emojiItems:[],
-                content: '',
-                contentFormatStr: '',
-                emojiimageList:['angry', 'anguished', "astonished", "disappointed",
-                    "blush", "bowtie", "zan", "cold_sweat", "confounded", "confused",
-                    "cry", "crying_cat_face",
-                    "relieved", "satisfied", "point_up_2",
-                    "relaxed", "scream", "scream_cat", "see_no_evil",
-                    "dizzy_face", "expressionless", "fearful",
-                    "flushed", "frowning", "full_moon_with_face",
-                    "grin", "grinning", "heart_eyes", "heart_eyes_cat",
-                    "hushed", "innocent", "joy", "joy_cat",
-                    "kissing", "kissing_cat", "kissing_heart",
-                    "neutral_face", "open_mouth", "pensive", "persevere",
-                    "rage", "pouting_cat", "sleeping", "sleepy", "smile",
-                    "kissing_smiling_eyes", "laughing", "mask", "smile_cat", "smiling_imp", "smirk",
-                    "smiley", "smirk_cat", "sob", "stuck_out_tongue", "v", "weary", "wink", "worried", "yum",
-                    "sweat_smile", "sweat", "triumph", "unamused",
-                    "heart", "heavy_exclamation_mark",
-                    "stuck_out_tongue_closed_eyes", "stuck_out_tongue_winking_eye", "sun_with_face",
-                    "sunglasses", "tired_face",
-                    "pill", "point_up", "point_down",
-                    "point_left", "point_right", "poop", "pray", "raised_hands",
-                    "tada","balloon", "bicyclist", "beer",
-                    "bomb", "bouquet", "broken_heart", "clap", "crown", "fire", "ghost", "gift", "gift_heart"],
             },
             mounted() {
                 var _this = this;
@@ -477,45 +139,8 @@
                 this.initArticleModel();
                 this.getRelvantArticle();
                 this.getRandomBanner();
-                this.initemoji();
             },
             methods: {
-                initemoji(){
-                    var _this=this;
-                    this.emojiimageList.forEach(function(m){
-                        var tag='<span class="emoji emoji_'+m+'"></span>';
-                        _this.emojiItems.push(tag);
-                    })
-                },
-                choose() {
-                    this.emojishow=!this.emojishow;
-                },
-                chooseclose(event){
-                    if(event.target.id!=="choose"&&event.target.className.indexOf("emojic")==-1){
-                        this.emojishow=false;
-                    }
-                },
-                select(m){
-                    this.content+='['+m+']';
-                },
-                checkExist(item){
-                    return this.emojiItems.indexOf(item)>-1;
-                },
-                contentformat(str){
-                    var list = str.match(/\[*\w*\]/g);
-                    var filter = /[\[\]]/g;
-                    if(list){
-                        for(var i=0;i<list.length;i++){
-                            var item=list[i];
-                            var title= item.replace(filter,'');
-                            var tag='<span class="emoji emoji_'+title+'"></span>';
-                            if(this.checkExist(tag)){
-                                str=str.replace(item,tag);
-                            }
-                        }
-                    }
-                    return str;
-                },
                 getRandomBanner() {
                     var _this = this;
                     $.ajax({

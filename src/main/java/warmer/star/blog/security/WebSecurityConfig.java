@@ -43,6 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	WebSuccessHandler webSuccessHandler;
+	@Autowired
+	WebFailedHandler webFailedHandler;
 
 	//@Autowired
 	//TokenAuthorizationFilter tokenAuthorizationFilter;
@@ -64,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().rememberMe().tokenValiditySeconds(3600)
 				.and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)//在网站基本认证之前添加ssoFilter过滤器
-				.formLogin().loginPage("/login").successHandler(webSuccessHandler).defaultSuccessUrl("/home").failureUrl("/login?error=true").permitAll();
+				.formLogin().loginPage("/login").successHandler(webSuccessHandler).defaultSuccessUrl("/home").failureHandler(webFailedHandler).failureUrl("/login?error=true").permitAll();
 		//http.addFilterBefore(tokenAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 

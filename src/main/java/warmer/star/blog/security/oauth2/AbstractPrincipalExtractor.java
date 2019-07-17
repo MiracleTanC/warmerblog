@@ -7,15 +7,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import warmer.star.blog.config.WebAppConfig;
 import warmer.star.blog.mapper.UserMapper;
 import warmer.star.blog.mapper.UserRoleMapper;
 import warmer.star.blog.model.User;
 import warmer.star.blog.model.UserInfo;
 import warmer.star.blog.model.UserRole;
-import warmer.star.blog.util.AppUser;
-import warmer.star.blog.util.DateTimeHelper;
-import warmer.star.blog.util.RedisUtil;
-import warmer.star.blog.util.SpringUtils;
+import warmer.star.blog.util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +22,8 @@ import java.util.Map;
 public abstract class AbstractPrincipalExtractor implements PrincipalExtractor {
   @Autowired
   private RedisUtil redisUtil;
+  @Autowired
+  private WebAppConfig webAppConfig;
   //用户openid
   public abstract User getUserByOpenId(String openId);
   //用户角色，用“FACEBOOK"代表facebook用户，”GITHUB"代表"github用户
@@ -32,6 +32,10 @@ public abstract class AbstractPrincipalExtractor implements PrincipalExtractor {
   public Object extractPrincipal(Map<String, Object> map) {
     //得到对于的社交平台的openid
     String openId = map.get("node_id").toString();
+    String blogOwnerOpenId=webAppConfig.getOpenid();
+    if(StringUtil.isBlank(openId)||!blogOwnerOpenId.contains(openId)){
+      throw new UsernameNotFoundException("用户: " + map.get("login") + " 不属于该博客，拒绝登录");
+    }
     // Check if we've already registered this uer
     //System.out.println("openId: " + openId);
     User userModel = getUserByOpenId(openId);

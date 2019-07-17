@@ -1,0 +1,130 @@
+server:
+  port: 80
+  error:
+    whitelabel:
+      enabled: false  #禁用Whitelabel error page
+
+spring:
+  datasource:
+    url: jdbc:mysql://118.31.43.234:3306/warmerblog?useSSL=false
+    username: tan
+    password: miss1991
+    driver-class-name: com.mysql.jdbc.Driver
+  thymeleaf:
+    mode: HTML5
+  neo4j:
+      url: bolt://118.31.43.234:7687
+      #url: bolt://localhost:7687
+      username: neo4j
+      password: miss1991
+      #password: 123456
+  http:
+    encoding:
+      charset: utf-8
+    converters:
+      preferred-json-mapper: jackson
+  servlet:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 1000Mb
+  application:
+    name: warmer
+  #redis
+  redis:
+    # Redis服务器地址
+    host: 47.104.87.65 #默认就是localhost
+    #host: localhost
+    # Redis服务器连接端口
+    port: 6379 #默认
+    # Redis数据库索引（默认为0）
+    database: 0
+    # Redis服务器连接密码（默认为空）
+    password: miracletan2018.
+    # 连接超时时间（毫秒）
+    timeout: 10000
+    # Lettuce
+    lettuce:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: 10000
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池中的最小空闲连接
+        min-idle: 0
+      # 关闭超时时间
+      shutdown-timeout: 100
+  # rabbitMq
+  rabbitmq:
+    host: 127.0.0.1 #默认localhost
+    port: 5672 #默认
+    virtualHost: /
+    publisher-confirms: true
+    queues: topic.1,helloQuene.*,helloQuene
+    username: root
+    password: root
+  # rabbitMq
+  # mail
+  mail:
+    default-encoding: UTF-8
+    host: smtp.126.com
+    #端口
+    port: 25
+    #协议
+    protocol: smtp
+    #发送者的邮箱账号
+    username: warmercloud@126.com
+    #发送者的邮箱授权码,非登录密码
+    password: miracletan2018
+  # mail
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  #config-location: classpath:mybatis-conf.xml
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+    #org.springframework.security: DEBUG
+#--------七牛云配置
+qiniu:
+  access:
+    key: 2J5BOKpbxDlzkYVYZ5dwGS3jAevVmOJwcL3fIdpw
+  secret:
+    key: 2LXAQbFFbFR_I76bseNEmu-Sjnh4RRaSRsazX5Dj
+  bucket:
+    name: nndt
+    host:
+      name: file.miaoleyan.com
+  prefixName: /nndt
+#--------七牛云配置
+img:  #//如果是Windows情况下，格式是 D:\\blog\\image\\   linx 格式"/home/blog/image/";
+   location : /home/blog/image/
+file:
+  location : /home/kgmanager/csv/   #如果是Windows情况下，格式是 D:\\kgmanager\\csv\\   linx 格式"/home/kgmanager/csv/";
+#--------极验验证码配置
+geetest:
+  geetest_id: 86cc24901b72dce49d347561a548a84e
+  geetest_key: 08c31f60e8eed5e48a9ebd12d0ba1027
+  newfailback: true
+#--------极验验证码配置
+# Elasticsearch 6.3版本
+elasticsearch:
+  ip: 127.0.0.1
+  port: 9300
+  cluster:
+    name: elasticsearch
+  pool: 5
+# Elasticsearch
+github:
+  client:
+    clientId: 823ef50c1afb7f3f4951
+    clientSecret: 70ce1af440214e0d26c069d22e6b92307962ec91
+    accessTokenUri: https://github.com/login/oauth/access_token
+    userAuthorizationUri: https://github.com/login/oauth/authorize
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://api.github.com/user
+blogowner:
+  openid: MDQ6VXNlcjEzODY1Njk0
+

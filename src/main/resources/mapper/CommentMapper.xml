@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.CommentMapper">
+	<resultMap id="commentmodel" type="warmer.star.blog.model.Comment">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="useruuid" property="useruuid" jdbcType="VARCHAR"/>
+        <result column="touseruuid" property="touseruuid" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="usernickname" property="usernickname" jdbcType="VARCHAR"/>
+        <result column="tousernickname" property="tousernickname" jdbcType="VARCHAR"/>
+        <result column="userip" property="userip" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getCommentList" resultMap="commentmodel">
+        select * from comment where uuid=#{uuid}
+    </select>
+
+     <insert id="saveComment" parameterType="warmer.star.blog.model.Comment">
+		  insert into comment (uuid,useruuid,touseruuid,content,usernickname,tousernickname,userip)
+		  values (#{uuid},#{useruuid},#{touseruuid},#{content},#{usernickname},#{tousernickname},#{userip})
+		  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	          SELECT LAST_INSERT_ID()
+	      </selectKey>
+	</insert>
+	<update id="updateComment">
+		  update comment
+		  <set>
+			  content = #{content}
+		  </set>
+			where id = #{id}
+	</update>
+	<update id="deleteComment">
+		  delete from comment  where id = #{commentId}
+	</update>
+</mapper>
