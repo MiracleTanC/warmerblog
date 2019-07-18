@@ -13,11 +13,9 @@ spring:
   thymeleaf:
     mode: HTML5
   neo4j:
-      url: bolt://118.31.43.234:7687
-      #url: bolt://localhost:7687
+      url: bolt://localhost:7687
       username: neo4j
-      password: miss1991
-      #password: 123456
+      password: 123456
   http:
     encoding:
       charset: utf-8
@@ -32,14 +30,14 @@ spring:
   #redis
   redis:
     # Redis服务器地址
-    host: 47.104.87.65 #默认就是localhost
+    host: xxxxxxxxxx #默认就是localhost
     #host: localhost
     # Redis服务器连接端口
     port: 6379 #默认
     # Redis数据库索引（默认为0）
     database: 0
     # Redis服务器连接密码（默认为空）
-    password: miracletan2018.
+    password: xxxxxxxxx
     # 连接超时时间（毫秒）
     timeout: 10000
     # Lettuce
@@ -74,9 +72,9 @@ spring:
     #协议
     protocol: smtp
     #发送者的邮箱账号
-    username: warmercloud@126.com
+    username: xxxx@126.com
     #发送者的邮箱授权码,非登录密码
-    password: miracletan2018
+    password: xxxx
   # mail
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
@@ -89,14 +87,14 @@ logging:
 #--------七牛云配置
 qiniu:
   access:
-    key: 2J5BOKpbxDlzkYVYZ5dwGS3jAevVmOJwcL3fIdpw
+    key: xxxxxxxxxxxxxxxx
   secret:
-    key: 2LXAQbFFbFR_I76bseNEmu-Sjnh4RRaSRsazX5Dj
+    key: xxxxxxxxxxxx
   bucket:
-    name: nndt
+    name: xxx
     host:
-      name: file.miaoleyan.com
-  prefixName: /nndt
+      name: xxxx.com
+  prefixName: /xxx
 #--------七牛云配置
 img:  #//如果是Windows情况下，格式是 D:\\blog\\image\\   linx 格式"/home/blog/image/";
    location : /home/blog/image/
@@ -104,8 +102,8 @@ file:
   location : /home/kgmanager/csv/   #如果是Windows情况下，格式是 D:\\kgmanager\\csv\\   linx 格式"/home/kgmanager/csv/";
 #--------极验验证码配置
 geetest:
-  geetest_id: 86cc24901b72dce49d347561a548a84e
-  geetest_key: 08c31f60e8eed5e48a9ebd12d0ba1027
+  geetest_id: xxxxxxxxxxxxxxxxx
+  geetest_key: xxxxxxxxxxxxxxxx
   newfailback: true
 #--------极验验证码配置
 # Elasticsearch 6.3版本
@@ -118,13 +116,13 @@ elasticsearch:
 # Elasticsearch
 github:
   client:
-    clientId: 823ef50c1afb7f3f4951
-    clientSecret: 70ce1af440214e0d26c069d22e6b92307962ec91
-    accessTokenUri: https://github.com/login/oauth/access_token
-    userAuthorizationUri: https://github.com/login/oauth/authorize
+    clientId: xxxxxxxxxxxxx
+    clientSecret: xxxxxxxxxxxxxx
+    accessTokenUri: xxxxxxxxxxxxxxxxx
+    userAuthorizationUri: xxxxxxxxxxxxxxx
     clientAuthenticationScheme: form
   resource:
     userInfoUri: https://api.github.com/user
 blogowner:
-  openid: MDQ6VXNlcjEzODY1Njk0
+  openid: xxxxxxxxxxxx
 
