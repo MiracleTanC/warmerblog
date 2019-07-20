@@ -1,4 +1,4 @@
-package warmer.star.blog.model;
+package warmer.star.blog.dto;
 
 import java.io.Serializable;
 

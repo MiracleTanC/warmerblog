@@ -12,6 +12,7 @@ import warmer.star.blog.service.UserService;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,6 +29,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByOpenId(String openId) {
         return userMapper.getByOpenId(openId);
+    }
+
+    @Override
+    public List<User> getUserList() {
+        return userMapper.getUserList();
     }
 
     @Override

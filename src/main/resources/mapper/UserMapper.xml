@@ -15,6 +15,7 @@
         <result column="credential" property="credential" jdbcType="BOOLEAN"/>
         <result column="enabled" property="enabled" jdbcType="BOOLEAN"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <association property="userItem" column="id" jdbcType="INTEGER"  select="getUserById"/>
     </resultMap>
     <resultMap id="userInfoModel" type="warmer.star.blog.model.UserInfo">
         <id column="id" property="id" jdbcType="INTEGER"></id>
@@ -31,9 +32,35 @@
         <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
         <result column="workExperience" property="workExperience" jdbcType="VARCHAR"/>
     </resultMap>
+    <sql id="Where_Clause" >
+        <where >
+            1=1
+            <if test="name!= null and name!= ''">
+                and a.username like concat('%',#{name},'%')
+            </if>
+        </where>
+    </sql>
+    <select id="getUserList" resultMap="usermodel">
+        select a.* from user a
+        <include refid="Where_Clause" />
+        <choose>
+            <when test="sort ==0" >
+                order by a.createTime asc
+            </when>
+            <when test="sort == 1" >
+                order by a.createTime desc
+            </when>
+            <otherwise>
+                order by a.createTime desc
+            </otherwise>
+        </choose>
+    </select>
     <!--通过username获取user对象-->
     <select id="getUser" parameterType="String" resultMap="usermodel">
         SELECT * from user where username = #{username}
+    </select>
+    <select id="getUserById" parameterType="Integer" resultMap="userInfoModel">
+        SELECT * from userinfo where userid = #{id}
     </select>
     <select id="getByOpenId" parameterType="String" resultMap="usermodel">
         SELECT * from user where OpenId = #{openId}

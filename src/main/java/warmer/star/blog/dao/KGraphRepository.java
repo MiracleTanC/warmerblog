@@ -1,6 +1,6 @@
 package warmer.star.blog.dao;
 import warmer.star.blog.dto.GraphQuery;
-import warmer.star.blog.model.QAEntityItem;
+import warmer.star.blog.dto.QAEntityItem;
 import warmer.star.blog.util.GraphPageRecord;
 
 import java.util.HashMap;

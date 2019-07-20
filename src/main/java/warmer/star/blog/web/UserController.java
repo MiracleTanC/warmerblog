@@ -1,17 +1,25 @@
 package warmer.star.blog.web;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import warmer.star.blog.dto.UserQueryItem;
+import warmer.star.blog.model.User;
 import warmer.star.blog.model.UserInfo;
 import warmer.star.blog.service.UserService;
 import warmer.star.blog.util.AppUserUtil;
+import warmer.star.blog.util.PageRecord;
 import warmer.star.blog.util.R;
 import warmer.star.blog.util.RedisUtil;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -25,6 +33,28 @@ public class UserController extends BaseController {
 	@RequestMapping("/user")
 	//@PreAuthorize("hasRole('USER')")
 	public String index(Model model) {
+		return "user/index";
+	}
+	@RequestMapping("/user/getuserlist")
+	@ResponseBody
+	public R getUserlist(@RequestBody UserQueryItem query) {
+		PageHelper.startPage(query.getPageIndex(), query.getPageSize(), true);
+		List<User> userList = userService.getUserList();
+		PageInfo<User> pageInfo = new PageInfo<User>(userList);
+		long total = pageInfo.getTotal();
+		int pages = pageInfo.getPages();
+		PageRecord<User> pageRecord = new PageRecord<User>();
+		pageRecord.setRows(userList);
+		pageRecord.setCurrentPage(query.getPageIndex());
+		pageRecord.setCurrentPageSize(query.getPageSize());
+		pageRecord.setTotalCount(total);
+		pageRecord.setTotalPage(pages);
+		return R.success().put("data", pageRecord);
+	}
+
+	@RequestMapping("/user/detail")
+	//@PreAuthorize("hasRole('USER')")
+	public String Detail(Model model) {
 		String username = AppUserUtil.GetUserCode();
 		if (StringUtil.isEmpty(username)) {
 			return "redirect:/login";
@@ -39,9 +69,8 @@ public class UserController extends BaseController {
 			}
 		}
 		model.addAttribute("userModel", userInfo);
-		return "user/index";
+		return "user/detail";
 	}
-
 	@RequestMapping("/user/saveUserInfo")
 	@ResponseBody
 	public R saveUserInfo(UserInfo submitItem) {

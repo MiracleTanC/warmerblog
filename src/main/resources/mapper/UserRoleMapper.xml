@@ -11,7 +11,7 @@
     </resultMap>
     
     <select id="getUserRole" parameterType="Integer" resultMap="userrole">
-        SELECT * from sys_user_role where userid = #{userId}
+        SELECT * from userrole where userid = #{userId}
     </select>
 	
 </mapper>

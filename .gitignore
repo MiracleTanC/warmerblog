@@ -23,3 +23,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+*.yml
+*.yml
+*.yml
+src/main/resources/application.yml

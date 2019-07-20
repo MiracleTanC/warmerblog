@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import warmer.star.blog.config.WebAppConfig;
 import warmer.star.blog.dto.GraphQuery;
-import warmer.star.blog.model.QAEntityItem;
+import warmer.star.blog.dto.QAEntityItem;
 import warmer.star.blog.service.KGGraphService;
 import warmer.star.blog.service.KnowledgegraphService;
 import warmer.star.blog.util.*;

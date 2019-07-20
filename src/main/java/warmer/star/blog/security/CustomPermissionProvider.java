@@ -1,19 +1,18 @@
 package warmer.star.blog.security;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-
-import warmer.star.blog.model.Permission;
+import warmer.star.blog.model.Menu;
 import warmer.star.blog.model.RolePermission;
 import warmer.star.blog.service.RolePermissionService;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 @Component
 public class CustomPermissionProvider implements PermissionEvaluator {
@@ -34,10 +33,10 @@ public class CustomPermissionProvider implements PermissionEvaluator {
         	List<RolePermission> permissionList = rolePermissionService.getRolePermission(roleId);
             // 遍历permissionList
             for(RolePermission sysPermission : permissionList) {
-            	Permission permissionItem=sysPermission.getPermission();
+            	Menu permissionItem=sysPermission.getMenuItem();
                 // 如果访问的Url和权限用户符合的话，返回true
-                if(targetUrl.equals(sysPermission.getUrl())
-                        && permissionItem.getPermissioncode().equals(permission)) {
+                if(permissionItem!=null&&targetUrl.equals(permissionItem.getUrl())
+                        && sysPermission.getOperatecode().contains(permission.toString())) {
                     return true;
                 }
             }

@@ -6,19 +6,42 @@
 	<resultMap id="RolePermissionmodel" type="warmer.star.blog.model.RolePermission">
         <id column="id" property="id" jdbcType="INTEGER"></id>
         <result column="roleid" property="roleid" jdbcType="INTEGER"/>
-        <result column="url" property="url" jdbcType="VARCHAR"/>
-        <result column="permissionid" property="permissionid" jdbcType="INTEGER"/>
-        <association property="permission" column="permissionid" jdbcType="INTEGER" resultMap="permission"/>
+        <result column="menuid" property="menuid" jdbcType="INTEGER"/>
+        <result column="operatecode" property="operatecode" jdbcType="VARCHAR"/>
+        <association property="menuItem" column="menuid" jdbcType="INTEGER" resultMap="permission"/>
     </resultMap>
-   <resultMap id="permission" type="warmer.star.blog.model.Permission">
+    <resultMap id="permission" type="warmer.star.blog.model.Menu">
         <id column="id" property="id" jdbcType="INTEGER"></id>
-        <result column="permissioncode" property="permissioncode" jdbcType="VARCHAR"/>
-        <result column="permissionname" property="permissionname" jdbcType="VARCHAR"/>
-        <result column="createuser" property="createuser" jdbcType="INTEGER"/>
-        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="createon" property="createon" jdbcType="TIMESTAMP"/>
+        <result column="updateon" property="updateon" jdbcType="TIMESTAMP"/>
     </resultMap>
     <select id="getRolePermission" parameterType="Integer" resultMap="RolePermissionmodel">
-        SELECT *,p.permissioncode,p.permissionname from sys_role_permission rp
-        left join  sys_permission p on rp.permissionid=p.id  where roleid = #{roleId}
+        SELECT *,p.code,p.name,p.url from rolepermission rp
+        left join  menu p on rp.menuid=p.id  where rp.roleid = #{roleId}
     </select>
+    <select id="getAuthOperateList" resultType="map">
+		SELECT id,code,name,comment FROM authoperate
+	</select>
+    <insert id="savePermission" parameterType="java.util.List" >
+        insert into rolepermission (roleid,menuid,operatecode)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleid},#{item.menuid},#{item.operatecode})
+        </foreach>
+    </insert>
+    <delete id="deletePermission" parameterType="java.util.List">
+		  delete from rolepermission where roleid  in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+	</delete>
 </mapper>

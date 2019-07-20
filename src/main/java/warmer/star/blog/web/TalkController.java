@@ -53,7 +53,7 @@ public class TalkController extends BaseController {
 					String fileName = file.getOriginalFilename();
 					String url = "http://" + qiniuUploadService.uploadImage(file, fileName);
 					ELogFile eLogFile=new ELogFile();
-					eLogFile.seteLogId(log.getId());
+					eLogFile.setELogId(log.getId());
 					eLogFile.setFileurl(url);
 					eLogFile.setCreateTime(DateTimeHelper.getNowDate());
 					eLogFile.setUpdateTime(DateTimeHelper.getNowDate());

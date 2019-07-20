@@ -49,7 +49,7 @@ public class MenuController extends BaseController{
             menuModel.put("url", menu.getUrl());
             menuModel.put("icon", menu.getIcon());
             menuModel.put("parentId", menu.getPid());
-            List<HashMap<String, Object>> childrenList=getTree( menu.getId(),nodelList);
+            List<HashMap<String, Object>> childrenList=getTree(menu.getId(),nodelList);
             if(!childrenList.isEmpty())
             {
                 menuModel.put("children",childrenList);

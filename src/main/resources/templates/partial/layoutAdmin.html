@@ -10,7 +10,8 @@
 	<!-- default header name is X-CSRF-TOKEN spring security 避免ajax请求403-->
 	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 	<title>首页</title>
-	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
@@ -50,7 +51,7 @@
         </div>
 	<!-- 全局js -->
     <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>  
     <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
     <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js"></script>
@@ -81,7 +82,7 @@
 	    		{
 	    			title:'系统管理',icon:'el-icon-setting',linkUrl:'javascript:void(0);',active:false,childrens:[
 	    				{title:'菜单管理',icon:'',linkUrl:'/menu/index',active:false,childrens:[]},
-	    				{title:'资源管理',icon:'',linkUrl:'#',active:false,childrens:[]}
+	    				{title:'角色管理',icon:'',linkUrl:'/role/index',active:false,childrens:[]}
 	    			]
 	    		},
 	    		{

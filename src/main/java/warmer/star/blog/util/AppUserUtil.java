@@ -41,8 +41,8 @@ public class AppUserUtil {
 		return result;
 	}
 
-	public static long GetUserId() {
-		long result = 0;
+	public static Integer GetUserId() {
+		Integer result = 0;
 
 		try {
 			if (IsUserExsit()) {

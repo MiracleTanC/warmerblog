@@ -41,7 +41,7 @@ public class CategoryController extends BaseController {
 		for (Category cate : categoryList) {
 			HashMap<String, Object> cateModel = new HashMap<String, Object>();
 			cateModel.put("id", cate.getId().toString());
-			cateModel.put("code", cate.getcategoryCode());
+			cateModel.put("code", cate.getCategoryCode());
 			cateModel.put("name", cate.getCategoryName());
 			maps.add(cateModel);
 		}
@@ -56,11 +56,11 @@ public class CategoryController extends BaseController {
 		for (Category cate : categoryList) {
 			HashMap<String, Object> cateModel = new HashMap<String, Object>();
 			cateModel.put("id", cate.getId().toString());
-			cateModel.put("code", cate.getcategoryCode());
+			cateModel.put("code", cate.getCategoryCode());
 			cateModel.put("name", cate.getCategoryName());
 			cateModel.put("sort", cate.getSort());
 			cateModel.put("level", cate.getLevel().toString());
-			cateModel.put("isLeaf", cate.isParent == 0);
+			cateModel.put("isLeaf", cate.getIsParent() == 0);
 			cateModel.put("children", new ArrayList<HashMap<String, Object>>());
 			maps.add(cateModel);
 		}
@@ -76,12 +76,12 @@ public class CategoryController extends BaseController {
 	}
 	private List<HashMap<String, Object>> getTree(int parentId,List<Category> nodelList) {
 		List<HashMap<String, Object>> maps=new ArrayList<HashMap<String, Object>>();
-		Iterator<Category> treeList=nodelList.stream().filter(m->m.parentId==parentId).iterator();
+		Iterator<Category> treeList=nodelList.stream().filter(m->m.getParentId()==parentId).iterator();
 		 while (treeList.hasNext()) {  
 			 Category cate = (Category) treeList.next();  
 			 HashMap<String, Object> cateModel = new HashMap<String, Object>();
 				cateModel.put("id", cate.getId().toString());
-				cateModel.put("code", cate.getcategoryCode());
+				cateModel.put("code", cate.getCategoryCode());
 				//cateModel.put("value", cate.getcategoryCode());
 				cateModel.put("name", cate.getCategoryName());
 			 	cateModel.put("label", cate.getCategoryName());

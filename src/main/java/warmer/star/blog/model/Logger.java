@@ -1,8 +1,11 @@
 package warmer.star.blog.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+@Data
 public class Logger implements Serializable {
     private Long id;
     //客户端请求ip
@@ -27,102 +30,5 @@ public class Logger implements Serializable {
     private String httpStatusCode;
     //请求耗时秒单位
     private int timeConsuming;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getClientIp() {
-        return clientIp;
-    }
-
-    public void setClientIp(String clientIp) {
-        this.clientIp = clientIp;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getParamData() {
-        return paramData;
-    }
-
-    public void setParamData(String paramData) {
-        this.paramData = paramData;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
-    public String getReturnTime() {
-        return returnTime;
-    }
-
-    public void setReturnTime(String returnTime) {
-        this.returnTime = returnTime;
-    }
-
-    public String getReturnData() {
-        return returnData;
-    }
-
-    public void setReturnData(String returnData) {
-        this.returnData = returnData;
-    }
-
-    public String getHttpStatusCode() {
-        return httpStatusCode;
-    }
-
-    public void setHttpStatusCode(String httpStatusCode) {
-        this.httpStatusCode = httpStatusCode;
-    }
-
-    public int getTimeConsuming() {
-        return timeConsuming;
-    }
-
-    public void setTimeConsuming(int timeConsuming) {
-        this.timeConsuming = timeConsuming;
-    }
-
 
 }
