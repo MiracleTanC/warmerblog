@@ -8,6 +8,7 @@ import warmer.star.blog.model.Menu;
 import warmer.star.blog.service.MenuService;
 import warmer.star.blog.util.DateTimeHelper;
 import warmer.star.blog.util.R;
+import warmer.star.blog.util.RedisUtil;
 import warmer.star.blog.util.StringUtil;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ public class MenuController extends BaseController{
 
     @Autowired
     private MenuService menuService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @RequestMapping("/menu/index")
     public String index() {
@@ -29,13 +32,23 @@ public class MenuController extends BaseController{
     @RequestMapping("/menu/getmenulist")
     @ResponseBody
     public R getTreelist(int parentId) {
+        List<Object> maps=new ArrayList<>();
+        if(parentId==0){
+            maps=redisUtil.lGet("menuList",0,-1);
+            if(maps==null|| maps.size()==0){
+                List<Menu> data = menuService.getAll();
+                maps = getTree(parentId,data);
+                redisUtil.lSet("menuList",maps,3600);
+            }
+            return R.success().put("data", maps);
+        }
         List<Menu> data = menuService.getAll();
-        List<HashMap<String, Object>> maps = getTree(parentId,data);
+        maps = getTree(parentId,data);
         return R.success().put("data", maps);
 
     }
-    private List<HashMap<String, Object>> getTree(int parentId,List<Menu> nodelList) {
-        List<HashMap<String, Object>> maps=new ArrayList<HashMap<String, Object>>();
+    private List<Object> getTree(int parentId,List<Menu> nodelList) {
+        List<Object> maps=new ArrayList<Object>();
         Iterator<Menu> treeList=nodelList.stream().filter(m->m.getPid()==parentId).iterator();
         while (treeList.hasNext()) {
             Menu menu = (Menu) treeList.next();
@@ -49,7 +62,7 @@ public class MenuController extends BaseController{
             menuModel.put("url", menu.getUrl());
             menuModel.put("icon", menu.getIcon());
             menuModel.put("parentId", menu.getPid());
-            List<HashMap<String, Object>> childrenList=getTree(menu.getId(),nodelList);
+            List<Object> childrenList=getTree(menu.getId(),nodelList);
             if(!childrenList.isEmpty())
             {
                 menuModel.put("children",childrenList);
