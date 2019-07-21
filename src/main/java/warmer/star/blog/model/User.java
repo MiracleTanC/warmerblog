@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class User implements Serializable {
@@ -29,6 +30,8 @@ public class User implements Serializable {
     private Date createTime;    //创建时间
 
     private UserInfo userItem;
+
+    private List<UserRole> userRoles;
 
     public boolean isAccountNonExpired() {
         return expired;

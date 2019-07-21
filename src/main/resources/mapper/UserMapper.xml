@@ -16,6 +16,7 @@
         <result column="enabled" property="enabled" jdbcType="BOOLEAN"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
         <association property="userItem" column="id" jdbcType="INTEGER"  select="getUserById"/>
+        <collection property="userRoles" column="id" javaType="ArrayList"   select="warmer.star.blog.mapper.UserRoleMapper.getUserRole"></collection>
     </resultMap>
     <resultMap id="userInfoModel" type="warmer.star.blog.model.UserInfo">
         <id column="id" property="id" jdbcType="INTEGER"></id>

@@ -13,5 +13,14 @@
     <select id="getUserRole" parameterType="Integer" resultMap="userrole">
         SELECT * from userrole where userid = #{userId}
     </select>
-	
+    <insert id="saveUserRole" parameterType="java.util.List" >
+        insert into userrole (userid,roleid)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userid},#{item.roleid})
+        </foreach>
+    </insert>
+    <delete id="deleteUserRole" parameterType="java.util.List">
+        delete from userrole where userid =#{userId}
+    </delete>
 </mapper>
