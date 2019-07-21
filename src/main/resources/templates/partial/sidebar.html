@@ -20,12 +20,16 @@
                         </div>
                     </li>
                     <li v-if="menuList" v-for="item in menuList" :class="{'active':item.active}" @click="collapseClick(item)">
-                        <a :href="item.linkUrl"><i :class="item.icon"></i>
-                            <span class="nav-label">{{item.title}}</span>
+                        <a :href="item.url?item.url:'javascript:void(0)'">
+                            <i :class="item.icon"></i>
+                            <span class="nav-label">{{item.name}}</span>
                         </a>
-                        <ul :class="[item.active ? ' in' : '', 'nav nav-second-level collapse']" v-if="item.childrens" >
-                            <li  v-for="subitem in item.childrens" :class="{'active':subitem.active}">
-                            	<a class="J_menuItem" :href="subitem.linkUrl">{{subitem.title}}</a>
+                        <ul :class="[item.active ? ' in ' : '', 'nav nav-second-level collapse']" v-if="item.children" >
+                            <li  v-for="subitem in item.children" :class="{'active':subitem.active}">
+                            	<a class="J_menuItem" :href="subitem.url">
+                                    <i :class="subitem.icon"></i>
+                                    <span class="nav-label sd">{{subitem.name}}</span>
+                                </a>
                             </li>
                         </ul>
                     </li>
