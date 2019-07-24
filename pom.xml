@@ -267,6 +267,34 @@
 			<version>1.18.8</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>warmer.star</groupId>
+			<artifactId>lpsolve55j</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/lpsolve55j.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>warmer.star</groupId>
+			<artifactId>PKUSUMSUM</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/PKUSUMSUM.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>warmer.star</groupId>
+			<artifactId>stanford-ner</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/stanford-ner.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>warmer.star</groupId>
+			<artifactId>ansj_seg-5.0.2-all-in-one</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/ansj_seg-5.0.2-all-in-one.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

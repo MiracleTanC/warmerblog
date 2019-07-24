@@ -15,6 +15,7 @@ import warmer.star.blog.model.UserInfo;
 import warmer.star.blog.model.UserRole;
 import warmer.star.blog.service.UserRoleService;
 import warmer.star.blog.service.UserService;
+import warmer.star.blog.util.AppUser;
 import warmer.star.blog.util.Md5Util;
 import warmer.star.blog.util.RedisUtil;
 
@@ -35,9 +36,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
         String username = token.getName();
         //从数据库找到的用户
-        User user = null;
+        AppUser user = null;
         if (username != null) {
-        	 user = userService.getUserByUsername(username);
+        	User userItem = userService.getUserByUsername(username);
+        	if(userItem!=null){
+        	    user.setUserId(userItem.getId());
+        	    user.setEmail(userItem.getUserItem()!=null?userItem.getUserItem().getEmail():"");
+        	    user.setUsername(userItem.getUsername());
+            }
         }
         if (user == null) {
             throw new UsernameNotFoundException("用户名/密码无效");
@@ -59,7 +65,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Invalid username/password");
         }
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        List<UserRole> userRoleList=userRoleService.getUserRole(user.getId());
+        List<UserRole> userRoleList=userRoleService.getUserRole(user.getUserId());
         for (UserRole userRole : userRoleList) {
         	GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userRole.getRoleid().toString());
     		// 1：此处将权限信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority 对象。
@@ -69,7 +75,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         redisUtil.remove(username);
     	redisUtil.set(username, JSON.toJSONString(userInfo),3600);
         //授权
-        return new UsernamePasswordAuthenticationToken(userInfo, password, grantedAuthorities);
+        return new UsernamePasswordAuthenticationToken(user, password, grantedAuthorities);
     }
     @Override
     public boolean supports(Class<?> authentication) {

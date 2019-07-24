@@ -119,6 +119,9 @@
 	<select id="getImageById" resultMap="articleFile">
 		select articleId,coverImage,createTime,updateTime  from articlefile where articleId=#{articleId}
 	</select>
+	<select id="getNoAbstractArticleId" resultType="int">
+		select id  from article where abstractContent='' or abstractContent is null
+	</select>
     <select id="getById" resultMap="article">
         select 
         <include refid="Base_Column_List" />
@@ -177,6 +180,9 @@
 	</update>
 	<update id="deleteArticle">
 		  update article set  status=-1,updateTime=NOW() where id = #{articleId}
+	</update>
+	<update id="updateAbstractById">
+		  update article set  abstractContent=#{abstractContent},updateTime=NOW() where id = #{articleId}
 	</update>
 	<delete id="deleteContent">
 		delete from articledetail  where articleId = #{articleId}

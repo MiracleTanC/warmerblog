@@ -25,7 +25,7 @@
         <result column="updateon" property="updateon" jdbcType="TIMESTAMP"/>
     </resultMap>
     <select id="getRolePermission" parameterType="Integer" resultMap="RolePermissionmodel">
-        SELECT *,p.code,p.name,p.url from rolepermission rp
+        SELECT rp.roleid,rp.menuid,rp.operatecode,p.id,p.code,p.name,p.url from rolepermission rp
         left join  menu p on rp.menuid=p.id  where rp.roleid = #{roleId}
     </select>
     <select id="getAuthOperateList" resultType="map">

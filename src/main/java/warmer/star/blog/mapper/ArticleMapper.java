@@ -20,10 +20,12 @@ public interface ArticleMapper {
     List<ArticleFile> getImageById(@Param("articleId") int articleId);
     ArticleDetail getContentById(@Param("articleId") int articleId);
     ArticleItem getById(@Param("articleId") int articleId);
+    List<Integer> getNoAbstractArticleId();
     int saveArticle(ArticleSubmitItem submitItem);
     void saveContent(ArticleDetail submitItem);
     void saveImage(List<ArticleFile> fileList);
     boolean updateArticle(ArticleSubmitItem submitItem);
+    void updateAbstractById(@Param("articleId") int articleId,@Param("abstractContent") String abstractContent);
     boolean deleteArticle(@Param("articleId") int articleId);
     boolean deleteImage(@Param("articleId") int articleId);
     boolean deleteContent(@Param("articleId") int articleId);

@@ -4,8 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import warmer.star.blog.util.AutoAbstract.Tokenizer;
 
 import java.io.File;
+import java.io.IOException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -19,6 +21,12 @@ public class TestGetFile {
 			System.out.println(" "+list[i]);
 		}
 
+	}
+	@Test
+	public void Tokenizer() throws IOException {
+		String basePath="stopwords.txt";
+		Tokenizer tokenizer=new Tokenizer();
+		tokenizer.readStopwords(basePath);
 	}
 
 }

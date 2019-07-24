@@ -8,6 +8,7 @@
         <id column="id" property="id" jdbcType="INTEGER"></id>
         <result column="userid" property="userid" jdbcType="INTEGER"/>
         <result column="roleid" property="roleid" jdbcType="INTEGER"/>
+        <collection property="menus" column="roleid" javaType="ArrayList"   select="warmer.star.blog.mapper.RolePermissionMapper.getRolePermission"></collection>
     </resultMap>
     
     <select id="getUserRole" parameterType="Integer" resultMap="userrole">

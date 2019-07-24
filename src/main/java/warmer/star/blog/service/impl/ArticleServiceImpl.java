@@ -65,6 +65,11 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
+	public void updateAbstractById(int articleId, String abstractContent) {
+		articleMapper.updateAbstractById(articleId,abstractContent);
+	}
+
+	@Override
 	public boolean deleteArticle(int articleId) {
 		return articleMapper.deleteArticle(articleId);
 	}
@@ -106,6 +111,11 @@ public class ArticleServiceImpl implements ArticleService {
 		List<String> tids=Arrays.asList(tagIds.split(","));
 		String StrTagId=String.join(",",tids.stream().map(n->String.format("'%s'",n)).collect(Collectors.toList()));
 		return articleMapper.getRelvantArticle(articleId,StrTagId);
+	}
+
+	@Override
+	public List<Integer> getNoAbstractArticleId() {
+		return articleMapper.getNoAbstractArticleId();
 	}
 
 
