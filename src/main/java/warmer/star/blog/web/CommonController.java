@@ -16,9 +16,13 @@ public class CommonController {
     }
 
     /**
-     * 500 error
+     * 403 error
      * @return
      */
+    @RequestMapping("/403")
+    public String error403() {
+        return "common/403";
+    }
     @RequestMapping("/500")
     public String error500() {
         return "common/500";

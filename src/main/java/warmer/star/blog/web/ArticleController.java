@@ -41,12 +41,14 @@ public class ArticleController extends BaseController {
     private TagService tagService;
 
     @RequestMapping("/article")
+    @PreAuthorize("hasPermission('/article','select')")
     public String index(ArticleQueryItem queryItem) {
         return "article/index";
     }
 
     @RequestMapping("/getArticlelist")
     @ResponseBody
+    @PreAuthorize("hasPermission('/article','select')")
     public R getArticlelist(@RequestBody ArticleQueryItem query) {
         PageHelper.startPage(query.getPageIndex(), query.getPageSize(), true);
         // 获取文章列表
@@ -65,6 +67,7 @@ public class ArticleController extends BaseController {
 
     @RequestMapping("/getEsArticlelist")
     @ResponseBody
+    @PreAuthorize("hasPermission('/article','select')")
     public R getEsArticlelist(ArticleQueryItem query) {
         String index = "warmer_blog";
         String type = "article";

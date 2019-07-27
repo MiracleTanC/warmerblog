@@ -36,4 +36,5 @@ public class AppUser extends User {
     public AppUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
+
 }

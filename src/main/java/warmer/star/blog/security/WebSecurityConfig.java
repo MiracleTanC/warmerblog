@@ -1,14 +1,15 @@
 package warmer.star.blog.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +34,8 @@ import java.util.List;
 
 @Configuration
 @EnableOAuth2Client
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -59,9 +62,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().
 				antMatchers("/qiniu/**").
 				permitAll().and().headers().frameOptions().disable(); // 允许iframe
-		http.antMatcher("/**").authorizeRequests()
-				.antMatchers("/", "/kg/**",  "/login/github", "/login/**","/static/**").permitAll()
-				.antMatchers("/article/**", "/banner/**", "/category/**", "/partner/**", "/tag/**").authenticated().and().exceptionHandling()
+		http.authorizeRequests()
+				.antMatchers("/", "/kg/**",  "/login/github","/admin","/login", "/login/**","/static/**").permitAll()
+				.anyRequest().authenticated()
 				.and().logout().logoutUrl("/loginOut").logoutSuccessUrl("/")
 				.and().rememberMe().tokenValiditySeconds(3600)
 				.and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
@@ -72,7 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/**/*.*");
+		//忽略静态资源
+		web.ignoring().antMatchers("/static/**");
 	}
 
 	@Override
@@ -136,9 +140,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		filter.setAuthenticationSuccessHandler(webSuccessHandler);
 		OAuth2RestTemplate template = new OAuth2RestTemplate(client.getClient(), oauth2ClientContext);
 		filter.setRestTemplate(template);
-		UserInfoTokenServices tokenServices = new MyUserInfoTokenServices(client.getResource().getUserInfoUri(), client.getClient().getClientId(), principalExtractor);
-		tokenServices.setRestTemplate(template);
-		filter.setTokenServices(tokenServices);
 		return filter;
 	}
+
+
 }

@@ -2,6 +2,7 @@ package warmer.star.blog.web;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class HomeController extends BaseController {
 	@Autowired
 	private RedisUtil redisUtil;
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	@PreAuthorize("hasPermission('/home','select')")
 	public String home(Model model) {
 		return "admin/index";
 	}
