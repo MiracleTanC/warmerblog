@@ -16,7 +16,7 @@ import java.util.List;
 public class PartnerController extends BaseController {
 	@Autowired
 	private PartnerService partnerService;
-	@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_OWNER')")
 	@RequestMapping("/partner")
 	public String index() {
 		return "partner/index";

@@ -24,7 +24,7 @@ import java.util.List;
 public class BannerController extends BaseController {
 	@Autowired
 	private BannerService BannerService;
-	@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_OWNER')")
 	@RequestMapping("/banner")
 	public String index(BannerQueryItem queryItem) {
 		return "banner/index";

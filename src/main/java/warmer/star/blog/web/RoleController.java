@@ -32,7 +32,7 @@ public class RoleController extends  BaseController{
     @Autowired
     private PermissionService permissionService;
     @RequestMapping("/index")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String Index(Model model) {
         return "role/index";
     }
@@ -65,6 +65,8 @@ public class RoleController extends  BaseController{
                 roleService.updateRoleCode(roleId, code);
             }
         }else {
+            submitItem.setCreateuser(AppUserUtil.GetUserId());
+            submitItem.setCreatetime(DateTimeHelper.getNowDate());
             roleService.updateRole(submitItem);
         }
         return R.success("操作成功");

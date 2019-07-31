@@ -41,7 +41,7 @@ public class ArticleController extends BaseController {
     private TagService tagService;
 
     @RequestMapping("/article")
-    @PreAuthorize("hasPermission('/article','article_select') or hasRole('ROLE_admin')")
+    @PreAuthorize("hasPermission('/article','article_select') or hasRole('ROLE_ADMIN')")
     public String index(ArticleQueryItem queryItem) {
         return "article/index";
     }

@@ -34,7 +34,7 @@ public class UserController extends BaseController {
     private UserRoleService userRoleService;
     @Autowired
     private RedisUtil redisUtil;
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping("/user")
     public String index(Model model) {
         return "user/index";

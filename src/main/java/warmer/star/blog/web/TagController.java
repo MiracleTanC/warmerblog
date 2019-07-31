@@ -21,7 +21,7 @@ import java.util.List;
 public class TagController extends BaseController {
 	@Autowired
 	private TagService tagService;
-	@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_OWNER')")
 	@RequestMapping("/tag")
 	public String index() {
 		return "tag/index";

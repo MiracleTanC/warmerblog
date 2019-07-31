@@ -23,7 +23,7 @@ public class CategoryController extends BaseController {
 
 	@Autowired
 	private CategoryService categoryService;
-	@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_OWNER')")
 	@RequestMapping("/category")
 	public String index() {
 		return "category/index";

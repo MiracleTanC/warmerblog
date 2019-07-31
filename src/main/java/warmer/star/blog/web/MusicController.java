@@ -26,7 +26,7 @@ public class MusicController extends BaseController {
 	@Autowired
 	private MusicService musicService;
 	@RequestMapping("/music")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String index(MusicQueryItem queryItem) {
 		return "music/index";
 	}
