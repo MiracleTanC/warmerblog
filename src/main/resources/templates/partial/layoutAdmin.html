@@ -81,9 +81,39 @@
 	    	menuList:[]
 	      },
 	      created(){
-	    	  this.getMenuList();
+              this.menuList = JSON.parse(sessionStorage.getItem('menus'));
+              if(!this.menuList||this.menuList.length==0){
+                  this.getMenuList();
+              }else{
+                  this.initMenu();
+              }
 	      },
+          watch:{
+
+          },
 	      methods: {
+              initMenu(){
+	                var _this=this;
+                    _this.menuList = _this.menuList.map(item => {
+                        return {
+                            ...item,
+                            active: false
+                        };
+                    });
+                    var operurl=_this.currentUrl.split("/")[1];
+                    _this.menuList.forEach(function (item) {
+                        if(item.children){
+                            for(var i=0;i<item.children.length;i++){
+                                if(item.children[i].url==_this.currentUrl||item.children[i].url.indexOf(operurl)>-1){
+                                    item.active=true;
+                                    item.children[i].active=true;
+                                    return;
+                                }
+                                if(item.active) return;
+                            }
+                        }
+                    })
+                },
 	          collapseClick(item){
 	        	  //其他节点都折叠
 	        	  this.menuList.forEach(function (it) {
@@ -101,25 +131,9 @@
                       url: '/menu/getmenulist',
                       success: function (result) {
                           if(result.code==0){
-                              _this.menuList = result.data.map(item => {
-                                  return {
-                                      ...item,
-                                      active: false
-                                  };
-                              });
-                              var operurl=_this.currentUrl.split("/")[1];
-                              _this.menuList.forEach(function (item) {
-                                  if(item.children){
-                                      for(var i=0;i<item.children.length;i++){
-                                          if(item.children[i].url==_this.currentUrl||item.children[i].url.indexOf(operurl)>-1){
-                                              item.active=true;
-                                              item.children[i].active=true;
-                                              return;
-                                          }
-                                          if(item.active) return;
-                                      }
-                                  }
-                              })
+                              _this.menuList=result.data;
+                              sessionStorage.setItem('menus', JSON.stringify(_this.menuList));
+                              _this.initMenu();
                           }
                       }
                   })

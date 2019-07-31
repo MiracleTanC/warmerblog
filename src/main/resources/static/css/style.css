@@ -65,7 +65,8 @@ a:focus {
 }
 
 .nav>li.active>a {
-    color: rgb(191, 203, 217);
+    /*color: rgb(191, 203, 217);*/
+    color: #fff;
 }
 
 .navbar-default .nav>li>a:hover,
