@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="partial/layoutAdmin">
 <head>
-    <title>partner</title>
+    <title>角色管理</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
         .e-card{
@@ -21,9 +21,7 @@
                     <span>角色列表</span>
                     <el-button size="mini" v-loading="loading" style="float: right"  type="primary" @click="newRole">添加角色</el-button>
                 </div>
-                <el-table
-                        :data="rolelist"
-                        style="width: 100%">
+                <el-table :data="rolelist" style="width: 100%">
                     <el-table-column
                             prop="rolename"
                             label="角色名称"
@@ -33,9 +31,10 @@
                             prop="comment"
                             label="描述">
                     </el-table-column>
-                    <el-table-column fixed="right" label="操作" align="center" width="240">
+                    <el-table-column fixed="right" label="操作" align="center" >
                         <template slot-scope="scope">
                             <el-button type="primary" @click="editRole(scope.row)" size="mini">编辑</el-button>
+                            <el-button type="primary" @click="editMenu(scope.row)" size="mini">分配菜单</el-button>
                             <el-button type="primary" @click="editAuth(scope.row)" size="mini">分配权限</el-button>
                             <el-button type="danger" @click="removeRole(scope.row)" size="mini">删除</el-button>
                         </template>
@@ -48,29 +47,60 @@
                 <div slot="header" class="clearfix">
                     <span>权限分配</span>
                     <span style="float: right" v-if="roleItem.id>0">
-                        <el-button size="mini" v-loading="loading"  type="primary" @click="addAuth">{{defaultAction}}</el-button>
-                        <el-button size="mini" v-loading="loading" type="primary" @click="cancelAuth">取消</el-button>
+                        <template v-if="operateActiveName=='permission'">
+                            <el-button size="mini" v-loading="loading"  type="primary" @click="addAuth">{{defaultAction}}</el-button>
+                            <el-button size="mini" v-loading="loading" type="primary" @click="cancelAuth">取消</el-button>
+                        </template>
+                        <template v-else>
+                            <el-button size="mini" v-loading="loading"  type="primary" @click="addRoleMenu">{{defaultAction}}</el-button>
+                            <el-button size="mini" v-loading="loading" type="primary" @click="cancelRoleMenu">取消</el-button>
+                        </template>
                     </span>
                 </div>
-                <div style="padding: 20px">
-                    <div style="margin-bottom: 20px">
-                        <el-button size="mini" @click="checkAll">全选</el-button>
-                        <el-button size="mini" @click="clearAll">清空</el-button>
-                        <el-button size="mini" @click="collapseAll(true)">展开</el-button>
-                        <el-button size="mini" @click="collapseAll(false)">收起</el-button>
-                    </div>
-                    <div class="tree-con" style="max-height:500px;overflow-y: scroll;">
-                        <el-tree ref="mycatetree" node-key="id"
-                                 :data="data"
-                                 @check="treeNodeClick"
-                                 :check-on-click-node="true"
-                                 :props="treeData"
-                                 show-checkbox
-                                 :default-expanded-keys="ownmenudata"
-                                 :default-checked-keys="ownauthdata"
-                                 class="e-tree">
-                        </el-tree>
-                    </div>
+                <div>
+                    <el-tabs v-model="operateActiveName"  type="card">
+                        <el-tab-pane label="菜单分配" name="menu">
+                            <div style="margin-bottom: 20px">
+                                <el-button size="mini" @click="menuCheckAll">全选</el-button>
+                                <el-button size="mini" @click="menuClearAll">清空</el-button>
+                                <el-button size="mini" @click="menuCollapseAll(true)">展开</el-button>
+                                <el-button size="mini" @click="menuCollapseAll(false)">收起</el-button>
+                            </div>
+                            <div class="tree-con" style="max-height:500px;overflow-y: scroll;">
+                                <el-tree ref="mymenutree" node-key="id"
+                                         :data="menudata"
+                                         @check="menuNodeClick"
+                                         :check-on-click-node="true"
+                                         :props="treeData"
+                                         show-checkbox
+                                         :default-expanded-keys="roleSelectMenu"
+                                         :default-checked-keys="roleSelectMenu"
+                                         class="e-tree">
+                                </el-tree>
+                            </div>
+                        </el-tab-pane>
+                        <el-tab-pane label="资源分配" name="permission">
+                            <div style="margin-bottom: 20px">
+                                <el-button size="mini" @click="permissionCheckAll">全选</el-button>
+                                <el-button size="mini" @click="permissionClearAll">清空</el-button>
+                                <el-button size="mini" @click="permissionCollapseAll(true)">展开</el-button>
+                                <el-button size="mini" @click="permissionCollapseAll(false)">收起</el-button>
+                            </div>
+                            <div class="tree-con" style="max-height:500px;overflow-y: scroll;">
+                                <el-tree ref="mypermissiontree" node-key="id"
+                                         :data="permissiondata"
+                                         @check="permissionNodeClick"
+                                         :check-on-click-node="true"
+                                         :props="treeData"
+                                         show-checkbox
+                                         :default-expanded-keys="ownmenudata"
+                                         :default-checked-keys="ownauthdata"
+                                         class="e-tree">
+                                </el-tree>
+                            </div>
+                        </el-tab-pane>
+                    </el-tabs>
+
                 </div>
 
             </el-card>
@@ -83,6 +113,9 @@
                 <el-form label-width="120px">
                     <el-form-item label="角色名称">
                         <el-input placeholder="请输入新名称" v-model="roleItem.rolename" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="角色编码">
+                        <el-input placeholder="请输入新名称" v-model="roleItem.rolecode" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="描述">
                         <el-input type="textarea" class="article-textarea" :rows="1" placeholder="请输入 描述"
@@ -113,20 +146,25 @@
                     comment: '',
                     createuser: ''
                 },
-                data: [],
+                permissiondata: [],
+                menudata: [],
                 rolelist: [],
                 defaultAction: '保存',
                 opeateCode: 'auth',
                 treeData: {
                     label: 'name'
                 },
-                selectdata: [],
+                operateActiveName:'menu',
+                selectpermissiondata: [],
+                selectmenudata: [],
                 ownmenudata:[],
-                ownauthdata:[]
+                ownauthdata:[],
+                roleSelectMenu:[]
             },
             created() {
                 this.getAllRole();
-                this.loadCategory();
+                this.getpermissionlist();
+                this.getmenulist();
             },
             methods: {
                 getAllRole() {
@@ -231,15 +269,27 @@
                 },
                 editAuth(row) {
                     this.opeateCode = "auth";
+                    this.operateActiveName = "permission";
                     this.roleItem.id=row.id;
                     this.getroleauth();
-                    this.collapseAll(false);//收起节点
+                    this.permissionCollapseAll(false);//收起节点
+                },
+                editMenu(row){
+                    this.opeateCode = "auth";
+                    this.operateActiveName = "menu";
+                    this.roleItem.id=row.id;
+                    this.getrolemenu();
+                    this.menuCollapseAll(false);//收起节点
                 },
                 cancelAuth(){
                     this.roleItem.id=0;
-                    this.clearAll()
+                    this.permissionClearAll()
                 },
-                loadCategory() {
+                cancelRoleMenu(){
+                    this.roleItem.id=0;
+                    this.menuClearAll()
+                },
+                getpermissionlist() {
                     var _this = this;
                     var param = {parentId: 0};
                     $.ajax({
@@ -248,7 +298,24 @@
                         url: "/role/getpermissionlist",
                         success: function (result) {
                             if (result.code == 0) {
-                                _this.data = result.data;
+                                _this.permissiondata = result.data;
+                                _this.parentId = 0;
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                },
+                getmenulist() {
+                    var _this = this;
+                    var param = {parentId: 0};
+                    $.ajax({
+                        data: param,
+                        type: "POST",
+                        url: "/menu/getmenulist",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.menudata = result.data;
                                 _this.parentId = 0;
                             }
                         },
@@ -268,28 +335,9 @@
                     }
                     return result
                 },
-                treeNodeClick() {
-                    this.selectdata = [];
-                    var tree = this.$refs.mycatetree;
-                    var nodes = tree.store.getCheckedNodes();
-                    let menuidArray = nodes.filter(item => item.isoperate==1).map(item => {
-                        return item.pid;
-                    });
-                    menuidArray=this.distinct(menuidArray);
-                    for (var i = 0; i < menuidArray.length; i++) {
-                        var operateCodeArray = nodes.filter(item => item.pid == menuidArray[i]).map(item => {
-                            return item.code;
-                        });
-                        var menuid = menuidArray[i];
-                        var opcode = operateCodeArray.toString();
-                        this.selectdata.push({roleid:this.roleItem.id,menuid: menuid, operatecode: opcode})
-                    }
-
-                },
                 addAuth() {
-                    var data=this.selectdata;
                     $.ajax({
-                        data: JSON.stringify(this.selectdata),
+                        data: JSON.stringify(this.selectpermissiondata),
                         type: "POST",
                         url: '/role/saveauth',
                         dataType:"json",
@@ -308,33 +356,111 @@
                         }
                     });
                 },
-                checkAll(){
-                    this.$refs.mycatetree.setCheckedNodes(this.data);
-                    this.selectdata = [];
-                    var tree = this.$refs.mycatetree;
-                    var nodes = tree.store.getCheckedNodes();
-                    let menuidArray = nodes.filter(item => item.isoperate==1).map(item => {
-                        return item.pid;
+                addRoleMenu(){
+                    $.ajax({
+                        data: JSON.stringify(this.selectmenudata),
+                        type: "POST",
+                        url: '/role/saverolemenu',
+                        dataType:"json",
+                        contentType:"application/json",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                app.$message({
+                                    showClose: true,
+                                    message: result.msg,
+                                    type: 'success'
+                                });
+                            }
+                        },
+                        error: function (data) {
+
+                        }
                     });
-                    menuidArray=this.distinct(menuidArray);
-                    for (var i = 0; i < menuidArray.length; i++) {
-                        var operateCodeArray = nodes.filter(item => item.pid == menuidArray[i]).map(item => {
-                            return item.code;
+                },
+                permissionCheckAll(){
+                    if(this.$refs.mypermissiontree){
+                        this.$refs.mypermissiontree.setCheckedNodes(this.permissiondata);
+                        this.selectpermissiondata = [];
+                        var tree = this.$refs.mypermissiontree;
+                        var nodes = tree.store.getCheckedNodes();
+                        let permissionArray = nodes.filter(item => item.isoperate==1).map(item => {
+                            return item.id;
                         });
-                        var menuid = menuidArray[i];
-                        var opcode = operateCodeArray.toString();
-                        this.selectdata.push({roleid:this.roleItem.id,menuid: menuid, operatecode: opcode})
+                        permissionArray=this.distinct(permissionArray);
+                        for (var i = 0; i < permissionArray.length; i++) {
+                            var pStr = permissionArray[i];
+                            var permissionid=pStr.split("#")[1];
+                            this.selectpermissiondata.push({roleid:this.roleItem.id,permissionid: permissionid})
+                        }
+                        this.permissionCollapseAll(false);//收起节点
                     }
-                    this.collapseAll(false);//收起节点
                 },
-                clearAll(){
-                    this.$refs.mycatetree.setCheckedKeys([]);
-                    this.collapseAll(false);//收起节点
-                    this.selectdata=[];
+                permissionClearAll(){
+                    if(this.$refs.mypermissiontree){
+                        this.$refs.mypermissiontree.setCheckedKeys([]);
+                        this.permissionCollapseAll(false);//收起节点
+                        this.selectpermissiondata=[];
+                    }
                 },
-                collapseAll(status){
-                    for(var i=0;i<this.$refs.mycatetree.store._getAllNodes().length;i++){
-                        this.$refs.mycatetree.store._getAllNodes()[i].expanded=status;
+                permissionCollapseAll(status){
+                    if(this.$refs.mypermissiontree){
+                        for(var i=0;i<this.$refs.mypermissiontree.store._getAllNodes().length;i++){
+                            this.$refs.mypermissiontree.store._getAllNodes()[i].expanded=status;
+                        }
+                    }
+                },
+                permissionNodeClick() {
+                    if(this.$refs.mypermissiontree){
+                        this.selectpermissiondata = [];
+                        var tree = this.$refs.mypermissiontree;
+                        var nodes = tree.store.getCheckedNodes();
+                        let permissionArray = nodes.filter(item => item.isoperate==1).map(item => {
+                            return item.id;
+                        });
+                        permissionArray=this.distinct(permissionArray);
+                        for (var i = 0; i < permissionArray.length; i++) {
+                            var pStr = permissionArray[i];
+                            var permissionid=pStr.split("#")[1];
+                            this.selectpermissiondata.push({roleid:this.roleItem.id,permissionid: permissionid})
+                        }
+                    }
+                },
+                menuCheckAll(){
+                    if(this.$refs.mymenutree){
+                        this.$refs.mymenutree.setCheckedNodes(this.menudata);
+                        this.selectmenudata = [];
+                        var tree = this.$refs.mymenutree;
+                        var nodes = tree.store.getCheckedNodes();
+                        for (var i = 0; i < nodes.length; i++) {
+                            var menuid=nodes[i].id;
+                            this.selectmenudata.push({roleid:this.roleItem.id,menuid: menuid})
+                        }
+                        this.menuCollapseAll(false);//收起节点
+                    }
+                },
+                menuClearAll(){
+                    if(this.$refs.mymenutree){
+                        this.$refs.mymenutree.setCheckedKeys([]);
+                        this.menuCollapseAll(false);//收起节点
+                        this.selectpermissiondata=[];
+                    }
+                },
+                menuCollapseAll(status){
+                    if(this.$refs.mymenutree){
+                        for(var i=0;i<this.$refs.mymenutree.store._getAllNodes().length;i++){
+                            this.$refs.mymenutree.store._getAllNodes()[i].expanded=status;
+                        }
+                    }
+                },
+                menuNodeClick() {
+                    if(this.$refs.mymenutree){
+                        this.selectmenudata = [];
+                        var tree = this.$refs.mymenutree;
+                        var nodes = tree.store.getCheckedNodes();
+                        for (var i = 0; i < nodes.length; i++) {
+                            var menuid=nodes[i].id;
+                            this.selectmenudata.push({roleid:this.roleItem.id,menuid: menuid})
+                        }
                     }
                 },
                 getroleauth() {
@@ -348,8 +474,26 @@
                             if (result.code == 0) {
                                 _this.ownmenudata = result.data.ownMenu;
                                 _this.ownauthdata = result.data.ownAuth;
-                                var tree = _this.$refs.mycatetree;
+                                var tree = _this.$refs.mypermissiontree;
                                 tree.store.setCheckedKeys(_this.ownauthdata);
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                },
+                getrolemenu() {
+                    var _this = this;
+                    var param = {roleid: _this.roleItem.id};
+                    $.ajax({
+                        data: param,
+                        type: "POST",
+                        url: "/role/getrolemenu",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.roleSelectMenu = result.data.selectMenu;
+                                var tree = _this.$refs.mymenutree;
+                                tree.store.setCheckedKeys(_this.roleSelectMenu);
                             }
                         },
                         error: function (data) {

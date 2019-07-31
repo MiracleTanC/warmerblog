@@ -1,16 +1,14 @@
 package warmer.star.blog.web;
-import java.util.List;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-
 import warmer.star.blog.dto.BannerItem;
 import warmer.star.blog.dto.BannerQueryItem;
 import warmer.star.blog.dto.BannerSubmitItem;
@@ -19,12 +17,14 @@ import warmer.star.blog.util.DateTimeHelper;
 import warmer.star.blog.util.PageRecord;
 import warmer.star.blog.util.R;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/") 
 public class BannerController extends BaseController {
 	@Autowired
 	private BannerService BannerService;
-
+	@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
 	@RequestMapping("/banner")
 	public String index(BannerQueryItem queryItem) {
 		return "banner/index";

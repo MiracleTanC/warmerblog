@@ -99,11 +99,15 @@ public class AppUserUtil {
 		List<UserRole> userRoles=AppUserUtil.GetUserRoles();
 		List<Integer> uerMeunIds=new ArrayList<>();
 		userRoles.forEach(m->{
-			if(m.getMenus()!=null&&m.getMenus().size()>0){
-				m.getMenus().forEach(n->{
-					if(!uerMeunIds.contains(n.getId())){
-						uerMeunIds.add(n.getId());
+			if(m.getRolepermission()!=null&&m.getRolepermission().size()>0){
+				m.getRolepermission().forEach(n->{
+					if(n.getPermission()!=null){
+						Integer menuId=n.getPermission().getMenuid();
+						if(!uerMeunIds.contains(menuId)){
+							uerMeunIds.add(menuId);
+						}
 					}
+
 				});
 			}
 		});

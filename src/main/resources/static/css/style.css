@@ -71,7 +71,8 @@ a:focus {
 .navbar-default .nav>li>a:hover,
 .navbar-default .nav>li>a:focus {
     background-color: #131e26;
-    color: white;
+    /*color: white;*/
+    color: #1E90FF;
 }
 
 .nav .open>a,

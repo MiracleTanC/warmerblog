@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +34,8 @@ public class UserController extends BaseController {
     private UserRoleService userRoleService;
     @Autowired
     private RedisUtil redisUtil;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/user")
-    //@PreAuthorize("hasRole('USER')")
     public String index(Model model) {
         return "user/index";
     }

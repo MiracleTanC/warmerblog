@@ -13,7 +13,8 @@ public class UserRole implements Serializable {
     private Integer userid;  
     
     private Integer roleid;
+    private Role roleItem;
 
-    private List<Menu> menus;
+    private List<RolePermission> rolepermission;
 
 }

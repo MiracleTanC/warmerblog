@@ -1,16 +1,15 @@
 package warmer.star.blog.web;
 
-import java.util.List;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import warmer.star.blog.dto.MusicQueryItem;
 import warmer.star.blog.model.Music;
 import warmer.star.blog.service.MusicService;
@@ -18,8 +17,7 @@ import warmer.star.blog.util.DateTimeHelper;
 import warmer.star.blog.util.PageRecord;
 import warmer.star.blog.util.R;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -28,6 +26,7 @@ public class MusicController extends BaseController {
 	@Autowired
 	private MusicService musicService;
 	@RequestMapping("/music")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String index(MusicQueryItem queryItem) {
 		return "music/index";
 	}

@@ -1,12 +1,16 @@
 package warmer.star.blog.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import warmer.star.blog.model.Menu;
 import warmer.star.blog.service.MenuService;
-import warmer.star.blog.util.*;
+import warmer.star.blog.util.DateTimeHelper;
+import warmer.star.blog.util.R;
+import warmer.star.blog.util.RedisUtil;
+import warmer.star.blog.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +23,7 @@ public class MenuController extends BaseController{
     private MenuService menuService;
     @Autowired
     private RedisUtil redisUtil;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/menu/index")
     public String index() {
         return "menu/index";
@@ -37,12 +41,12 @@ public class MenuController extends BaseController{
                 maps = getTree(parentId,data);
                 redisUtil.lSet("menuList",maps,3600);
             }
-            maps=AppUserUtil.filterUserRole(maps);
+            //maps=AppUserUtil.filterUserRole(maps);
             return R.success().put("data", maps);
         }
         List<Menu> data = menuService.getAll();
         maps = getTree(parentId,data);
-        maps=AppUserUtil.filterUserRole(maps);
+        //maps=AppUserUtil.filterUserRole(maps);
         return R.success().put("data", maps);
 
     }

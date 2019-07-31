@@ -11,7 +11,7 @@ import warmer.star.blog.interceptor.LoggerInterceptor;
 public class MyInterceptorConfig extends WebMvcConfigurationSupport {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/**").excludePathPatterns("/static/");//有多个拦截器继续add进去
+		registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/**").excludePathPatterns("/static/**");//有多个拦截器继续add进去
 
 		super.addInterceptors(registry);
 	}

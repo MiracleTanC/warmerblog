@@ -62,9 +62,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().
 				antMatchers("/qiniu/**").
 				permitAll().and().headers().frameOptions().disable(); // 允许iframe
-		http.authorizeRequests()
-				.antMatchers("/", "/kg/**",  "/login/github","/admin","/login", "/login/**","/static/**").permitAll()
-				.anyRequest().authenticated()
+		http.authorizeRequests().antMatchers("/", "/kg/**",  "/login/github","/admin","/login", "/login/**","/static/**").permitAll()
+				.antMatchers("/article/**", "/banner/**", "/category/**", "/partner/**", "/tag/**").authenticated()
+				//.anyRequest().authenticated()
 				.and().logout().logoutUrl("/loginOut").logoutSuccessUrl("/")
 				.and().rememberMe().tokenValiditySeconds(3600)
 				.and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())

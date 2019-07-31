@@ -2,10 +2,11 @@ package warmer.star.blog.mapper;
 
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import warmer.star.blog.model.Role;
 
 import java.util.List;
-
+@Repository
 public interface RoleMapper {
 
     Role getRole(@Param("roleId") Integer roleId);

@@ -1,17 +1,14 @@
 package warmer.star.blog.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import warmer.star.blog.model.Menu;
-import warmer.star.blog.model.Role;
-import warmer.star.blog.model.RolePermission;
-import warmer.star.blog.service.MenuService;
-import warmer.star.blog.service.RolePermissionService;
-import warmer.star.blog.service.RoleService;
+import warmer.star.blog.model.*;
+import warmer.star.blog.service.*;
 import warmer.star.blog.util.AppUserUtil;
 import warmer.star.blog.util.DateTimeHelper;
 import warmer.star.blog.util.R;
@@ -30,7 +27,12 @@ public class RoleController extends  BaseController{
     private MenuService menuService;
     @Autowired
     private RolePermissionService rolePermissionService;
+    @Autowired
+    private RoleMenuService roleMenuService;
+    @Autowired
+    private PermissionService permissionService;
     @RequestMapping("/index")
+    @PreAuthorize("hasRole('ADMIN')")
     public String Index(Model model) {
         return "role/index";
     }
@@ -51,12 +53,17 @@ public class RoleController extends  BaseController{
     @ResponseBody
     public R saveRole(Role submitItem) {
         if(submitItem.getId()==null||submitItem.getId()==0) {
+            if(StringUtil.isNotBlank(submitItem.getRolecode())){
+                submitItem.setRolecode(submitItem.getRolecode().toUpperCase());
+            }
             submitItem.setCreateuser(AppUserUtil.GetUserId());
             submitItem.setCreatetime(DateTimeHelper.getNowDate());
             roleService.saveRole(submitItem);
-            Integer roleId = submitItem.getId();
-            String code = String.format("%04d", roleId);
-            roleService.updateRoleCode(roleId, code);
+            if(StringUtil.isBlank(submitItem.getRolecode())){
+                Integer roleId = submitItem.getId();
+                String code = String.format("%04d", roleId);
+                roleService.updateRoleCode(roleId, code);
+            }
         }else {
             roleService.updateRole(submitItem);
         }
@@ -66,12 +73,12 @@ public class RoleController extends  BaseController{
     @ResponseBody
     public R getTreelist(int parentId) {
         List<Menu> data = menuService.getAll();
-        List<Map<String,String>> oplist=rolePermissionService.getAuthOperateList();
+        List<Permission> oplist=permissionService.getList();
         List<HashMap<String, Object>> maps = getTree(parentId,data,oplist);
         return R.success().put("data", maps);
 
     }
-    private List<HashMap<String, Object>> getTree(int parentId,List<Menu> nodelList,List<Map<String,String>> oplist) {
+    private List<HashMap<String, Object>> getTree(int parentId,List<Menu> nodelList,List<Permission> oplist) {
         List<HashMap<String, Object>> maps=new ArrayList<HashMap<String, Object>>();
         Iterator<Menu> treeList=nodelList.stream().filter(m->m.getPid()==parentId).iterator();
         while (treeList.hasNext()) {
@@ -89,21 +96,24 @@ public class RoleController extends  BaseController{
             menuModel.put("parentId", menu.getPid());
             List<HashMap<String, Object>> childrenList=getTree(menu.getId(),nodelList,oplist);
             if(childrenList.isEmpty()){
+                List<Permission> permissionList=oplist.stream().filter(n->n.getMenuid().equals(menu.getId())).collect(Collectors.toList());
                 //增加操作权限
-                oplist.forEach(n->{
-                    String operateId=menu.getId()+"#"+String.valueOf(n.get("code"));
-                    String operateName=n.get("name");
-                    String operateCode=n.get("code");
-                    HashMap<String, Object> operateModel = new HashMap<String, Object>();
-                    operateModel.put("id", operateId);
-                    operateModel.put("isoperate", 1);
-                    operateModel.put("pid", menu.getId());
-                    operateModel.put("code", operateCode);
-                    operateModel.put("name", operateName);
-                    operateModel.put("level", menu.getLevel()+1);
-                    operateModel.put("parentId", menu.getId());
-                    childrenList.add(operateModel);
-                });
+                if(permissionList!=null&permissionList.size()>0){
+                    permissionList.forEach(n->{
+                        String operateId=menu.getId()+"#"+n.getId()+"#"+n.getCode();
+                        String operateName=n.getName();
+                        String operateCode=n.getCode();
+                        HashMap<String, Object> operateModel = new HashMap<String, Object>();
+                        operateModel.put("id", operateId);
+                        operateModel.put("isoperate", 1);
+                        operateModel.put("pid", menu.getId());
+                        operateModel.put("code", operateCode);
+                        operateModel.put("name", operateName);
+                        operateModel.put("level", menu.getLevel()+1);
+                        operateModel.put("parentId", menu.getId());
+                        childrenList.add(operateModel);
+                    });
+                }
             }
             menuModel.put("children",childrenList);
             menuModel.put("isLeaf", childrenList.isEmpty()?true:false);
@@ -132,6 +142,27 @@ public class RoleController extends  BaseController{
         }
         return R.error("操作失败");
     }
+    @RequestMapping("/saverolemenu")
+    @ResponseBody
+    public R saveRoleMenu(@RequestBody List<RoleMenu> submitItem) {
+        boolean result=false;
+        try {
+            if(submitItem!=null&&submitItem.size()>0){
+                List<String> roleIds=submitItem.stream().map(n->n.getRoleid().toString()).distinct().collect(Collectors.toList());
+                rolePermissionService.deletePermission(roleIds);
+                roleMenuService.saveRoleMenu(submitItem);
+                result=true;
+            }
+        } catch (Exception e) {
+            log.error("操作失败:{0}", e);
+            log.error(e.getMessage());
+            result=false;
+        }
+        if(result){
+            return R.success("操作成功");
+        }
+        return R.error("操作失败");
+    }
     @RequestMapping("/getroleauth")
     @ResponseBody
     public R getRoleAuth(Integer roleid) {
@@ -141,15 +172,14 @@ public class RoleController extends  BaseController{
             List<RolePermission> rolePermissions=rolePermissionService.getRolePermission(roleid);
             if(rolePermissions!=null&&rolePermissions.size()>0){
                 rolePermissions.forEach(n->{
-                    ownMenu.add(String.valueOf(n.getMenuid()));
-                    String operateCode=n.getOperatecode();
-                    if(StringUtil.isNotBlank(operateCode)){
-                        String[] ops=operateCode.split(",");
-                        if(ops.length>0){
-                            for(String c:ops){
-                                String operateId=n.getMenuid()+"#"+c;
-                                ownAuth.add(operateId);
-                            }
+                    if(n.getPermission()!=null){
+                        String menuId=String.valueOf(n.getPermission().getMenuid());
+                        if(!ownMenu.contains(menuId)){
+                            ownMenu.add(menuId);
+                        }
+                        String authId=String.valueOf(n.getPermission().getMenuid()+"#"+n.getPermissionid()+"#"+n.getPermission().getCode());
+                        if(!ownAuth.contains(authId)){
+                            ownAuth.add(authId);
                         }
                     }
                 });
@@ -157,6 +187,33 @@ public class RoleController extends  BaseController{
             Map<String,Object> mp=new HashMap<>();
             mp.put("ownMenu",ownMenu);
             mp.put("ownAuth",ownAuth);
+            return R.success().put("data", mp);
+
+        } catch (Exception e) {
+            log.error("操作失败:{0}", e);
+            log.error(e.getMessage());
+        }
+
+        return R.error("操作失败");
+    }
+    @RequestMapping("/getrolemenu")
+    @ResponseBody
+    public R getRoleMenu(Integer roleid) {
+        try {
+            List<String> ownMenu=new ArrayList<>();
+            List<RoleMenu> roleMenus=roleMenuService.getRoleMenu(roleid);
+            if(roleMenus!=null&&roleMenus.size()>0){
+                roleMenus.forEach(n->{
+                    if(n.getMenuItem()!=null){
+                        String menuId=String.valueOf(n.getMenuid());
+                        if(!ownMenu.contains(menuId)){
+                            ownMenu.add(menuId);
+                        }
+                    }
+                });
+            }
+            Map<String,Object> mp=new HashMap<>();
+            mp.put("selectMenu",ownMenu);
             return R.success().put("data", mp);
 
         } catch (Exception e) {

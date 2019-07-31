@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.RoleMenuMapper">
+	<resultMap id="RoleMenuModel" type="warmer.star.blog.model.RoleMenu">
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="roleid" property="roleid" jdbcType="INTEGER"/>
+        <result column="menuid" property="menuid" jdbcType="INTEGER"/>
+        <association property="menuItem" column="menuid" jdbcType="INTEGER" resultMap="menu"/>
+    </resultMap>
+    <resultMap id="menu" type="warmer.star.blog.model.Menu">
+        <id column="id_m" property="id" jdbcType="INTEGER"></id>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="createon" property="createon" jdbcType="TIMESTAMP"/>
+        <result column="updateon" property="updateon" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="getRoleMenu" parameterType="Integer" resultMap="RoleMenuModel">
+        SELECT rm.roleid,rm.menuid,m.id as id_m,m.code,m.name,m.url from rolemenu rm
+        left join  menu m on rm.menuid=m.id  where rm.roleid = #{roleId}
+    </select>
+    <insert id="saveRoleMenu" parameterType="java.util.List" >
+        insert into rolemenu (roleid,menuid)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleid},#{item.menuid})
+        </foreach>
+    </insert>
+    <delete id="deleteRoleMenu" parameterType="java.util.List">
+		  delete from rolemenu where roleid  in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+	</delete>
+</mapper>

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ public class TalkController extends BaseController {
 	private ElogService elogService;
 	@Autowired
 	private QiniuUploadService qiniuUploadService;
-
+	@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
 	@RequestMapping(value = "/talk", method = RequestMethod.GET)
 	public String talk(Model model) {
 		return "talk/index";

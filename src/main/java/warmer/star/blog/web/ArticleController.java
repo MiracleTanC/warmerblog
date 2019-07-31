@@ -41,14 +41,13 @@ public class ArticleController extends BaseController {
     private TagService tagService;
 
     @RequestMapping("/article")
-    @PreAuthorize("hasPermission('/article','select')")
+    @PreAuthorize("hasPermission('/article','article_select') or hasRole('ROLE_admin')")
     public String index(ArticleQueryItem queryItem) {
         return "article/index";
     }
 
     @RequestMapping("/getArticlelist")
     @ResponseBody
-    @PreAuthorize("hasPermission('/article','select')")
     public R getArticlelist(@RequestBody ArticleQueryItem query) {
         PageHelper.startPage(query.getPageIndex(), query.getPageSize(), true);
         // 获取文章列表
@@ -67,7 +66,7 @@ public class ArticleController extends BaseController {
 
     @RequestMapping("/getEsArticlelist")
     @ResponseBody
-    @PreAuthorize("hasPermission('/article','select')")
+
     public R getEsArticlelist(ArticleQueryItem query) {
         String index = "warmer_blog";
         String type = "article";
@@ -93,7 +92,6 @@ public class ArticleController extends BaseController {
         return R.success().put("data", "");
     }
     @RequestMapping("/article/edit/{t}/{articleId}")
-    @PreAuthorize("hasPermission('/article/edit','create')")
     public String edit(@PathVariable("t") Integer t, @PathVariable("articleId") Integer articleId, Model model) {
         ArticleItem articleItem = new ArticleItem();
         if (articleId != null && articleId != 0) {
@@ -112,7 +110,7 @@ public class ArticleController extends BaseController {
 
     @RequestMapping("/article/deleteArticle")
     @ResponseBody
-    @PreAuthorize("hasPermission('/article/deleteArticle','delete')")
+    @PreAuthorize("hasPermission('/article/deleteArticle','article_delete')")
     public R deleteArticle(int articleId) {
         boolean result = false;
         try {
@@ -130,7 +128,7 @@ public class ArticleController extends BaseController {
 
     @RequestMapping("/article/saveArticle")
     @ResponseBody
-    @PreAuthorize("hasPermission('/article/edit','create')")
+    @PreAuthorize("hasPermission('/article/saveArticle','article_edit')")
     public R saveArticle(ArticleSubmitItem submitItem) {
         boolean result = false;
         try {
