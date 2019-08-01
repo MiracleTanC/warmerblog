@@ -78,10 +78,12 @@
 	    el: '#navBar',
 	    data:{
 	    	currentUrl:[[${#request.getRequestURI()}]],
-	    	menuList:[]
+	    	menuList:[],
+            userCode:[[${session.SPRING_SECURITY_CONTEXT.authentication.principal.userCode}]]
 	      },
 	      created(){
-              this.menuList = JSON.parse(sessionStorage.getItem('menus'));
+              var key=this.userCode+"_menus";
+              this.menuList = JSON.parse(sessionStorage.getItem(key));
               if(!this.menuList||this.menuList.length==0){
                   this.getMenuList();
               }else{
@@ -132,7 +134,8 @@
                       success: function (result) {
                           if(result.code==0){
                               _this.menuList=result.data;
-                              sessionStorage.setItem('menus', JSON.stringify(_this.menuList));
+                              var key=_this.userCode+"_menus";
+                              sessionStorage.setItem(key, JSON.stringify(_this.menuList));
                               _this.initMenu();
                           }
                       }

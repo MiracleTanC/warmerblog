@@ -9,6 +9,7 @@
         <result column="roleid" property="roleid" jdbcType="INTEGER"/>
         <association property="roleItem" column="roleid" jdbcType="INTEGER" resultMap="rolemodel"/>
         <collection property="rolepermission" column="roleid" javaType="ArrayList"   select="warmer.star.blog.mapper.RolePermissionMapper.getRolePermission"></collection>
+        <collection property="roleMenu" column="roleid" javaType="ArrayList"   select="warmer.star.blog.mapper.RoleMenuMapper.getRoleMenu"></collection>
     </resultMap>
     <resultMap id="rolemodel" type="warmer.star.blog.model.Role">
         <id column="id_r" property="id" jdbcType="INTEGER"></id>

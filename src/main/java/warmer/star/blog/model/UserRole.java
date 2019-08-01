@@ -16,5 +16,6 @@ public class UserRole implements Serializable {
     private Role roleItem;
 
     private List<RolePermission> rolepermission;
+    private List<RoleMenu> roleMenu;
 
 }
