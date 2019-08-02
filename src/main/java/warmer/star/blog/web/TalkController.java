@@ -33,7 +33,7 @@ public class TalkController extends BaseController {
 	private ElogService elogService;
 	@Autowired
 	private QiniuUploadService qiniuUploadService;
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_OWNER')")
+	@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
 	@RequestMapping(value = "/talk", method = RequestMethod.GET)
 	public String talk(Model model) {
 		return "talk/index";

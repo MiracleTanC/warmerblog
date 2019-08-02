@@ -4,12 +4,18 @@ package warmer.star.blog.util;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import warmer.star.blog.model.Permission;
+import warmer.star.blog.model.Role;
+import warmer.star.blog.model.RolePermission;
 import warmer.star.blog.model.UserRole;
+import warmer.star.blog.service.RolePermissionService;
+import warmer.star.blog.service.RoleService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AppUserUtil {
 	public static String GetUserCode() {
@@ -157,5 +163,51 @@ public class AppUserUtil {
 
 		return result;
 
+	}
+
+	/**
+	 * 获取角色权限
+	 * @param roleCode
+	 * @return
+	 */
+	public static  List<HashMap<String, String>> getRolePermission(String roleCode) {
+		List<HashMap<String, String>> permissions = new ArrayList<>();
+		RedisUtil redisUtil=SpringUtils.getBean("redisUtil",RedisUtil.class);
+		if (StringUtil.isNotBlank(roleCode)) {
+			String key = "ROLE_" + roleCode;
+			Object perm = redisUtil.get(key);
+			if (perm != null) {
+				permissions = (List<HashMap<String, String>>) perm;
+			} else {
+				RoleService roleService=SpringUtils.getBean("roleServiceImpl",RoleService.class);
+				RolePermissionService rolePermissionService=SpringUtils.getBean("rolePermissionServiceImpl",RolePermissionService.class);
+				List<Role> roleList = roleService.getAll();
+				if (roleList != null && roleList.size() > 0) {
+					List<Role> roleItems = roleList.stream().filter(n -> n.getRolecode().equals(roleCode)).collect(Collectors.toList());
+					if (roleItems != null && roleItems.size() > 0) {
+						Role roleItem = roleItems.get(0);
+						// 得到角色所有的资源权限
+						List<RolePermission> permissionList = rolePermissionService.getRolePermission(roleItem.getId());
+						if (permissionList != null && permissionList.size() > 0) {
+							// 遍历permissionList
+							for (RolePermission userPermission : permissionList) {
+								Permission permissionItem = userPermission.getPermission();
+								// 如果访问的资源用户符合的话，返回true   url 和权限编码
+								HashMap<String, String> mp = new HashMap<>();
+								mp.put("code", permissionItem.getCode());
+								mp.put("name", permissionItem.getName());
+								mp.put("url", permissionItem.getUrl());
+								permissions.add(mp);
+							}
+							if(redisUtil.hasKey(key)){
+								redisUtil.remove(key);
+							}
+							redisUtil.set(key, permissions);
+						}
+					}
+				}
+			}
+		}
+		return permissions;
 	}
 }

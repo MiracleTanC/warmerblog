@@ -20,7 +20,7 @@ public class MenuController extends BaseController{
     private MenuService menuService;
     @Autowired
     private RedisUtil redisUtil;
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/menu/index")
     public String index() {
         return "menu/index";

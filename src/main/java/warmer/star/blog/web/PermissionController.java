@@ -24,7 +24,7 @@ public class PermissionController extends  BaseController {
     private PermissionService permissionService;
     @Autowired
     private RedisUtil redisUtil;
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/permission/index")
     public String index() {
         return "permission/index";

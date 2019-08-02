@@ -32,7 +32,7 @@ public class RoleController extends  BaseController{
     @Autowired
     private PermissionService permissionService;
     @RequestMapping("/index")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String Index(Model model) {
         return "role/index";
     }

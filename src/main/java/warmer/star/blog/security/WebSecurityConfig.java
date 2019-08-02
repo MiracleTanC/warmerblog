@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -93,9 +94,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler(){
         DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
+		//handler.setDefaultRolePrefix("");//默认情况下，如果提供的角色不以“ROLE_”开头 这里设置不让以ROLE_开头
         handler.setPermissionEvaluator(new CustomPermissionProvider());
         return handler;
     }
+	@Bean
+	public GrantedAuthorityDefaults grantedAuthorityDefaults() {//springboot 2.0情况下适用
+		return  new GrantedAuthorityDefaults("");//默认情况下，如果提供的角色不以“ROLE_”开头 这里设置不让以ROLE_开头
+	}
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
