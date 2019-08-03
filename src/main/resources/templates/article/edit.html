@@ -263,7 +263,7 @@ div#mceu_55 {
 							</el-upload>
 							<ul class="el-upload-list el-upload-list--picture-card">
 								  <li v-for="item in submitForm.coverImageList" class="el-upload-list__item is-success">
-									  <img :src="item" alt="" class="el-upload-list__item-thumbnail">
+									  <img :src="item.coverImage" alt="" class="el-upload-list__item-thumbnail">
 									  <label class="el-upload-list__item-status-label">
 									  		<i class="el-icon-upload-success el-icon-check"></i>
 									  </label>
@@ -318,6 +318,7 @@ div#mceu_55 {
 			}
 		}
 		var initArticleTags=function(value){
+		    if(!value) return;
 		    var _this=this;
 		    var param={tagids:value}
             $.ajax({
@@ -330,6 +331,7 @@ div#mceu_55 {
                         for(var i=0;i<result.data.length;i++){
                             _this.selectedTags.push({ name: result.data[i].alia, type: '' })
                         }
+                        var aa=_this.selectedTags;
                     }
                 },
                 error: function (data) {}
@@ -572,7 +574,6 @@ div#mceu_55 {
    	   activated() {
    	     this.handleScroll();
    	     this.initTinymce();
-
    	   },
    	   destroyed() {
    	     window.removeEventListener('scroll', this.handleScroll);
@@ -587,6 +588,7 @@ div#mceu_55 {
    		 this.loadCategoryOptions();
    	  },
  	 methods: {
+         initArticleTags:initArticleTags,
  		opencommentChange(data){
  			this.submitForm.openComment=data;
  		},
