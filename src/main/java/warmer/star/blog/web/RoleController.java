@@ -151,7 +151,7 @@ public class RoleController extends  BaseController{
         try {
             if(submitItem!=null&&submitItem.size()>0){
                 List<String> roleIds=submitItem.stream().map(n->n.getRoleid().toString()).distinct().collect(Collectors.toList());
-                rolePermissionService.deletePermission(roleIds);
+                roleMenuService.deleteRoleMenu(roleIds);
                 roleMenuService.saveRoleMenu(submitItem);
                 result=true;
             }

@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @MapperScan("warmer.star.blog.mapper")
-
+/*@Scope(value = WebApplicationContext.SCOPE_SESSION)*/
 public class Application extends SpringBootServletInitializer{//war包tomcat模式
 	public static void main(String[] args) {
         SpringApplication application = new SpringApplication(Application.class);

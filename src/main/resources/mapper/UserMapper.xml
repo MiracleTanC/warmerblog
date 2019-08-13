@@ -67,7 +67,7 @@
         SELECT * from user where OpenId = #{openId}
     </select>
 	<select id="getUserInfo" parameterType="String" resultMap="userInfoModel">
-        SELECT * from userinfo where username = #{username}
+        SELECT * from userinfo where username = #{username} limit 1
     </select>
     <select id="allUser" resultMap="usermodel">
         select * from user

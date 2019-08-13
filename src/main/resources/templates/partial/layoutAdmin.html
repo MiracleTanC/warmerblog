@@ -33,16 +33,24 @@
             display: inline !important;
         }
 	</style>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js"></script>
+    <script src="https://cdn.bootcss.com/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+    <script th:src="@{/js/iconfont.js}"></script>
 </head>
 
-<body class="fixed-sidebar full-height-layout white-bg ">
+<body class=" full-height-layout white-bg ">
 	<div id="wrapper">
             <!-- 侧边栏导航 -->
             <div id="navBar" th:include="partial/sidebar::sidebar"></div>
+            <!-- 头部工具栏 -->
+            <div id="headerAdmin" th:include="partial/headerAdmin::headerAdmin"></div>
             <!--右侧部分开始-->
             <div id="page-wrapper" class="gray-bg dashbard-1">
-                <!-- 头部工具栏 -->
-                <div th:include="partial/headerAdmin::headerAdmin"></div>
                 <div class="row J_mainContent" >
                     <!-- 正文内容 -->
                     <div id="app" style="min-height: 100%;background-color:#fff">
@@ -53,15 +61,8 @@
             <!--右侧部分结束-->
         </div>
 	<!-- 全局js -->
-    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>  
-    <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
-    <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js"></script>
-    <script src="https://cdn.bootcss.com/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
-    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
-    <script th:src="@{/js/iconfont.js}"></script>
-    <script th:src="@{/js/sidebarAdmin.js}"></script>
+
+    <!--<script th:src="@{/js/sidebarAdmin.js}"></script>-->
     <script type="text/javascript">
         var contextRoot = "[[@{/}]]";
     	var token = $("meta[name='_csrf']").attr("content");
@@ -79,7 +80,8 @@
 	    data:{
 	    	currentUrl:[[${#request.getRequestURI()}]],
 	    	menuList:[],
-            userCode:[[${session.SPRING_SECURITY_CONTEXT.authentication.principal.userCode}]]
+            userCode:[[${session.SPRING_SECURITY_CONTEXT.authentication.principal.userCode}]],
+            isShowSideBar:true,
 	      },
 	      created(){
               var key=this.userCode+"_menus";
@@ -89,7 +91,17 @@
               }else{
                   this.initMenu();
               }
-	      },
+               var key=this.userCode+"_ishowSideBar";
+               var cacheState = JSON.parse(sessionStorage.getItem(key));
+               if(cacheState!=null){
+                   this.isShowSideBar=cacheState;
+                   if(this.isShowSideBar){//解决收起侧边栏后，右侧空白的问题
+                       $("#page-wrapper").css('margin',"0 0 0 180px");
+                   }else{
+                       $("#page-wrapper").css('margin',"0 0 0 70px");
+                   }
+               }
+          },
           watch:{
 
           },
@@ -140,7 +152,17 @@
                           }
                       }
                   })
-              }
+              },
+              switchSideBar(){
+                  if(!this.isShowSideBar){
+                      $("#page-wrapper").css('margin',"0 0 0 180px");
+                  }else{
+                      $("#page-wrapper").css('margin',"0 0 0 70px");
+                  }
+                  this.isShowSideBar=!this.isShowSideBar;
+                  var key=this.userCode+"_ishowSideBar";
+                  sessionStorage.setItem(key, JSON.stringify(this.isShowSideBar));
+              },
 	        },
 
 	    })

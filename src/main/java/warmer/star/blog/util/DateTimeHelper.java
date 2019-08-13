@@ -1,10 +1,10 @@
-/**    
-* @Title: DateTimeHelper.java  
-* @Package com.example.base  
-* @Description: TODO(用一句话描述该文件做什么)  
-* @author tc    
-* @date 2018年5月2日 上午10:28:54  
-* @version V1.0    
+/**
+* @Title: DateTimeHelper.java
+* @Package com.example.base
+* @Description: TODO(用一句话描述该文件做什么)
+* @author tc
+* @date 2018年5月2日 上午10:28:54
+* @version V1.0
 */
 package warmer.star.blog.util;
 
@@ -15,7 +15,7 @@ import java.util.Locale;
 
 /**
  * @ClassName: DateTimeHelper
- * 
+ *
  */
 public class DateTimeHelper {
 	/**
@@ -43,7 +43,12 @@ public class DateTimeHelper {
 		String dateString = formatter.format(dateDate);
 		return dateString;
 	}
-
+    /**
+     * 将长时间格式时间转换为字符串 yyyy-MM-dd HH:mm:ss
+     *
+     * @param dateDate
+     * @return
+     */
 	public static String dateToStr(java.util.Date dateDate) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String dateString = formatter.format(dateDate);
@@ -86,7 +91,7 @@ public class DateTimeHelper {
 
 	/**
 	 * 获取现在时间
-	 * 
+	 *
 	 * @return 返回时间类型 yyyy-MM-dd HH:mm:ss
 	 */
 	public static Date getNowDate() {
@@ -105,7 +110,7 @@ public class DateTimeHelper {
 	}
 	/*
      * 将时间转换为时间戳
-     */    
+     */
     public static String dateToStamp(String s) throws ParseException{
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -114,7 +119,7 @@ public class DateTimeHelper {
         res = String.valueOf(ts);
         return res;
     }
-    public static String dateToStamp(Date date) throws ParseException{
+    public static String dateToStamp(Date date) {
         String res;
         long ts = date.getTime();
         res = String.valueOf(ts);

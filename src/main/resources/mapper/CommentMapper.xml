@@ -6,20 +6,25 @@
 	<resultMap id="commentmodel" type="warmer.star.blog.model.Comment">
         <id column="id" property="id" jdbcType="INTEGER"></id>
         <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
-        <result column="useruuid" property="useruuid" jdbcType="VARCHAR"/>
-        <result column="touseruuid" property="touseruuid" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="useruuid" property="useruuid" jdbcType="INTEGER"/>
+        <result column="touseruuid" property="touseruuid" jdbcType="INTEGER"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
-        <result column="usernickname" property="usernickname" jdbcType="VARCHAR"/>
-        <result column="tousernickname" property="tousernickname" jdbcType="VARCHAR"/>
         <result column="userip" property="userip" jdbcType="VARCHAR"/>
-    </resultMap>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+		<result column="createtime" property="createtime"/>
+		<association property="userItem" column="useruuid" jdbcType="INTEGER" select="warmer.star.blog.mapper.UserMapper.getUserById"/>
+		<association property="toUserItem" column="touseruuid" jdbcType="INTEGER" select="warmer.star.blog.mapper.UserMapper.getUserById" />
+	</resultMap>
     <select id="getCommentList" resultMap="commentmodel">
-        select * from comment where uuid=#{uuid}
+        select * from comment where uuid=#{uuid} and pid=0 order by createtime desc
     </select>
-
+	<select id="getChildComment" resultMap="commentmodel">
+        select * from comment where uuid=#{uuid} and pid=#{pid}
+    </select>
      <insert id="saveComment" parameterType="warmer.star.blog.model.Comment">
-		  insert into comment (uuid,useruuid,touseruuid,content,usernickname,tousernickname,userip)
-		  values (#{uuid},#{useruuid},#{touseruuid},#{content},#{usernickname},#{tousernickname},#{userip})
+		  insert into comment (pid,uuid,useruuid,touseruuid,content,userip,status,createtime)
+		  values (#{pid},#{uuid},#{useruuid},#{touseruuid},#{content},#{userip},1,#{createtime})
 		  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 	          SELECT LAST_INSERT_ID()
 	      </selectKey>
@@ -32,6 +37,6 @@
 			where id = #{id}
 	</update>
 	<update id="deleteComment">
-		  delete from comment  where id = #{commentId}
+		  update comment set status=0  where id = #{commentId}
 	</update>
 </mapper>

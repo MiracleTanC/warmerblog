@@ -16,6 +16,11 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.getCommentList(uuid);
     }
 
+    @Override
+    public List<Comment> getChildComment(String uuid, Integer pid) {
+        return commentMapper.getChildComment(uuid,pid);
+    }
+
 
     @Override
     public int saveComment(Comment submitItem) {

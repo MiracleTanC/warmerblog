@@ -105,7 +105,7 @@ public class ArticleController extends BaseController {
         if (t == 0) {
             return "article/markdown";
         }
-        return "article/edit";
+        return "article/tinymce";
     }
 
     @RequestMapping("/article/deleteArticle")
