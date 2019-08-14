@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/warmercomment.css}">
     <link rel="stylesheet" th:href="@{/emoji/css/emoji.css}">
     <link th:href="@{/editor/css/editormd.css}" rel="stylesheet"/>
-    <link th:href="@{/editor/css/editormd.preview.min.css}" rel="stylesheet"/>
+    <link th:href="@{/editor/css/editormd.preview.css}" rel="stylesheet"/>
     <link th:href="@{/editor/lib/codemirror/codemirror.min.css}" rel="stylesheet"/>
     <link th:href="@{/editor/lib/codemirror/addon/dialog/dialog.css}" rel="stylesheet"/>
     <link th:href="@{/editor/lib/codemirror/addon/search/matchesonscrollbar.css}" rel="stylesheet"/>
@@ -41,14 +41,29 @@
             right: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
             overflow: hidden;
-            background: #fff url(/images/comment.png) no-repeat center;;
+            background: #fff url(/images/comment.png) no-repeat center;
             text-indent: 100%;
+        }
+        .warmer-section {
+            background-color: #000;
+            background: no-repeat center center;
+            background-attachment: scroll;
+            position: relative;
+            color: white;
+            max-height: 100vh;
+            height: 300px;
+            background-image: url(/images/atair.png);
+            background-size: cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
         }
     </style>
 </head>
 <body>
 <div layout:fragment="main">
     <warmer-musicplayer-view v-bind:data="'music'"></warmer-musicplayer-view>
+    <div class="warmer-section"></div>
     <div class="detailcontainer">
         <div class="infosbox">
             <div class="newsview">
@@ -151,21 +166,23 @@
             mounted() {
                 var _this = this;
                 _this.$nextTick(function () {
-                    /* _this.defaultfollowUsPosition=_this.$refs.followUs.offsetTop;
                    // 注册scroll事件并监听
                    window.addEventListener('scroll', ()=> {
-                     var scrollTop = document.documentElement.scrollTop;
-                     _this.scrollTop=scrollTop;
-                      var followUsPosition = _this.$refs.followUs.offsetTop;
-                      _this.followUsPosition=followUsPosition;
-                      if(scrollTop<=_this.defaultfollowUsPosition ){
-                           _this.followUsPosition=_this.defaultfollowUsPosition;
-                       }
-                   })  */
+                       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                        if(scrollTop>200){
+                            document.querySelector('.BlogAnchor').style.top = '70px';
+                        }else{
+                            document.querySelector('.BlogAnchor').style.top = '320px';
+                        }
+                   })
                     editormd.markdownToHTML("divcontent", {
                         htmlDecode: "style,script,iframe", //可以过滤标签解码
-                        emoji: false,
+                        emoji: true,
                         taskList: true,
+                        editorTheme : "pastel-on-dark",
+                        previewTheme : "dark",
+                        theme : "dark",
+                        codeFold: true,
                         tex: true,               // 默认不解析
                         flowChart: true,         // 默认不解析
                         sequenceDiagram: false,  // 默认不解析

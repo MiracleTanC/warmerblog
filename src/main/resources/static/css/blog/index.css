@@ -1,5 +1,5 @@
  @charset "gb2312";
-.picsbox { width: 100%; overflow: hidden; position: relative; margin-top: 56px;}
+.picsbox { width: 100%; overflow: hidden; position: relative; }
 /*banner*/
 .banner { width: 66%; overflow: hidden; float: left }
 .fader { position: relative; width: 100%; padding-top: 60%; font-family: "futura", arial; overflow: hidden; }
@@ -330,7 +330,8 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      line-height: 180%;
      position: fixed;
      left: 20px;
-     top: 140px;
+     /*top: 140px;*/
+     top:315px;
      border-radius:5px;
  }
  .BlogAnchor p {

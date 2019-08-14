@@ -14,17 +14,18 @@ a:hover { text-decoration: none; color: #00A7EB; }
 .f_l { float: left }
 .f_r { float: right }
 .mt20 { margin-top: 20px }
-header { width: 100%; background: rgba(255,255,255,1); }
+header { width: 100%; background: rgba(0,0,0,.3)/*rgba(255,255,255,1)*/; }
 /*article { width: 65%; margin: 15px auto 0; overflow: hidden }*/
 .blogcontainer{ width: 65%; margin: 15px auto 0; overflow: hidden }
-.detailcontainer{ width: 60%; margin: 15px auto 0;margin-top: 80px }
+.detailcontainer{ width: 60%; margin: 15px auto 0;}
 .tophead { width: 1200px; margin: 0 auto 10px; overflow: hidden; }
 header { position: fixed; top: 0; z-index: 100 }
 .container { width: 1140px; margin: 20px auto }
 /*nav*/
 .logo {margin-top: 15px; float: left; margin-right: 50px; font-size: 20px; }
 .logo a { color: #00A7EB }
-.menu { height: 56px; line-height: 56px; width: 100%; background-color: #000; }
+.menu { height: 56px; line-height: 56px; width: 100%; color: #fff;background-color: #000;}
+.menu_trans{background: rgba(0,0,0,.3);}
 .nav { height: 56px; width:100%; margin: 0 auto; }
 .nav li { float: left; position: relative; }
 .nav li a { color: #bdbdbd; padding: 0 20px; display: inline-block; }

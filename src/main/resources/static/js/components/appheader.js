@@ -63,6 +63,7 @@ Vue.component('warmer-appheader-view', {
             isOpen: false,
             search_active: false,
             searchkeyword: '',
+            istran:true,
         };
     },
     filters: {},
@@ -71,9 +72,17 @@ Vue.component('warmer-appheader-view', {
 
     },
     mounted() {
-
+        window.addEventListener('scroll', this.handleScroll,true);
     },
     methods: {
+        handleScroll() {
+            var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+            if(scrollTop>56){
+                this.istran=false;
+            }else{
+                this.istran=true;
+            }
+        },
         selectStyle(nav) {
             var _this = this;
             this.$nextTick(function () {
@@ -120,7 +129,7 @@ Vue.component('warmer-appheader-view', {
     template:
         `
         <div>
-		  <div class="menu">
+		  <div :class="[istran ? 'menu_trans' : '','menu']">
 		    <nav class="nav" id="topnav">
 		      <h1 class="logo"><a href="/"><img style="width: 60px;margin-left: 50px;" src="/images/logo/logo_o.png"></a></h1>
 		      <ul v-if="navList.length>0">

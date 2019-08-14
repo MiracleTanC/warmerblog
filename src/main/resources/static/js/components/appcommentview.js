@@ -48,10 +48,12 @@ Vue.component('warmer-comment-view', {
         if (JSON.stringify(this.user) != "{}") {
             var key = "content_" + this.data.id;//初始化评论内容，（未登录先输入评论点发送跳转，登录成功后回显）
             var cacheContent=sessionStorage.getItem(key);
-            var content = JSON.parse(cacheContent);
-            if(content){
-                this.commentData.content = content;
-                this.content = content;
+            if(cacheContent){
+                var content = JSON.parse(cacheContent);
+                if(content){
+                    this.commentData.content = content;
+                    this.content = content;
+                }
             }
             this.avatar = this.user.avatar;
             this.commentData.useruuid = this.user.userId;

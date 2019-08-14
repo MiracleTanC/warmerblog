@@ -26,8 +26,10 @@
         </div>
         <div class="hotmessage">
             <div class="news">
-                <div class="item">
-                    友盟+短视频行业研究： 5.9亿用户的狂欢，短视频的“舞台社交”
+                <div  class="item">
+                    <i style="color: #ff0000;" class="fa fa-heart" aria-hidden="true"></i>
+                    <span id="typedItem"></span>
+                    <i style="color: #ff0000;" class="fa fa-heart" aria-hidden="true"></i>
                 </div>
             </div>
         </div>
@@ -97,6 +99,7 @@
     <script src="https://cdn.bootcss.com/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
     <script th:inline="javascript" th:src="@{/js/scrollreveal.js}" type="text/javascript"></script>
     <script th:inline="javascript" th:src="@{/js/components/apprecordview.js}" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/typed.js/2.0.5/typed.js"></script>
     <script type="text/javascript">
         var app = new Vue({
             el: '#app',
@@ -123,7 +126,15 @@
                     children: 'zones',
                     isLeaf:'isLeaf'
                 },
-                tabActiveName:'first'
+                tabActiveName:'first',
+                expression:['没有期望，就没有失望，从此之后，再没受过伤害，因为从一开始，就不抱有什么希望。',
+                    'impossible的完整形式是 i\'m possible',
+                    '喝他喝过的酒，受他受过的伤。',
+                    '他们正热烈地讨论着别人的秘密，但是，一个不说，一个不听，还有一个不看。',
+                    '跳舞，不停地跳舞。不要考虑为什么跳，不要考虑意义不意义，意义那玩意儿本来就是没有的，要是考虑这个，脚步势必停下来。',
+                    '这个城市大得让人到处能一见钟情，却没法重逢。',
+                    '活着本身就很美妙，如果连这道理都不懂，怎么去探索更深的东西呢？',
+                    '不管对什么事情都不能有先入为主的观念。']
             },
             mounted() {
                 // 缓存指针
@@ -143,6 +154,7 @@
                         }
                     },true);
                 })
+                _this.initTyped();
             },
             created() {
                 this.initData();
@@ -153,6 +165,18 @@
                 this.initTagList();
             },
             methods: {
+                initTyped(){
+                    var _this=this;
+                    var boxObj3 = document.getElementById('typedItem');
+                    new Typed(boxObj3,{
+                        strings: _this.expression,
+                        typeSpeed: 200,
+                        startDelay: 1000,
+                        loop: true,
+                        loopCount: Infinity,
+                        cursorChar: 'ღ' //
+                    });
+                },
                 treeNodeClick(node){
                     var tree = this.$refs.mycatetree;
                     var nodes = tree.store.getCheckedNodes();
