@@ -15,17 +15,18 @@ Vue.component('warmer-appfocus-view', {
                 {
                     title: '说走就走的旅行',
                     url: '//shang.qq.com/wpa/qunwpa?idkey=cd43ce7a73d88cdff96bb954294a0cc8de9cc05f4c99b1646eec922745b9fb63',
-                    qrcode: '/images/qrcode/travelgroup.jpg',
+                    qrcode: 'http://file.miaoleyan.com/travelgroup.jpg',
                 },
                 {
                     title: 'java/.net学习交流',
                     url: '//shang.qq.com/wpa/qunwpa?idkey=6fae314e36aeaaf7addd7da78b47f901c1a53074c89e21f033ed9b8c5ad5e55e',
-                    qrcode: '/images/qrcode/learngroup.jpg',
+                    //qrcode: '/images/qrcode/learngroup.jpg',
+                    qrcode: 'http://file.miaoleyan.com/learngroup.JPG',
                 },
                 {
                     title: '知识图谱构建与可视化',
                     url: '//shang.qq.com/wpa/qunwpa?idkey=81b65d5dcdaeb3cc423c32eb1c8b1a72480a7af853630feadd40678b702914d9',
-                    qrcode: '/images/qrcode/kggroup.jpg',
+                    qrcode: 'http://file.miaoleyan.com/kggroup.JPG',
                 }
             ],
             currentindex: 2,

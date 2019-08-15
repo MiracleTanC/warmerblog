@@ -83,9 +83,9 @@ public class HomeController extends BaseController {
 			}
 			model.addAttribute("tagList",tags);
 			if(articleItem.getEditorType().equals(0)) {
-				return "home/detailmarkdown";
+				return "home/markdown";
 			}
-			return "home/detail";
+			return "home/tinymce";
 		}
 		return "";
 	}

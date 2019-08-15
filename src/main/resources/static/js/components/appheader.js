@@ -64,6 +64,7 @@ Vue.component('warmer-appheader-view', {
             search_active: false,
             searchkeyword: '',
             istran:true,
+            issearch:false,
         };
     },
     filters: {},
@@ -75,6 +76,14 @@ Vue.component('warmer-appheader-view', {
         window.addEventListener('scroll', this.handleScroll,true);
     },
     methods: {
+        switchSearch(){
+            this.issearch=!this.issearch;
+            if(!this.issearch){
+                if(this.searchkeyword){
+                    this.searchResult();
+                }
+            }
+        },
         handleScroll() {
             var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
             if(scrollTop>56){
@@ -104,20 +113,6 @@ Vue.component('warmer-appheader-view', {
         clickNav(nav) {
             nav.active = !nav.active;
         },
-        searchToggle(evt) {
-            var obj = evt.currentTarget;
-            var container = $(obj).closest('.search-wrapper');
-            if (!container.hasClass('active')) {
-                container.addClass('active');
-                evt.preventDefault();
-            }
-            else if (container.hasClass('active') && $(obj).closest('.input-holder').length == 0) {
-                container.removeClass('active');
-                this.searchkeyword = "";
-            } else {
-                this.searchResult();
-            }
-        },
         searchResult() {
             //父容器app
             app.queryForm.pageIndex = 1;
@@ -133,25 +128,35 @@ Vue.component('warmer-appheader-view', {
 		    <nav class="nav" id="topnav">
 		      <h1 class="logo"><a href="/"><img style="width: 60px;margin-left: 50px;" src="/images/logo/logo_o.png"></a></h1>
 		      <ul v-if="navList.length>0">
-			      <template v-for="nav in navList">
+			     <template v-for="nav in navList">
 				      <li @mouseover="selectStyle(nav)" @mouseout="outStyle(nav)">
 				        <a :class="{'a_active':currentUrl==nav.linkUrl}"  :href="nav.linkUrl">{{nav.title}}</a>
-				        <ul class="sub-nav" v-if="nav.childrens.length>0" v-show="nav.active">
-				          <li v-for="children in nav.childrens">
-				           	<a target="_blank" :href="children.linkUrl">{{children.title}}</a>
-				          </li>
-				        </ul>
+                            <ul class="sub-nav" v-if="nav.childrens.length>0" v-show="nav.active">
+                                  <li v-for="children in nav.childrens">
+                                    <a target="_blank" :href="children.linkUrl">{{children.title}}</a>
+                                  </li>
+                            </ul>
 				      </li>
-				      </template>
+				  </template>
+				  <li id="controlSearch" class="nav_menu_li">
+                      <a id="switchicon" @click="switchSearch" class="navmla2 nav_menu_li_a2">              
+                          <i v-if="issearch" class="fa fa-times" style="font-size: medium" aria-hidden="true"></i>
+                          <i v-else class="fa fa-search"  style="font-size: medium" aria-hidden="true"></i>
+                      </a>
+                  </li>
 		      </ul>
-		      <div class="search-wrapper">
-					<div class="input-holder">
-						<input type="text" v-model="searchkeyword" @keyup.enter.native="searchResult" class="search-input" placeholder="想搜点什么呢..." />
-					    <button class="search-icon" @click="searchToggle($event)"><span></span></button>
-					</div>
-					<span class="close" @click="searchToggle($event)"></span>
-					<div class="result-container"></div>
-			    </div>
+		      <!--search begin-->
+                <div v-show="issearch" id="topsearch" class="topsearch" style="opacity: 1;">
+                    <div class="intopsearch">
+                        <div class="mainsearch">
+                            <div id="search">
+                                <input type="text" id="s" v-model="searchkeyword" @keyup.enter="searchResult" name="s" class="text" placeholder="你要找些什么...">
+                                <button  @click="searchResult" class="submit">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			  <!--search end-->
 		    </nav>
 		    
 		  </div>

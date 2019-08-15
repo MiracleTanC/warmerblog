@@ -170,9 +170,16 @@
                    window.addEventListener('scroll', ()=> {
                        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
                         if(scrollTop>200){
-                            document.querySelector('.BlogAnchor').style.top = '70px';
+                            var anc=document.querySelector('.BlogAnchor');
+                            if(anc){
+                                anc.style.top = '70px';
+                            }
+
                         }else{
-                            document.querySelector('.BlogAnchor').style.top = '320px';
+                            var anc=document.querySelector('.BlogAnchor');
+                            if(anc){
+                                anc.style.top = '320px';
+                            }
                         }
                    })
                     editormd.markdownToHTML("divcontent", {

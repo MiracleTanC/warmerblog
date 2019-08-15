@@ -34,6 +34,82 @@ header { position: fixed; top: 0; z-index: 100 }
 .nav li .sub-nav li { clear: left; height: 35px; line-height: 35px; position: relative; width: 200px; padding: 5px 20px }
 .nav li .sub-nav li a { font-size: 15px; font-weight: 400; color: #404040; line-height: 28px; }
 .nav li .sub-nav li a:hover { color: #000; border-left: 2px solid #000; }
+.nav_menu_li {
+    position: static;
+    display: table-cell;
+    cursor: pointer;
+    float: right !important;
+    margin-right: 20%;
+}
+li#controlSearch {
+    width: 43px;
+}
+.nav_menu_li_a2 {
+    font-size: 12px;
+    color: #fff;
+    padding: 0px 15px;
+    line-height: 56px;
+    transition: all .5s ease-out;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+}
+@media screen and (min-width: 768px){
+    #topsearch {
+        width: 100vw;
+        position: fixed;
+        z-index: 99;
+    }
+    .topsearch {
+        transition: all .5s ease-out;
+        -webkit-transition: all .5s ease-in-out;
+        -moz-transition: all .5s ease-in-out;
+        -ms-transition: all .5s ease-in-out;
+        -o-transition: all .5s ease-in-out;
+        top: 60px;
+    }
+}
+@media screen and (min-width: 1200px){
+    .intopsearch {
+        max-width: 1160px;
+    }
+}
+
+.intopsearch {
+    margin: 0 auto;
+    padding: 0px 10px;
+}
+.mainsearch {
+    border-radius: 3px;
+}
+div#search {
+    display: flex;
+}
+input#s {
+    flex-grow: 1;
+    border: none;
+    padding: 10px;
+    outline: none;
+    opacity: .8;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 5px 0 0 5px;
+}
+button.submit {
+    border: none;
+    outline: none;
+    padding: 10px;
+    cursor: pointer;
+    background: rgba(36,137,255,.8);
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+}
 #topnav_current { color: #00A7EB; }
 .a_active { color: #00A7EB !important;  }
 /*search*/

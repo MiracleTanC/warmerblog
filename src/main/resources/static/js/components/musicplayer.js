@@ -46,13 +46,13 @@ Vue.component('warmer-musicplayer-view', {
     mounted() {
         var _this = this;
         _this.musicAudio=_this.$refs.musicAudio;
-        window.addEventListener('scroll', () => {
+        /*window.addEventListener('scroll', () => {
             if(!_this.firstscroll){
                 _this.play();
                 _this.firstscroll=true;
             }
 
-        }, true);
+        }, true);*/
     },
     methods: {
         initMusic(){
@@ -137,7 +137,7 @@ Vue.component('warmer-musicplayer-view', {
         `
         <div ref="musicplayer">
             
-			<audio ref="musicAudio" @ended="nextMusic" autoplay="true"></audio>
+			<audio ref="musicAudio"  @ended="nextMusic" autoplay="true"></audio>
 			<div @click="showMusicPanel" :class="[musicPlayState ? 'rotate' : '', 'audio_icon']"></div>
 			<div class="m_player" v-show="musicPanelShowState">
 				<!-- 主体 -->
