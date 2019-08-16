@@ -1,0 +1,82 @@
+
+.aplayer {
+    background: rgba(0, 0, 0, .1);
+}
+.aplayer.aplayer-fixed .aplayer-body {
+    background: rgba(0, 0, 0, .1);
+}
+
+.aplayer-pic{
+	transition: .5s;
+    border-radius: 50%;
+    border: 2px #FF8C00 solid;
+    -webkit-animation: rotating 3.5s linear infinite;
+    -moz-animation: rotating 3.5s linear infinite;
+    -o-animation: rotating 3.5s linear infinite;
+    animation: rotating 3.5s linear infinite;
+}
+.aplayer-body{
+	max-width:300px !important;
+}
+.aplayer.aplayer-fixed {
+    max-width: 318px !important;
+}
+.aplayer.aplayer-fixed .aplayer-list {
+    margin-bottom: 80px !important;
+    border: unset !important;
+    border-bottom: none;
+	width: 315px;
+}
+.aplayer.aplayer-fixed .aplayer-info {
+    border-top: unset !important;
+}
+.aplayer .aplayer-miniswitcher .aplayer-icon path {
+    fill: #FF8C00 !important;
+}
+.aplayer .aplayer-miniswitcher {
+    background: rgba(0, 0, 0, .1);
+}
+.aplayer-narrow{
+    -webkit-transform: translate3d(-77px,0,0);
+    -webkit-transform: translate3d(-77px,0,0);
+    -moz-transform: translate3d(-77px,0,0);
+    -ms-transform: translate3d(-77px,0,0);
+    transform: translate3d(-77px,0,0);
+}
+#musicnote{
+	position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin: 0;
+	z-index: 999;
+}
+#musictouch *{box-sizing:content-box}
+[class*=" fa-"]:before,[class^=fa-]:before{margin:unset!important}
+#pdyf1{animation:mymove 2s linear 0s infinite normal}
+@keyframes mymove{0%{left:15px;top:-15px;opacity:0}
+50%{opacity:1;transform:rotate(9deg)}
+100%{left:200px;top:-90px;opacity:0}
+}
+#pdyf2{animation:mymove2 2s linear .4s infinite normal}
+@keyframes mymove2{0%{left:15px;top:-15px;opacity:0}
+50%{opacity:1;transform:rotate(-9deg)}
+100%{left:200px;top:-80px;opacity:0}
+}
+#pdyf3{animation:mymove3 2s linear .7s infinite normal}
+@keyframes mymove3{0%{left:15px;top:-15px;opacity:0}
+50%{opacity:1;transform:rotate(9deg)}
+100%{left:200px;top:-70px;opacity:0}
+}
+.note {
+    display: block;
+    opacity: 0;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    background: unset;
+    margin: unset;
+    padding: unset;
+    z-index: 99999999;
+	color:red;
+}
