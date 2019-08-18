@@ -221,7 +221,7 @@ Vue.component('warmer-comment-view', {
     },
     template:
         `
-        <div id="comment-list" style="padding: 20px;margin-top: 50px">
+        <div id="comment-list" style="padding: 20px;">
             <div @click="returnComment" class="quick_comment"></div>
             <div  class="comment-list">
                 <div>

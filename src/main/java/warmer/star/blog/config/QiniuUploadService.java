@@ -38,4 +38,9 @@ public class QiniuUploadService {
         UploadUtil qiniuUtil = new QiniuUtil(this.bucketHostName, this.bucketName,auth);
         return qiniuUtil.getFileList(marker,limit);
     }
+    public boolean deleteByKey(String key){
+        Auth auth = Auth.create(this.accesskey, this.secretKey);
+        UploadUtil qiniuUtil = new QiniuUtil(this.bucketHostName, this.bucketName,auth);
+        return qiniuUtil.deleteByKey(key);
+    }
 }

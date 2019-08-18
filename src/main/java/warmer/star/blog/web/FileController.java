@@ -213,4 +213,28 @@ public class FileController extends BaseController {
 		}
 		return obj;
 	}
+	@PostMapping("/qiniu/deletefile")
+	@ResponseBody
+	public JSONObject deletefile(@RequestParam(value = "keys[]") String[] keys) {
+		JSONObject obj=new JSONObject();
+		boolean res = false;
+		try {
+			for(String key:keys){
+				qiniuUploadService.deleteByKey(key);
+			}
+			res=true;
+			if(res){
+				obj.put("code",200);
+				obj.put("data",res);
+			}
+			else{
+				obj.put("code",500);
+			}
+		} catch (Exception e) {
+			obj.put("code",500);
+			log.error(e.getMessage());
+		}
+		return obj;
+	}
+
 }

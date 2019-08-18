@@ -136,6 +136,10 @@ h1.t_nav span { display: none }
  .el-carousel__container{height: 138px !important;}
  .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
  .blogcontainer {width: 100%;}
+ .sidebardetail{display: none}
+ .comment-list .new-comment textarea {
+  width: calc(70vw)!important;
+ }
 }
 @media only screen and  (min-width: 361px) and (max-width: 375px) {
 header, .blogsbox, .banner { width: 100%; margin: auto; }
@@ -176,6 +180,10 @@ footer p { padding: 0 30px }
 .dasbox{ display:none}
 .el-carousel__container{height: 138px !important;}
  .blogcontainer {width: 100%;}
+ .sidebardetail{display: none}
+ .comment-list .new-comment textarea {
+  width: calc(70vw)!important;
+ }
 }
 @media only screen and (max-width: 360px) {
  header, .blogsbox, .banner { width: 100%; margin: auto; }
@@ -216,4 +224,11 @@ footer p { padding: 0 30px }
  .dasbox{ display:none}
  .el-carousel__container{height: 120px !important;}
  .blogcontainer {width: 100%;}
+ .sidebardetail{display: none}
+ .comment-list .new-comment textarea {
+   width: calc(70vw) !important;
+ }
+ .editormd-preview-container, .editormd-html-preview {
+   padding: 0px !important;
+ }
 }

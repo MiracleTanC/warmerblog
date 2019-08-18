@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class QiniuUtil implements UploadUtil { 
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+public class QiniuUtil implements UploadUtil {
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private String bucketHostName;
 
@@ -46,13 +46,13 @@ public class QiniuUtil implements UploadUtil {
         this.bucketHostName = bucketHostName;
         this.bucketName = bucketName;
         this.auth = auth;
-      //构造一个带指定Zone对象的配置类
+        //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
-        this.uploadManager= new UploadManager(cfg);
-        this.bucketManager=new BucketManager(auth,cfg);
+        this.uploadManager = new UploadManager(cfg);
+        this.bucketManager = new BucketManager(auth, cfg);
     }
 
-    public String generate(){
+    public String generate() {
         return this.generateToken();
     }
 
@@ -81,7 +81,7 @@ public class QiniuUtil implements UploadUtil {
     @Override
     public String uploadFile(String filePath, MultipartFile multipartFile) throws FileUploadException {
         byte[] bytes = getBytesWithMultipartFile(multipartFile);
-        return this.uploadFile(filePath,bytes);
+        return this.uploadFile(filePath, bytes);
     }
 
     /**
@@ -281,32 +281,33 @@ public class QiniuUtil implements UploadUtil {
         }
         return bucketHostName + (key.startsWith("/") ? key : "/" + key);
     }
+
     @Override
-    public QiniuFileResultItem getFileList(String marker, int limit){
-        QiniuFileResultItem result=new QiniuFileResultItem();
-        List<QiniuFileModel> res=new ArrayList<>();
-        FileListing fileList=new FileListing();
+    public QiniuFileResultItem getFileList(String marker, int limit) {
+        QiniuFileResultItem result = new QiniuFileResultItem();
+        List<QiniuFileModel> res = new ArrayList<>();
+        FileListing fileList = new FileListing();
         //文件名前缀
         String prefix = "";
         //每次迭代的长度限制，最大1000，推荐值 1000
-        if(limit<=0)limit=100;
+        if (limit <= 0) limit = 100;
         //指定目录分隔符，列出所有公共前缀（模拟列出目录效果）。缺省值为空字符串
         String delimiter = "";
         //列举空间文件列表
         try {
-            fileList = bucketManager.listFiles(this.bucketName, prefix, marker,limit, delimiter);
+            fileList = bucketManager.listFiles(this.bucketName, prefix, marker, limit, delimiter);
             result.setMarker(fileList.marker);
-            if(fileList!=null&&fileList.items.length>0){
+            if (fileList != null && fileList.items.length > 0) {
                 //处理获取的file list结果
                 for (FileInfo item : fileList.items) {
-                    QiniuFileModel mo=new QiniuFileModel();
+                    QiniuFileModel mo = new QiniuFileModel();
                     mo.setKey(item.key);
                     mo.setHash(item.hash);
                     mo.setFsize(item.fsize);
                     mo.setMimeType(item.mimeType);
                     mo.setPutTime(item.putTime);
                     mo.setEndUser(item.endUser);
-                    mo.setUrl(String.format("http://%s/%s",this.bucketHostName,item.key));
+                    mo.setUrl(String.format("http://%s/%s", this.bucketHostName, item.key));
                     res.add(mo);
                 }
             }
@@ -314,6 +315,19 @@ public class QiniuUtil implements UploadUtil {
         } catch (QiniuException e) {
             e.printStackTrace();
         }
-        return  result;
+        return result;
+    }
+    @Override
+    public boolean deleteByKey(String key) {
+        try {
+            Response res = bucketManager.delete(this.bucketName, key);
+            if (res.statusCode == 200) {
+                return true;
+            }
+            return false;
+        } catch (QiniuException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

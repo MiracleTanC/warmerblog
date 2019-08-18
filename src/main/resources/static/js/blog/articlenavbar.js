@@ -26,7 +26,7 @@
     }
     if(vHMaxTag == null) return;//没有任何标题则返回
 
-    $("body").prepend('<div class="BlogAnchor">' + 
+    $("body").prepend('<div class="BlogAnchor">' +
         '<span style="color:red;position:absolute;top:-5px;left:4px;cursor:pointer;" onclick="$(\'.BlogAnchor\').hide();">×</span>' +
         '<p>' + 
             '<b id="AnchorContentToggle" title="收起" style="cursor:pointer;">目录 </b>' + 

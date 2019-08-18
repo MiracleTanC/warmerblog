@@ -30,4 +30,5 @@ public interface UploadUtil {
 
 	String uploadFile(byte[] data, String fileName, String filePath) throws FileUploadException;
 	QiniuFileResultItem getFileList(String marker, int limit);
+	boolean deleteByKey(String key);
 }

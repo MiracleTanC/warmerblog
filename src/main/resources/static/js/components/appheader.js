@@ -163,7 +163,7 @@ Vue.component('warmer-appheader-view', {
 		  
 		 
 		  <div id="mnav">
-		    <h2 :class="{'open':isOpen}"><a href="/" class="mlogo">瞄了眼</a><span class="navicon" @click="changeIcon"></span></h2>
+		    <h2 :class="{'open':isOpen}"><a href="/" class="mlogo"><img style="width: 60px;padding: 15px;margin-left: -10px;" src="/images/logo/logo_o.png"></a><span class="navicon" @click="changeIcon"></span></h2>
 		    <dl class="list_dl" v-if="navList.length>0" v-show="isOpen">
 		     <template v-for="nav in navList">
 			      <dt class="list_dt">
