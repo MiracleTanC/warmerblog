@@ -37,9 +37,13 @@ Vue.component('warmer-appbacktop-view', {
     },
     template:
         `
-        <div id="appbackTop">
-            <!--<a @click="backToTop" href="javascript:void(0)" class="cd-is-visible cd-chat"></a>-->
-            <a @click="backToTop" href="javascript:void(0)" :class="[scrollTop>offset ? 'cd-is-visible' : '', 'cd-top']"></a>
+        <div  class="side-toolbar">
+            <div class="github">
+                <a target="_blank" href="https://github.com/MiracleTanC?tab=repositories" class="cd-github"></a>
+            </div>
+            <div class="backtop">
+                <a @click="backToTop" href="javascript:void(0)" :class="[scrollTop>offset ? 'cd-is-visible' : '', 'cd-top']"></a>
+            </div>
         </div>
 		`
 })

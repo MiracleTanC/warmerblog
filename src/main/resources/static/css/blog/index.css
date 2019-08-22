@@ -33,7 +33,7 @@
 .blogs .blogpic :hover img { transform: scale(1.1) }
 .blogs .blogtitle { margin: 0 0 10px 0; font-size: 15px; overflow: hidden; }
 .blogs .blogtitle a:hover { color: #337ab7; }
-.blogs .blogtext { font-size: 12px; color: #566573; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 3; margin-top: 10px }
+.blogs .blogtext { font-size: 12px; color: #566573; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 5; margin-top: 10px }
 .bloginfo { overflow: hidden; margin-top: 30px }
 .bloginfo ul li { float: left; font-size: 12px; padding: 0 0 0 20px; margin: 0 15px 0 0; color: #748594; line-height: 1.5; display: inline-block; }
 .bloginfo ul li a { color: #748594; }
@@ -239,9 +239,9 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
 .el-carousel img { width: 100% ;overflow: hidden;}
 .ad img { width: 100% }
 .hotmessage{
-    height: 68px;
+   /* height: 68px;*/
     z-index: 10;
-    background: #000;
+    /*background: #000;*/
     opacity: .9;
 }
  .hotmessage .item {
@@ -251,7 +251,7 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      font-size: 18px;
      -webkit-box-sizing: border-box;
      box-sizing: border-box;
-     padding: 20px;
+     padding: 5px;
  }
 .leftbox { width: 70%; float: left; overflow: hidden; }
 .rightbox { width: 28%; float: right; overflow: hidden; }
@@ -353,27 +353,27 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      padding: 3px;
  }
  .BlogAnchor li .item_h1{
-     margin-left: 0rem;
+     margin-left: 0;
  }
  .BlogAnchor li .item_h2{
-     margin-left: 2rem;
-     font-size: 0.8rem;
+     margin-left: 20px;
+     font-size: 14px;
  }
  .BlogAnchor li .item_h3{
-     margin-left: 3rem;
-     font-size: 0.8rem;
+     margin-left: 30px;
+     font-size: 14px;
  }
  .BlogAnchor li .item_h4{
-     margin-left: 4rem;
-     font-size: 0.8rem;
+     margin-left: 40px;
+     font-size: 14px;
  }
  .BlogAnchor li .item_h5{
-     margin-left: 5rem;
-     font-size: 0.8rem;
+     margin-left: 50px;
+     font-size: 14px;
  }
  .BlogAnchor li .item_h6{
-     margin-left: 2rem;
-     font-size: 0.8rem;
+     margin-left: 60px;
+     font-size: 14px;
  }
 
 
@@ -412,9 +412,7 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      background: #156498;
      border-radius: 50%;
  }
- .editormd-html-preview, .editormd-preview-container{
-     width: 96% !important;
- }
+
  /*datatransfer*/
  .tyue-checkbox {
      vertical-align: middle;

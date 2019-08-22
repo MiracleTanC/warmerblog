@@ -33,10 +33,7 @@
 		<header>
 			<warmer-appheader-view  v-bind:currenturl="'${#request.getRequestURI()}'"></warmer-appheader-view>
 		</header>
-
-		<article>
-			<div layout:fragment="main"></div>
-		</article>
+		<div layout:fragment="main"></div>
 		<footer>
 			<warmer-appfooter-view  v-bind:data="'footer'"></warmer-appfooter-view>
 		</footer>

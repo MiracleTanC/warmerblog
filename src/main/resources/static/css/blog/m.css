@@ -5,7 +5,7 @@ header { width: 100%; margin: auto; }
 .nav li a { padding: 0 15px }
 .search_bar { display: none }
 article { width: 90%; margin: 100px auto 0 }
- .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .detailcontainer{ width: 90%; margin: 15px auto 0;}
  .BlogAnchor{display: none !important;}
 .fader { padding-top: 0; height: 360px }
 .imginfo { bottom: 15% }
@@ -13,6 +13,9 @@ article { width: 90%; margin: 100px auto 0 }
 .gd { width: 230px }
 .container { width: 90%; margin: 20px auto; }
 .share ul li i { }
+ .side-toolbar .github{
+   display: none;
+ }
 }
 @media screen and (min-width: 960px) and (max-width: 1023px) {
 header { width: 100%; margin: auto; }
@@ -20,7 +23,7 @@ header { width: 100%; margin: auto; }
 .nav li a { padding: 0 15px }
 .search_bar { display: none }
 article { width: 90%; margin: 100px auto 0 }
- .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .detailcontainer{ width: 90%; margin: 15px auto 0;}
  .BlogAnchor{display: none !important;}
 .fader { padding-top: 0; height: 337px }
 .imginfo { bottom: 15% }
@@ -30,7 +33,9 @@ article { width: 90%; margin: 100px auto 0 }
 .container { width: 90%; margin: 20px auto; }
 .share ul li i { }
 .timebox li:hover a { padding: 0 30px }
-
+ .side-toolbar .github{
+   display: none;
+ }
 }
 @media screen and (min-width: 768px) and (max-width: 959px) {
 header, .blogsbox { width: 100%; margin: auto; }
@@ -38,7 +43,7 @@ header, .blogsbox { width: 100%; margin: auto; }
 #mnav { display: block; z-index: 99999;  }
 .search_bar { display: none }
 article { width: 90%; margin: 70px auto 0 }
- .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .detailcontainer{ width: 90%; margin: 15px auto 0;}
  .BlogAnchor{display: none !important;}
 .imginfo { bottom: 17% }
 .fader { padding-top: 0; height: 279px }
@@ -59,6 +64,9 @@ h1.t_nav span { display: none }
 .infosbox { width: 100% }
 .pagebg {margin-top: 50px;}
  .el-carousel__container{height: 268px !important;}
+ .side-toolbar .github{
+   display: none;
+ }
 }
 @media only screen and (min-width: 480px) and (max-width: 767px) {
 header, .blogsbox, .banner { width: 100%; margin: auto; }
@@ -66,7 +74,7 @@ header, .blogsbox, .banner { width: 100%; margin: auto; }
 #mnav { display: block; z-index: 99999; }
 .search_bar, .toppic { display: none }
 article { width: 90%; margin: 70px auto 0 }
- .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .detailcontainer{ width: 90%; margin: 15px auto 0;}
  .BlogAnchor{display: none !important;}
 .bloginfo { width: 100%; clear: both }
 .blogs .blogpic { width: 30%; height: auto }
@@ -94,7 +102,16 @@ h1.t_nav span { display: none }
 .pagebg {margin-top: 50px;}
 .diggit{ float:none; margin-left: auto;}
 .dasbox{ display:none}
- .blogcontainer {width: 100%;}
+ .blogcontainer {width: 90%;}
+ .warmer-section {
+  height: 135px !important;
+ }
+ .githubflag{
+  display: none;
+ }
+ .side-toolbar .github{
+  display: block;
+ }
 }
 @media only screen and  (min-width: 376px) and (max-width: 414px) {
  header, .blogsbox, .banner { width: 100%; margin: auto; }
@@ -102,7 +119,7 @@ h1.t_nav span { display: none }
  #mnav { display: block; z-index: 99999;  }
  .search_bar, .toppic { display: none }
  article { width: 90%; margin: 70px auto 0 }
- .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .detailcontainer{ width: 90%; margin: 15px auto 0;}
  .BlogAnchor{display: none !important;}
  .imginfo { font-size: 18px; bottom: 22%; }
  .bloginfo { width: 100%; clear: both; }
@@ -134,11 +151,20 @@ h1.t_nav span { display: none }
  .diggit{ float:none; margin-left: auto;}
  .dasbox{ display:none}
  .el-carousel__container{height: 138px !important;}
- .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
- .blogcontainer {width: 100%;}
+ .detailcontainer{ width: 90%; margin: 15px auto 0;}
+ .blogcontainer {width: 90%;}
  .sidebardetail{display: none}
  .comment-list .new-comment textarea {
   width: calc(70vw)!important;
+ }
+ .warmer-section {
+  height: 135px !important;
+ }
+ .githubflag{
+  display: none;
+ }
+ .side-toolbar .github{
+  display: block;
  }
 }
 @media only screen and  (min-width: 361px) and (max-width: 375px) {
@@ -147,7 +173,7 @@ header, .blogsbox, .banner { width: 100%; margin: auto; }
 #mnav { display: block; z-index: 99999;  }
 .search_bar, .toppic { display: none }
 article { width: 90%; margin: 70px auto 0 }
- .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .detailcontainer{ width: 90%; margin: 15px auto 0;}
  .BlogAnchor{display: none !important;}
 .imginfo { font-size: 18px; bottom: 22%; }
 .bloginfo { width: 100%; clear: both; }
@@ -179,10 +205,19 @@ footer p { padding: 0 30px }
 .diggit{ float:none; margin-left: auto;}
 .dasbox{ display:none}
 .el-carousel__container{height: 138px !important;}
- .blogcontainer {width: 100%;}
+ .blogcontainer {width: 90%;}
  .sidebardetail{display: none}
  .comment-list .new-comment textarea {
   width: calc(70vw)!important;
+ }
+ .warmer-section {
+  height: 135px !important;
+ }
+ .githubflag{
+  display: none;
+ }
+ .side-toolbar .github{
+  display: block;
  }
 }
 @media only screen and (max-width: 360px) {
@@ -191,7 +226,7 @@ footer p { padding: 0 30px }
  #mnav { display: block; z-index: 99999;  }
  .search_bar, .toppic { display: none }
  article { width: 90%; margin: 70px auto 0 }
- .detailcontainer{ width: 100%; margin: 15px auto 0;margin-top: 80px }
+ .detailcontainer{ width: 90%; margin: 15px auto 0;}
  .BlogAnchor{display: none !important;}
  .imginfo { font-size: 18px; bottom: 22%; }
  .bloginfo { width: 100%; clear: both; }
@@ -223,12 +258,21 @@ footer p { padding: 0 30px }
  .diggit{ float:none; margin-left: auto;}
  .dasbox{ display:none}
  .el-carousel__container{height: 120px !important;}
- .blogcontainer {width: 100%;}
+ .blogcontainer {width: 90%;}
  .sidebardetail{display: none}
  .comment-list .new-comment textarea {
    width: calc(70vw) !important;
  }
  .editormd-preview-container, .editormd-html-preview {
    padding: 0px !important;
+ }
+ .warmer-section {
+   height: 135px !important;
+ }
+ .githubflag{
+    display: none;
+ }
+ .side-toolbar .github{
+  display: block;
  }
 }
