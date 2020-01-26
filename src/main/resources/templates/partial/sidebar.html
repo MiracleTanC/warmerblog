@@ -2,36 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <body>
     <div th:fragment="sidebar">
-        <nav  class="navbar-default navbar-static-side" role="navigation">
-            <div class="nav-close"><i class="fa fa-times-circle"></i></div>
-            <div class="sidebar-collapse">
-                <ul class="nav" id="side-menu">
-                    <li class="nav-header">
-                        <div class="dropdown profile-element">
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+        <div :class="[isShowSideBar?'':'mini-navbar','sidebardiv fixed-sidebar']">
+            <nav class="navbar-default navbar-static-side" >
+                <div class="sideBarTool" @click="switchSideBar">
+                    <i :class="[isShowSideBar?'glyphicon-chevron-left':'glyphicon-chevron-right','glyphicon']"></i>
+                </div>
+                <div class="sidebar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="nav-header">
+                            <div class="dropdown profile-element">
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                     <span class="block m-t-xs" style="font-size:20px;">
                                         <img style="width: 60px;margin-left: 15px;" alt="" th:src="@{/images/logo/logo_o.png}">
                                     </span>
                                 </span>
+                                </a>
+                            </div>
+                            <div class="logo-element">ღ</div>
+                        </li>
+                        <li v-if="menuList" v-for="item in menuList" :class="{'active':item.active}" @click="collapseClick(item)">
+                            <a :href="item.url?item.url:'javascript:void(0)'">
+                                <i :class="item.icon"></i>
+                                <span class="nav-label">{{item.name}}</span>
                             </a>
-                        </div>
-                        <div class="logo-element">喵
-                        </div>
-                    </li>
-                    <li v-if="menuList" v-for="item in menuList" :class="{'active':item.active}" @click="collapseClick(item)">
-                        <a :href="item.linkUrl"><i :class="item.icon"></i>
-                            <span class="nav-label">{{item.title}}</span>
-                        </a>
-                        <ul :class="[item.active ? ' in' : '', 'nav nav-second-level collapse']" v-if="item.childrens" >
-                            <li  v-for="subitem in item.childrens" :class="{'active':subitem.active}">
-                            	<a class="J_menuItem" :href="subitem.linkUrl">{{subitem.title}}</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+                            <ul :class="[item.active ? ' in ' : '', 'nav nav-second-level collapse']" v-if="item.children" >
+                                <li  v-for="subitem in item.children" :class="{'active':subitem.active}">
+                                    <a class="J_menuItem" :href="subitem.url">
+                                        <i :class="subitem.icon"></i>
+                                        <span class="nav-label sd">{{subitem.name}}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </div>
 
 </body>

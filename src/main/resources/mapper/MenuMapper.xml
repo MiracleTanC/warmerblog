@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="warmer.star.blog.mapper.MenuMapper">
+    <cache eviction="LRU" flushInterval="60000" readOnly="true"/>
+    <resultMap id="menu" type="warmer.star.blog.model.Menu">
+         <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="createon" property="createon" jdbcType="TIMESTAMP"/>
+        <result column="updateon" property="updateon" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		id,code,name,pid,url,icon,type,level,sort,status,createOn,updateOn
+	</sql>
+	<sql id="Where_Clause" >
+	    <where >	
+	     status=1 
+	      	<if test="pid!= null and pid != '' or pid==0 ">
+           		and pid = #{pid,jdbcType=INTEGER}
+        	</if>
+	    </where>
+	 </sql>
+    <select id="getMenuList" resultMap="menu">
+        select 
+        <include refid="Base_Column_List" />
+        from menu
+       <include refid="Where_Clause" />
+       order by createOn desc 
+    </select>
+    <select id="getAll" resultMap="menu">
+        select 
+        <include refid="Base_Column_List" />
+        from menu
+       order by sort asc 
+    </select>
+    <select id="getById" resultMap="menu">
+        select 
+        <include refid="Base_Column_List" />
+        from menu
+        <where >
+            status=1
+            <if test="id!= null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+        </where>
+       order by sort asc 
+    </select>
+    <insert id="saveMenu" parameterType="warmer.star.blog.model.Menu" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()  as id
+        </selectKey>
+		  insert into menu (name,code,pid,url,type,icon,sort,status,createon,updateon)
+		  values (#{name},#{code},#{pid},#{url},#{type},#{icon},#{sort},1,#{createon},#{updateon})
+	</insert>
+
+	<update id="updateMenu">
+	  update menu set
+	    name = #{name},
+	    pid = #{pid},
+	    url = #{url},
+	    type = #{type},
+	    icon = #{icon},
+	    sort = #{sort},
+	    updateOn = #{updateon}
+	  where id = #{id}
+	</update>
+    <update id="updateMenuCode">
+	  update menu set
+	    code = #{code},`Level`=LENGTH(code)/4
+	  where id = #{id}
+	</update>
+	<delete id="deleteMenuById">
+	  delete from menu where id = #{id}
+	</delete>
+</mapper>

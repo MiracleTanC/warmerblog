@@ -1,14 +1,15 @@
 package warmer.star.blog.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-
+@Data
 public class User implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
-	private Integer id;
+    private Integer id;
 
     private String username;    //用户名
 
@@ -28,65 +29,9 @@ public class User implements Serializable {
 
     private Date createTime;    //创建时间
 
-    public Integer getId() {
-        return id;
-    }
+    private UserInfo userItem;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isExpired() {
-        return expired;
-    }
-
-    public void setExpired(boolean expired) {
-        this.expired = expired;
-    }
-
-    public boolean isLocked() {
-        return locked;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public boolean isCredential() {
-        return credential;
-    }
-
-    public void setCredential(boolean credential) {
-        this.credential = credential;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
+    private List<UserRole> userRoles;
 
     public boolean isAccountNonExpired() {
         return expired;
@@ -104,19 +49,5 @@ public class User implements Serializable {
         return enabled;
     }
 
-    public String getOpenid() {
-        return openid;
-    }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
-    public Integer getSourcetype() {
-        return sourcetype;
-    }
-
-    public void setSourcetype(Integer sourcetype) {
-        this.sourcetype = sourcetype;
-    }
 }

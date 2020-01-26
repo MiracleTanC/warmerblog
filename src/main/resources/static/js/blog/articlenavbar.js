@@ -26,7 +26,7 @@
     }
     if(vHMaxTag == null) return;//没有任何标题则返回
 
-    $("body").prepend('<div class="BlogAnchor">' + 
+    $("body").prepend('<div class="BlogAnchor">' +
         '<span style="color:red;position:absolute;top:-5px;left:4px;cursor:pointer;" onclick="$(\'.BlogAnchor\').hide();">×</span>' +
         '<p>' + 
             '<b id="AnchorContentToggle" title="收起" style="cursor:pointer;">目录 </b>' + 
@@ -46,13 +46,14 @@
         var className = 'item_h'+useIndex;
         $(item).attr("id","wow"+id);
         $(item).addClass("wow_head");
-        $("#AnchorContent").css('max-height', ($(window).height() - 180) + 'px'); 
+        $("#AnchorContent").css('max-height', ($(window).height() - 300) + 'px');
         $("#AnchorContent").css('min-width', ($(window).height()*0.25) + 'px');
         $("#AnchorContent").css('max-width', ($(window).height()*0.25)+80 + 'px');
-        $("#AnchorContent").css('overflow', 'hidden');
+        $("#AnchorContent").css('overflow-x', 'hidden');
+        $("#AnchorContent").css('overflow-y', 'auto');
         $("#AnchorContent").css('text-overflow', 'ellipsis');
         $("#AnchorContent").css('white-space', 'nowrap');
-        $("#AnchorContent").append('<li><a class="nav_item '+className+' anchor-link" onclick="return false;" href="#" link="#wow'+id+'">'+$(this).text()+'</a></li>');
+        $("#AnchorContent").append('<li><a class="nav_item '+className+' anchor-link" onclick="return false;" href="#" title="'+$(this).text()+'" link="#wow'+id+'">'+$(this).text()+'</a></li>');
     });
 
     $("#AnchorContentToggle").click(function(){

@@ -80,11 +80,8 @@
 				        <el-form-item label="分类名称" prop="name">
 				          <el-input v-model="temp.name"></el-input>
 				        </el-form-item>
-				        <el-form-item label="分类编码" prop="code">
-				          <el-input v-model="temp.code"></el-input>
-				        </el-form-item>
 				        <el-form-item label="排序码" prop="sort">
-				          <el-input v-model="temp.sort"></el-input>
+							<el-input-number v-model="temp.sort" controls-position="right" :min="1" :max="10"></el-input-number>
 				        </el-form-item>
 				      </el-form>
 				      <div slot="footer" class="dialog-footer">
@@ -146,6 +143,7 @@
 	    	params.append('code', _this.temp.code);
 	    	params.append('sort', _this.temp.sort);
 	    	params.append('parentId', _this.temp.parentId);
+	    	params.append('parentcode', _this.temp.parentcode);
 			axios.post('/category/saveCate', params)
 			.then(function (response) {
 				var result=response.data;
@@ -175,12 +173,12 @@
 	             dialogPvVisible: false,
 	             pvData: [],
 	             rules: {
-	               name: [{ required: true, message: '分类名称 是必须的', trigger: 'blur' }],
-	               code: [{ required: true, message: '分类编码是必须的', trigger: 'blur' }]
+	               name: [{ required: true, message: '分类名称 是必须的', trigger: 'blur' }]
 	             },
 	        	 temp: {
 	        	        id: undefined,
 	        	        parentId:0,
+					 	parentcode:'',
 	        	        name: '',
 	        	        code: '',
 	        	        sort: ''
@@ -230,12 +228,14 @@
 	   		    	  this.dialogStatus = 'create'
 	   		    	  this.temp.id=0;
 	   		    	  this.temp.parentId=row.id;
+	   		    	  this.temp.parentcode=row.code;
 	   		      }else{
 	   		    	  this.temp.id=row.id;
 	   		    	  this.temp.name=row.name;
 	   		    	  this.temp.code=row.code;
 	   		    	  this.temp.sort=row.sort;
 	   		    	  this.temp.parentId=row.parentId;
+                      this.temp.parentcode=row.code;
 	   		      }
 		   		},
 	   		    addRoot:addRoot,

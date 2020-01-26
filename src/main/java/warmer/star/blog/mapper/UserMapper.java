@@ -21,6 +21,8 @@ public interface UserMapper {
      */
     List<User> allUser();
 
+    List<User> getUserList();
+    UserInfo getUserById(@Param("id") Integer userId);
     UserInfo getUserInfo(@Param("username") String username);
 
     void updateAvatar(@Param("url") String url, @Param("username") String username);

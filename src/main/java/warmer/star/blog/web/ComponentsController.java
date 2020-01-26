@@ -24,4 +24,8 @@ public class ComponentsController extends BaseController {
 	public String timeline(Model model) {
 		return "components/timeline";
 	}
+	@RequestMapping("/wordcloud")
+	public String wordcloud(Model model) {
+		return "components/wordcloud";
+	}
 }

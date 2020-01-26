@@ -1,0 +1,228 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="partial/layoutAdmin">
+<head>
+    <title>我的资源</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+        .filecon {
+            width: 70%;
+            float: left;
+            margin: 5px;
+            padding: 2px;
+            list-style: none;
+            position: relative;
+        }
+
+        .file img, video, audio {
+            width: 100%;
+            height: 150px;
+        }
+
+        .filedetail img, video, audio {
+            width: 100%;
+        }
+
+        .dp {
+            display: block !important;
+        }
+
+        .resource .delete {
+            position: absolute;
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+            opacity: .8;
+            user-select: none;
+            right: 5px;
+            top: 5px;
+            font-size: 25px;
+        }
+
+        .resource .sname {
+            float: left;
+            width: 100%;
+        }
+
+        .el-checkbox__inner {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="padding: 20px;">
+        <span @click="prev" style="margin-left: 20px;cursor: pointer">上一页</span>
+        <span @click="next" style="margin-left: 20px;cursor: pointer">下一页</span>
+        <span @click="batchhandleRemove" style="float: right;cursor: pointer;margin-right: 50px">批量删除</span>
+    </div>
+    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
+                 style="margin-left: 50px;">全选
+    </el-checkbox>
+    <div style="margin: 15px 0;"></div>
+    <ul class="file" v-show="data">
+
+        <el-checkbox-group v-model="deletekeys" @change="handleCheckedChange">
+            <el-checkbox v-for="item in data" :label="item.key" :key="item.key" style="width: 20%;">
+                <li class="filecon">
+                    <img @click="handlePreview(item)" v-show="item.mimeType.indexOf('image')>-1" :src="item.url"/>
+                    <img @click="handlePreview(item)" v-show="item.mimeType.indexOf('audio')>-1"
+                         src="/images/music.gif"/></audio>
+                    <video v-show="item.mimeType.indexOf('video')>-1" :src="item.url"/>
+                    </video>
+                    <div class="resource">
+                        <div class="sname">资源名称：<a target="_blank" :href="'http://file.miaoleyan.com/'+item.key">{{item.key}}</a>
+                        </div>
+                        <div class="sname">大小：{{item.fsize}}</div>
+                        <div class="sname">类型：{{item.mimeType}}</div>
+                        <div class="sname">上传时间：{{item.putTime}}</div>
+                        <span class="delete" @click="handleRemove(item)">X</span>
+                    </div>
+                </li>
+            </el-checkbox>
+        </el-checkbox-group>
+
+    </ul>
+    <el-dialog class="filedetail" :visible.sync="dialogVisible">
+        <img v-show="currentItem&&currentItem.mimeType.indexOf('image')>-1" :src="currentItem.url"/>
+        <audio class="dp" autoplay loop v-show="currentItem&&currentItem.mimeType.indexOf('audio')>-1"
+               :src="currentItem.url"/>
+        </audio>
+        <video class="dp" v-show="currentItem&&currentItem.mimeType.indexOf('video')>-1" :src="currentItem.url"/>
+        </video>
+    </el-dialog>
+    <div style="padding: 20px;">
+        <span @click="prev" style="margin-left: 20px;cursor: pointer">上一页</span>
+        <span @click="next" style="margin-left: 20px;cursor: pointer">下一页</span>
+        <span @click="batchhandleRemove" style="float: right;cursor: pointer;margin-right: 50px">批量删除</span>
+    </div>
+</div>
+<div layout:fragment="jscontent">
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                dataListLoading: false,
+                dialogVisible: false,
+                query: {
+                    marker: '',
+                    pageIndex: 1,
+                    limit: 24
+                },
+                total: null,
+                currentItem: {mimeType: '', ur: ''},
+                data: [],
+                hasnew: true,
+                checkAll: false,
+                isIndeterminate: true,
+                deletekeys: []
+            },
+            created: function () {
+                this.getDataList();
+            },
+            methods: {
+                handleCheckAllChange(val) {
+                    var array = [];
+                    for (var i = 0; i < this.data.length; i++) {
+                        array.push(this.data[i].key);
+                    }
+                    this.deletekeys = val ? array : [];
+                    this.isIndeterminate = false;
+                },
+                handleCheckedChange(value) {
+                    let checkedCount = value.length;
+                    this.checkAll = checkedCount === this.data.length;
+                    this.isIndeterminate = checkedCount > 0 && checkedCount < this.data.length;
+                },
+                handleRemove(item) {
+                    var _this = this;
+                    var arr = [];
+                    arr.push(item.key);
+                    var data = {keys: arr};
+                    $.ajax({
+                        data: data,
+                        type: "POST",
+                        url: '/qiniu/deletefile',
+                        dataType: "json",
+                        //contentType: "application/json",
+                        success: function (result) {
+                            if (result.code == 200) {
+                                _this.$message({
+                                    message: '操作成功',
+                                    type: 'success'
+                                });
+                                _this.deletekeys=[];
+                                _this.getDataList();
+                            } else {
+                                _this.$message.error('操作失败');
+                            }
+                        }
+                    })
+                },
+                batchhandleRemove() {
+                    var _this = this;
+                    var data = {keys: _this.deletekeys};
+                    $.ajax({
+                        data: data,
+                        type: "POST",
+                        url: '/qiniu/deletefile',
+                        dataType: "json",
+                        //contentType: "application/json",
+                        success: function (result) {
+                            if (result.code == 200) {
+                                _this.$message({
+                                    message: '操作成功',
+                                    type: 'success'
+                                });
+                                _this.deletekeys=[];
+                                _this.getDataList();
+                            } else {
+                                _this.$message.error('操作失败');
+                            }
+
+                        }
+                    })
+                },
+                handlePreview(item) {
+                    this.dialogVisible = true;
+                    this.currentItem = item;
+                },
+                prev() {
+                    if (this.query.pageIndex > 1) {
+                        this.query.pageIndex--;
+                        this.getDataList()
+                    }
+                },
+                next() {
+                    if (this.query.marker) {
+                        this.query.pageIndex++;
+                        this.getDataList()
+                    }
+                },
+                getDataList() {
+                    var _this = this;
+                    _this.dataListLoading = true;
+                    var data = {marker: _this.query.marker, limit: _this.query.limit};
+                    $.ajax({
+                        data: JSON.stringify(data),
+                        type: "POST",
+                        url: '/qiniu/filelist',
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function (result) {
+                            if (result.code == 200) {
+                                _this.data = result.data.items;
+                                _this.dataListLoading = false;
+                                _this.query.marker = result.data.marker;
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+</div>
+</body>
+
+</html>

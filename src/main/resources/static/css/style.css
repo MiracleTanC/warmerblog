@@ -65,13 +65,15 @@ a:focus {
 }
 
 .nav>li.active>a {
-    color: rgb(191, 203, 217);
+    /*color: rgb(191, 203, 217);*/
+    color: #fff;
 }
 
 .navbar-default .nav>li>a:hover,
 .navbar-default .nav>li>a:focus {
     background-color: #131e26;
-    color: white;
+    /*color: white;*/
+    color: #1E90FF;
 }
 
 .nav .open>a,
@@ -303,8 +305,21 @@ body.body-small .navbar-top-links li:last-child {
 .nav-second-level li:last-child {
     margin-bottom: 10px;
 }
-
-body:not(.fixed-sidebar):not(.canvas-menu).mini-navbar .nav li:hover>.nav-second-level,
+.sideBarTool{
+    margin-right: -34px;
+    margin-top: 54px;
+    position: absolute;
+    width: 30px;
+    text-align: center;
+    border-radius: 5px;
+    float: right;
+    color: #fff;
+    background: #0F192A;
+    display: block;
+    right: 0px;
+    cursor: pointer;
+}
+.sidebardiv:not(.fixed-sidebar):not(.canvas-menu).mini-navbar .nav li:hover>.nav-second-level,
 .mini-navbar .nav li:focus>.nav-second-level {
     display: block;
     border-radius: 0 2px 2px 0;
@@ -412,75 +427,67 @@ body.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
     margin-left: 0px;
 }
 
-body.mini-navbar .navbar-static-side {
+.sidebardiv.mini-navbar .navbar-static-side {
     width: 70px;
 }
 
-body.mini-navbar .profile-element,
-body.mini-navbar .nav-label,
-body.mini-navbar .navbar-default .nav li a span {
+.sidebardiv.mini-navbar .profile-element,
+.sidebardiv.mini-navbar .nav-label,
+.sidebardiv.mini-navbar .navbar-default .nav li a span {
     display: none;
 }
 
-body.canvas-menu .profile-element {
+.sidebardiv.canvas-menu .profile-element {
     display: block;
 }
 
-body:not(.fixed-sidebar):not(.canvas-menu).mini-navbar .nav-second-level {
+.sidebardiv:not(.fixed-sidebar):not(.canvas-menu).mini-navbar .nav-second-level {
     display: none;
 }
 
-body.mini-navbar .navbar-default .nav>li>a {
+.sidebardiv.mini-navbar .navbar-default .nav>li>a {
     font-size: 16px;
 }
 
-body.mini-navbar .logo-element {
+.sidebardiv.mini-navbar .logo-element {
     display: block;
 }
 
-body.canvas-menu .logo-element {
+.sidebardiv.canvas-menu .logo-element {
     display: none;
 }
 
-body.mini-navbar .nav-header {
+.sidebardiv.mini-navbar .nav-header {
     padding: 0;
     background-color: #23b7e5;
 }
 
-body.canvas-menu .nav-header {
+.sidebardiv.canvas-menu .nav-header {
     padding: 33px 25px;
 }
 
-body.mini-navbar #page-wrapper {
-    margin: 0 0 0 70px;
-}
 
-body.canvas-menu.mini-navbar #page-wrapper,
-body.canvas-menu.mini-navbar .footer {
-    margin: 0 0 0 0;
-}
-
-body.fixed-sidebar .navbar-static-side,
-body.canvas-menu .navbar-static-side {
+.sidebardiv.fixed-sidebar .navbar-static-side,
+.sidebardiv.canvas-menu .navbar-static-side {
     position: fixed;
     width: 180px;
     z-index: 2001;
     height: 100%;
 }
 
-body.fixed-sidebar.mini-navbar .navbar-static-side {
+.sidebardiv.fixed-sidebar.mini-navbar .navbar-static-side {
     width: 70px;
 }
 
-body.fixed-sidebar.mini-navbar #page-wrapper {
+.sidebardiv.fixed-sidebar.mini-navbar #page-wrapper {
     margin: 0 0 0 70px;
 }
 
-body.body-small.fixed-sidebar.mini-navbar #page-wrapper {
+.sidebardiv.body-small.fixed-sidebar.mini-navbar #page-wrapper {
     margin: 0 0 0 70px;
 }
 
-body.body-small.fixed-sidebar.mini-navbar .navbar-static-side {
+.sidebardiv.body-small.fixed-sidebar.mini-navbar .navbar-static-side {
     width: 70px;
 }
 
@@ -505,12 +512,12 @@ body.body-small.fixed-sidebar.mini-navbar .navbar-static-side {
     border-radius: 2px;
 }
 
-body.fixed-sidebar.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
+.sidebardiv.fixed-sidebar.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
     font-size: 12px;
     border-radius: 3px;
 }
 
-body.canvas-menu.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
+.sidebardiv.canvas-menu.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
     font-size: 13px;
     border-radius: 3px;
 }
@@ -532,7 +539,7 @@ body.canvas-menu.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
     left: 0px;
 }
 
-body.canvas-menu nav.navbar-static-side {
+.sidebardiv.canvas-menu nav.navbar-static-side {
     z-index: 2001;
     background: #2f4050;
     height: 100%;
@@ -540,7 +547,7 @@ body.canvas-menu nav.navbar-static-side {
     display: none;
 }
 
-body.canvas-menu.mini-navbar nav.navbar-static-side {
+.sidebardiv.canvas-menu.mini-navbar nav.navbar-static-side {
     display: block;
     width: 70px;
 }

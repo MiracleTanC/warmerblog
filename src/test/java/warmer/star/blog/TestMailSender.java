@@ -22,7 +22,7 @@ public class TestMailSender {
 	EmailSenderUtil emailSenderUtil;
 	@Autowired
 	TemplateEngine templateEngine;
-	//@Test
+	@Test
 	public void send(){
 		//建立邮件消息
 		SimpleMailMessage mainMessage = new SimpleMailMessage();

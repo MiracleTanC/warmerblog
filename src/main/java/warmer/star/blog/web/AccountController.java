@@ -31,7 +31,6 @@ public class AccountController extends BaseController {
 		model.addAttribute("user", user);
 		return "login";
 	}
-
 	@RequestMapping(value = "/logout")
 	public String Logout(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

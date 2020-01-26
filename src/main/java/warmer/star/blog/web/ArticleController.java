@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import warmer.star.blog.dto.ArticleItem;
@@ -40,13 +41,14 @@ public class ArticleController extends BaseController {
     private TagService tagService;
 
     @RequestMapping("/article")
+    @PreAuthorize("hasPermission('/article','article_select') or hasRole('ADMIN')")
     public String index(ArticleQueryItem queryItem) {
         return "article/index";
     }
 
     @RequestMapping("/getArticlelist")
     @ResponseBody
-    public R getArticlelist(ArticleQueryItem query) {
+    public R getArticlelist(@RequestBody ArticleQueryItem query) {
         PageHelper.startPage(query.getPageIndex(), query.getPageSize(), true);
         // 获取文章列表
         List<ArticleItem> articleList = articleService.getArticleList(query);
@@ -64,6 +66,7 @@ public class ArticleController extends BaseController {
 
     @RequestMapping("/getEsArticlelist")
     @ResponseBody
+
     public R getEsArticlelist(ArticleQueryItem query) {
         String index = "warmer_blog";
         String type = "article";
@@ -89,7 +92,6 @@ public class ArticleController extends BaseController {
         return R.success().put("data", "");
     }
     @RequestMapping("/article/edit/{t}/{articleId}")
-    @PreAuthorize("hasPermission('/article/edit','create')")
     public String edit(@PathVariable("t") Integer t, @PathVariable("articleId") Integer articleId, Model model) {
         ArticleItem articleItem = new ArticleItem();
         if (articleId != null && articleId != 0) {
@@ -103,12 +105,12 @@ public class ArticleController extends BaseController {
         if (t == 0) {
             return "article/markdown";
         }
-        return "article/edit";
+        return "article/tinymce";
     }
 
     @RequestMapping("/article/deleteArticle")
     @ResponseBody
-    @PreAuthorize("hasPermission('/article/deleteArticle','delete')")
+    @PreAuthorize("hasPermission('/article/deleteArticle','article_delete')")
     public R deleteArticle(int articleId) {
         boolean result = false;
         try {
@@ -126,7 +128,7 @@ public class ArticleController extends BaseController {
 
     @RequestMapping("/article/saveArticle")
     @ResponseBody
-    @PreAuthorize("hasPermission('/article/edit','create')")
+    @PreAuthorize("hasPermission('/article/saveArticle','article_edit')")
     public R saveArticle(ArticleSubmitItem submitItem) {
         boolean result = false;
         try {

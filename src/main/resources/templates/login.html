@@ -21,8 +21,8 @@
 		z-index: 9;
 	}
 </style>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
 </head>
 
 <body>
@@ -103,8 +103,8 @@
 								   value="登录">
 						</form>
 						<ul class="sns-login">
-							<a class="mr" href="javascript:void(0);"><li class="sns wechat-login" > <span>微信</span> </li></a>
-							<a class="mr" href="javascript:void(0);"><li class="sns qq-login" ><span>QQ</span></li></a>
+							<a class="mr" href="/login/gitee"><li class="sns wechat-login" > <span>微信</span> </li></a>
+							<a class="mr" href="/login/qq"><li class="sns qq-login" ><span>QQ</span></li></a>
 							<a class="mr" href="/login/github"><li class="sns github-login" > <span>Github</span> </li></a>
 						</ul>
 					</div>
@@ -112,8 +112,8 @@
 			</div>
 		</div>
 	</div>
-	<script src="/js/vegas.min.js"></script>
-	<script src="/js/loginvega.js"></script>
+	<script type="text/javascript" src="/js/vegas.min.js"></script>
+	<script type="text/javascript" src="/js/loginvega.js"></script>
 	<script type="text/javascript">
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");

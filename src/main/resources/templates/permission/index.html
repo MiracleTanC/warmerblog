@@ -1,0 +1,349 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="partial/layoutAdmin">
+<head>
+    <title>资源管理</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .el-input.el-input--suffix {
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .el-input.el-input--suffix.rotate .el-input__suffix {
+            transform: rotate(180deg);
+        }
+
+        .select-tree {
+            max-height: 350px;
+            overflow-y: scroll;
+        }
+
+        /* 菜单滚动条 */
+        .select-tree::-webkit-scrollbar {
+            z-index: 11;
+            width: 6px;
+        }
+
+        .select-tree::-webkit-scrollbar-track,
+        .select-tree::-webkit-scrollbar-corner {
+            background: #fff;
+        }
+
+        .select-tree::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            width: 6px;
+            background: #b4bccc;
+        }
+
+        .select-tree::-webkit-scrollbar-track-piece {
+            background: #fff;
+            width: 6px;
+        }
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="app-container calendar-list-container">
+        <div class="mod-menu">
+            <el-form :inline="true">
+                <el-form-item>
+                    <el-button type="primary" @click="addRoot">新增</el-button>
+                </el-form-item>
+            </el-form>
+            <el-table :data="data" :columns="columns" border v-bind="$attrs">
+                <el-table-column v-for="(column, index) in columns" :key="column.value" :label="column.text"
+                                 :width="column.width">
+                    <template slot-scope="scope">
+						  <span v-if="column.value=='menu'">
+							  <i :class="scope.row['menu'].icon"></i>{{scope.row['menu'].name}}
+						  </span>
+                        <span v-else>
+							  {{scope.row[column.value]}}
+						  </span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="操作" width="280">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="primary" @click="handleCreate(scope.row,1)" icon="el-icon-edit">
+                            编辑
+                        </el-button>
+                        <el-button size="mini" type="danger" @click="deleteMenu(scope.row)" icon="el-icon-delete">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination background @size-change="handleSizeChange"
+                               class="txtCenter" @current-change="handleCurrentChange"
+                               :current-page="listQuery.pageIndex" :page-sizes="[10,20,30, 50]"
+                               :page-size="listQuery.pageSize"
+                               layout="total, sizes, prev, pager, next, jumper" :total="total">
+                </el-pagination>
+            </div>
+            <!-- 弹窗, 新增 / 修改 -->
+            <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+                <el-form :rules="rules" :model="temp" label-position="left" label-width="140px"
+                         style='width: 400px; margin-left:50px;'>
+                    <el-form-item label="资源名称" prop="name">
+                        <el-input v-model="temp.name" clearable placeholder="资源名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="资源编码" prop="code">
+                        <el-input v-model="temp.code" clearable placeholder="资源编码"></el-input>
+                    </el-form-item>
+                    <el-form-item label="链接" prop="url" clearable placeholder="地址链接">
+                        <el-input v-model="temp.url"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所属菜单">
+                        <warmer-selecttree v-model="temp.menuid" :options="treeoptions" :props="defaultProps"/>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="resetData">取消</el-button>
+                    <el-button v-if="dialogStatus=='create'" type="primary" @click="addOrUpdate">确定</el-button>
+                    <el-button v-else type="primary" @click="addOrUpdate">更新</el-button>
+                </div>
+            </el-dialog>
+        </div>
+    </div>
+</div>
+<div layout:fragment="jscontent">
+    <script src="/js/components/warmer-selecttree.js"></script>
+    <script type="text/javascript">
+        function treeToArray(data, expandAll, parent = null, level = null) {
+            let tmp = []
+            Array.from(data).forEach(function (record) {
+                if (record._expanded === undefined) {
+                    Vue.set(record, '_expanded', expandAll)
+                }
+                let _level = 1
+                if (level !== undefined && level !== null) {
+                    _level = level + 1
+                }
+                Vue.set(record, '_level', _level)
+                // 如果有父元素
+                if (parent) {
+                    Vue.set(record, 'parent', parent)
+                }
+                tmp.push(record)
+                if (record.children && record.children.length > 0) {
+                    const children = treeToArray(record.children, expandAll, record, _level)
+                    tmp = tmp.concat(children)
+                }
+            })
+            return tmp
+        }
+
+        var resetData = function () {
+            app.temp.id = 0;
+            app.temp.menuid = 0;
+            app.temp.name = "";
+            app.temp.code = "";
+            app.temp.url = "";
+            app.dialogStatus = '';
+            app.dialogFormVisible = false
+        }
+        var addRoot = function () {
+            app.dialogFormVisible = true;
+            app.dialogStatus = 'create'
+            app.temp.id = 0;
+            app.temp.menuid = 0;
+            app.temp.name = "";
+            app.temp.code = "";
+            app.temp.url = "";
+        }
+        var addOrUpdate = function () {
+            var _this = this;
+            var params = new URLSearchParams();
+            params.append('id', _this.temp.id);
+            params.append('name', _this.temp.name);
+            params.append('code', _this.temp.code);
+            params.append('url', _this.temp.url);
+            params.append('menuid', _this.temp.menuid);
+            axios.post('/permission/savepermission', params)
+                .then(function (response) {
+                    var result = response.data;
+                    if (result.code == 0) {
+                        _this.resetData();
+                        _this.getDataList();
+                        _this.$message({
+                            message: result.msg,
+                            type: 'success'
+                        });
+
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        var app = new Vue({
+            el: '#app',
+            data: {
+                total: 0,
+                listQuery: {
+                    pageIndex: 1,
+                    pageSize: 10,
+                },
+                dialogFormVisible: false,
+                dialogStatus: '',
+                textMap: {
+                    update: '编辑',
+                    create: '添加'
+                },
+                // 数据默认字段
+                defaultProps: {
+                    parent: 'parentId',   // 父级唯一标识
+                    value: 'id',          // 唯一标识
+                    label: 'name',       // 标签显示
+                    children: 'children', // 子级
+                },
+                // 数据列表
+                treeoptions: [],
+                dialogPvVisible: false,
+                pvData: [],
+                rules: {
+                    name: [{required: true, message: '资源名称 是必须的', trigger: 'blur'}],
+                    code: [{required: true, message: '资源编码 是必须的', trigger: 'blur'}],
+                    url: [{required: true, message: '资源链接 是必须的', trigger: 'blur'}],
+                },
+                temp: {
+                    id: 0,
+                    name: '',
+                    code: '',
+                    url: '',
+                    menuid: 0
+                },
+                iconcontainershowstatus: false,
+                columns: [
+                    {
+                        text: '资源名称',
+                        value: 'name'
+                    },
+                    {
+                        text: '资源编码',
+                        value: 'code',
+                        width: 200
+                    },
+                    {
+                        text: '链接',
+                        value: 'url',
+                        width: 200
+                    },
+                    {
+                        text: '所属模块',
+                        value: 'menu',
+                        width: 200
+                    }
+                ],
+                data: []
+            },
+            created: function () {
+                this.getDataList();
+                this.getTreeList();
+            },
+            methods: {
+                handleFilter() {
+                    this.listQuery.pageIndex = 1
+                    this.getDataList()
+                },
+                handleSizeChange(val) {
+                    this.listQuery.pageSize = val
+                    this.getDataList()
+                },
+                handleCurrentChange(val) {
+                    this.listQuery.pageIndex = val
+                    this.getDataList()
+                },
+                reset() {
+                    this.name = '';
+                },
+                handleCreate(row, operate) {
+                    this.dialogFormVisible = true;
+                    if (operate == 0) {//新增
+                        this.dialogStatus = 'create'
+                        this.temp.id = 0;
+                        this.temp.menuid = row.id;
+                    } else {
+                        this.temp.id = row.id;
+                        this.temp.name = row.name;
+                        this.temp.code = row.code;
+                        this.temp.url = row.url;
+                        this.temp.menuid = row.menuid;
+                    }
+                },
+                addRoot: addRoot,
+                addOrUpdate: addOrUpdate,
+                resetData: resetData,
+                deleteMenu(row) {
+                    var _this = this;
+                    _this.$confirm('确定要[删除]' + row.name + '吗?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.ajax({
+                            data: {id: row.id},
+                            type: "POST",
+                            url: '/permission/deletepermission',
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    _this.getDataList();
+                                    _this.$message({
+                                        message: result.msg,
+                                        type: 'success'
+                                    });
+                                } else {
+                                    _this.$message.error(result.msg);
+                                }
+                            },
+                            error: function (data) {
+                            }
+                        });
+                    }).catch(() => {
+                    })
+                },
+                getDataList() {
+                    var _this = this;
+                    _this.dataListLoading = true;
+                    var param = _this.listQuery;
+                    $.ajax({
+                        data: param,//JSON.stringify(param),
+                        type: "POST",
+                        async: false,
+                        url: '/permission/getpermissionlist',
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.data = result.data.rows;
+                                _this.total = result.data.totalCount;
+                                _this.dataListLoading = false
+                                _this.temp.parentId = 0;
+                            }
+                        }
+                    })
+                },
+                getTreeList() {
+                    var _this = this;
+                    _this.dataListLoading = true;
+                    $.ajax({
+                        data: {parentId: 0},
+                        type: "POST",
+                        async: false,
+                        url: '/menu/getmenulist',
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.treeoptions = result.data;
+                            }
+                        }
+                    })
+                },
+
+            }
+        })
+    </script>
+</div>
+</body>
+
+</html>

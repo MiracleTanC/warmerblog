@@ -8,9 +8,39 @@
         <result column="rolecode" property="rolecode" jdbcType="VARCHAR"/>
         <result column="rolename" property="rolename" jdbcType="VARCHAR"/>
         <result column="comment" property="comment" jdbcType="VARCHAR"/>
+        <result column="createuser" property="createuser" jdbcType="INTEGER"/>
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
     </resultMap>
    
     <select id="getRole" parameterType="Integer" resultMap="rolemodel">
-        SELECT * from sys_role where id = #{roleId}
+        SELECT * from role where id = #{roleId}
     </select>
+    <select id="getAll" resultMap="rolemodel">
+        select id,rolecode,rolename,comment,createuser,createtime from role
+    </select>
+    <insert id="saveRole" parameterType="warmer.star.blog.model.Role" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()  as id
+        </selectKey>
+        insert into role (rolecode,rolename,comment,createuser,createtime)
+        values (#{rolecode},#{rolename},#{comment},#{createuser},#{createtime})
+    </insert>
+
+    <update id="updateRole">
+	  update role set
+	    rolecode = #{rolecode},
+	    rolename = #{rolename},
+	    comment = #{comment},
+	    createuser = #{createuser},
+	    createtime = #{createtime}
+	  where id = #{id}
+	</update>
+    <update id="updateRoleCode">
+	  update role set
+	    rolecode = #{rolecode}
+	  where id = #{id}
+	</update>
+    <delete id="deleteRoleById">
+	  delete from role where id = #{id}
+	</delete>
 </mapper>

@@ -5,14 +5,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import warmer.star.blog.config.QiniuUploadService;
 import warmer.star.blog.config.WebAppConfig;
-import warmer.star.blog.util.FileResponse;
-import warmer.star.blog.util.FileResult;
-import warmer.star.blog.util.ImageUtil;
+import warmer.star.blog.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -195,4 +194,47 @@ public class FileController extends BaseController {
 		return res;
 
 	}
+	@GetMapping("/qiniu")
+	public String index(Model model) {
+		return "file/index";
+	}
+	@PostMapping("/qiniu/filelist")
+	@ResponseBody
+	public JSONObject filelist(@RequestBody QiniuFileQueryItem queryItem) {
+		JSONObject obj=new JSONObject();
+		QiniuFileResultItem res = new QiniuFileResultItem();
+		try {
+			res=qiniuUploadService.getQiniuFileList(queryItem.getMarker(),queryItem.getLimit());
+			obj.put("code",200);
+			obj.put("data",res);
+		} catch (FileUploadException e) {
+			obj.put("code",500);
+			log.error(e.getMessage());
+		}
+		return obj;
+	}
+	@PostMapping("/qiniu/deletefile")
+	@ResponseBody
+	public JSONObject deletefile(@RequestParam(value = "keys[]") String[] keys) {
+		JSONObject obj=new JSONObject();
+		boolean res = false;
+		try {
+			for(String key:keys){
+				qiniuUploadService.deleteByKey(key);
+			}
+			res=true;
+			if(res){
+				obj.put("code",200);
+				obj.put("data",res);
+			}
+			else{
+				obj.put("code",500);
+			}
+		} catch (Exception e) {
+			obj.put("code",500);
+			log.error(e.getMessage());
+		}
+		return obj;
+	}
+
 }

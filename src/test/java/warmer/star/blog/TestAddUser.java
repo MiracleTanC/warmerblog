@@ -20,6 +20,7 @@ public class TestAddUser {
 		String encode = encoder.encode("miss1991");
 		User user=new User();
 		user.setUsername("tanchao");
+		userMapper.addUser(user);
 		user.setPassword(encode);
 		userMapper.updatePassword(user);
 		System.out.println(encode);

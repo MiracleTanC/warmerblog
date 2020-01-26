@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="partial/layout" lang="zh">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" th:href="@{/css/warmercomment.css}">
+    <link rel="stylesheet" th:href="@{/emoji/css/emoji.css}">
+    <link th:href="@{/editor/css/editormd.css}" rel="stylesheet"/>
+    <link th:href="@{/editor/css/editormd.preview.css}" rel="stylesheet"/>
+    <link href="https://cdn.bootcss.com/codemirror/5.0.0/codemirror.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/codemirror/5.0.0/addon/dialog/dialog.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/codemirror/5.0.0/addon/search/matchesonscrollbar.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <link th:href="@{/css/warmerplayer.css}" rel="stylesheet" />
+    <link href="https://cdn.bootcss.com/Swiper/3.3.1/css/swiper.min.css" rel="stylesheet">
+    <link th:href="@{/css/login.css}" rel="stylesheet" />
+    <style type="text/css">
+        .loginBox {
+            position: fixed;
+            top: 35%;
+            left: 50%;
+            margin-left: -200px;
+            border-radius: 5px;
+            width: 300px;
+            padding: 28px 50px 38px;
+            background-color: rgb(255,255,255) !important;
+        }
+        .login_dialog_wrapper {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: auto;
+            margin: 0;
+            background-color: rgba(128,128,128,0.3);
+        }
+
+        .warmer-section {
+            background-color: #000;
+            background: no-repeat center center;
+            background-attachment: scroll;
+            position: relative;
+            color: white;
+            max-height: 100vh;
+            height: 300px;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+        }
+        .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+            width: 78px!important;
+        }
+        .editormd-preview-container, .editormd-html-preview {
+            padding: 20px 0px !important;
+        }
+        .editormd-preview-container ol.linenums, .editormd-html-preview ol.linenums {
+            color: #999;
+            padding-left: 2.5em;
+            width: 100vh !important;
+        }
+        .big_img{position: fixed;z-index: -1;opacity: 0;background: rgba(255,255,255,0.9);width: 100%;height: 100%;top:0;left:0;}
+        .big_img .swiper-container2 {position: relative;width: 100%;height: 100%;}
+        .big_img .swiper-container2  .swiper-wrapper{width: 100%;height: 100%;}
+        .big_img .swiper-slide{width: 100%;height: 100%;display: table}
+        .big_img .swiper-slide .cell{width: 100%;;height: 100%;display: table-cell;vertical-align: middle;text-align: center;}
+        .big_img .swiper-slide img{max-width: 90%;max-height: 80%;margin:0 auto;}
+        .big_img .swiper-pagination2{position: absolute; top:0.2rem;text-align: center;width: 100%;}
+        .big_img .swiper-pagination2 span{margin:0 0.05rem;}
+    </style>
+</head>
+<body>
+<div layout:fragment="main">
+    <warmer-musicplayer-view v-bind:data="'music'"></warmer-musicplayer-view>
+    <div class="warmer-section" :style="'background-image: url('+bannerArray[randomIndex]+');'"></div>
+    <div class="detailcontainer">
+        <div class="infosbox">
+            <div class="newsview">
+                <h3 class="news_title">{{articleItem.title}}</h3>
+                <div class="bloginfo">
+                    <ul>
+                        <li class="author"><a href="/">{{articleItem.author}}</a></li>
+                        <li class="lmname"><a href="/">{{articleItem.categoryName}}</a></li>
+                        <li class="timer">{{articleItem.publishTime}}</li>
+                        <li class="view">{{articleItem.showCount}}</li>
+                    </ul>
+                </div>
+                <div v-if="articleItem.articleTags" class="tags">
+                    <a href="javascript:void(0)" target="_blank" v-for="tag in articleTagAliaName"> {{tag}} </a>
+                </div>
+                <div class="news_about" v-show="articleItem.abstractContent!=''">
+                    <strong>简介</strong>{{articleItem.abstractContent}}
+                </div>
+                <div class="news_con" id="divcontent">
+                    <textarea class="news_con">{{articleItem.content}}</textarea>
+                </div>
+            </div>
+            <keep-alive>
+                <warmer-comment-view v-bind:data="articleItem" v-bind:user="userItem" @showlogin="changeLoginState" ></warmer-comment-view>
+            </keep-alive>
+
+            <div v-show="isShowLogin" class="login_dialog_wrapper">
+                <warmer-applogin-view @showlogin="changeLoginState" v-bind:returnurl="returnUrl"></warmer-applogin-view>
+            </div>
+        </div>
+    </div>
+
+    <div class="big_img">
+        <div class="swiper-container2">
+            <div class="swiper-wrapper"> </div>
+        </div>
+    </div>
+    <div class="sidebardetail" v-show="RelvantArticle.length>0">
+        <div class="tuijian">
+            <h2 class="hometitle">相关推荐</h2>
+            <ul class="tjpic">
+                <i><img :src="randomBannerItem.imgSrc"></i>
+                <p>{{randomBannerItem.title}}</p>
+            </ul>
+            <ul class="sidenews">
+                <li v-for="item in RelvantArticle">
+                    <p>
+                        <a :href="['/detail/'+item.id]">{{item.title}}</a>
+                    </p> <span>{{item.publishTime}}</span>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div layout:fragment="js">
+    <script th:src="@{/editor/js/editormd.js}"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.0.0/codemirror.min.js"></script>
+    <script th:src="@{/editor/lib/marked.min.js}"></script>
+    <script th:src="@{/editor/lib/flowchart.min.js}"></script>
+    <script th:src="@{/editor/lib/jquery.flowchart.min.js}"></script>
+    <script th:src="@{/editor/lib/prettify.min.js}"></script>
+    <script th:src="@{/editor/lib/raphael.min.js}"></script>
+    <!-- <script th:src="@{/editor/lib/sequence-diagram.min.js}"></script> -->
+    <script th:src="@{/editor/lib/underscore.min.js}"></script>
+    <script th:src="@{/js/components/appcommentview.js}" type="text/javascript"></script>
+    <script th:src="@{/js/components/applogin.js}" type="text/javascript"></script>
+    <script th:src="@{/js/rem.js}" type="text/javascript"></script>
+    <script src="https://cdn.bootcss.com/Swiper/3.4.0/js/swiper.min.js"></script>
+    <script th:src="@{/js/blog/articlenavbar.js}" type="text/javascript"></script>
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script><!--音乐播放器组件-->
+    <script th:inline="javascript" th:src="@{/js/components/musicplayer.js}" type="text/javascript"></script>
+
+    <script th:inline="javascript" type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                userItem:{},
+                returnUrl:'',
+                commentdata:'',
+                bannerArray:['http://file.miaoleyan.com/b2.jpg',
+                    'http://file.miaoleyan.com/b5.gif',
+                    'http://file.miaoleyan.com/b3.jpg',
+                    'http://file.miaoleyan.com/b1.png',
+                    'http://file.miaoleyan.com/b4.jpg'],
+                randomIndex:0,
+                articleItem: {
+                    status: '0',
+                    title: '', // 文章题目
+                    author: '',
+                    categoryId: 0,
+                    categoryName: '',
+                    content: '', // 文章内容
+                    abstractContent: '', // 文章摘要
+                    coverImageList: [], // 文章图片
+                    publishTime: undefined, // 前台展示时间
+                    showStyle: 0,
+                    id: 0,
+                    openComment: 0,//打开评论
+                    articleTags: [],
+                },
+                isShowLogin:false,
+                articleTagAliaName: [],
+                randomBannerItem: {},
+                RelvantArticle: [],
+                detailhtml: '',
+                showMore: true,
+                loading: true,
+                offset: 300,
+                offset_opacity: 1200,
+                scroll_top_duration: 700,
+                scrollTop: 0,
+                defaultfollowUsPosition: 0,
+                followUsPosition: 0,
+                imageurl:'',
+                showbigimage:false
+            },
+            mounted() {
+                var _this = this;
+                _this.$nextTick(function () {
+                   // 注册scroll事件并监听
+                   window.addEventListener('scroll', ()=> {
+                       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                        if(scrollTop>200){
+                            var anc=document.querySelector('.BlogAnchor');
+                            if(anc){
+                                anc.style.top = '70px';
+                            }
+
+                        }else{
+                            var anc=document.querySelector('.BlogAnchor');
+                            if(anc){
+                                anc.style.top = '320px';
+                            }
+                        }
+                   })
+
+                    editormd.markdownToHTML("divcontent", {
+                        htmlDecode: "style,script,iframe", //可以过滤标签解码
+                        emoji: true,
+                        taskList: true,
+                        editorTheme : "pastel-on-dark",
+                        previewTheme : "dark",
+                        theme : "dark",
+                        codeFold: true,
+                        tex: true,               // 默认不解析
+                        flowChart: true,         // 默认不解析
+                        sequenceDiagram: false,  // 默认不解析
+                    });
+                })
+            },
+            watch:{
+                content:{
+                    handler:function(val,oldval){
+                        this.contentFormatStr=this.contentformat(val);
+                    },
+                    deep:true//对象内部的属性监听
+                }
+            },
+            created() {
+                var random = parseInt(Math.floor(Math.random()*this.bannerArray.length));
+                this.randomIndex=random;
+                this.returnUrl=[[${#request.getRequestURI()}]];
+                var auth=[[${session.SPRING_SECURITY_CONTEXT}]];
+                if(auth){
+                    this.userItem=auth.authentication.principal;
+                }
+                this.initArticleModel();
+                this.getRelvantArticle();
+                this.getRandomBanner();
+            },
+            methods: {
+                changeLoginState(data){
+                    this.isShowLogin=data;
+                },
+                getRandomBanner() {
+                    var _this = this;
+                    $.ajax({
+                        type: "POST",
+                        url: "/getBannerlist",
+                        data: {},
+                        success: function (result) {
+                            if (result.code == 0) {
+                                var resultCount = result.data.rows.length;
+                                if (resultCount > 0) {
+                                    var random = parseInt(Math.random() * resultCount, 10);
+                                    _this.randomBannerItem = result.data.rows[random];
+                                }
+                            }
+                        }
+                    });
+                },
+                getRelvantArticle() {
+                    var _this = this;
+                    var param = {articleId: this.articleItem.id, tagIds: this.articleItem.articleTags.join(",")};
+                    $.ajax({
+                        type: "POST",
+                        url: "/getRelvantArticle",
+                        data: param,
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.RelvantArticle = result.data;
+                            }
+                        }
+                    });
+
+                },
+                initArticleModel() {
+                    var articleModel = [[${articleModel}]];
+                    var articleTagAliaName = [[${tagList}]];
+                    if (articleModel != null) {
+                        this.articleItem.status = articleModel.status;
+                        this.articleItem.title = articleModel.title;
+                        this.articleItem.author = articleModel.author;
+                        this.articleItem.content = articleModel.content;
+                        this.articleItem.abstractContent = articleModel.abstractContent;
+                        this.articleItem.coverImageList = articleModel.coverImageList;
+                        this.articleItem.publishTime = articleModel.publishTime;
+                        this.articleItem.id = articleModel.id;
+                        this.articleItem.showStyle = articleModel.showStyle;
+                        this.articleItem.categoryId = articleModel.categoryId;
+                        this.articleItem.categoryName = articleModel.category.categoryName;
+                        this.articleItem.openComment = articleModel.openComment;
+                        this.articleItem.articleTags = articleModel.articleTags;
+                        var tagLists = articleModel.articleTags.split(',');
+                        this.articleItem.articleTags = tagLists;
+                        this.articleTagAliaName = articleTagAliaName;
+                    }
+
+                },
+                backToTop() {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                }
+            }
+        })
+        $(function(){
+            /*调起大图 S*/
+            var mySwiper = new Swiper('.swiper-container2', {
+                loop: false,
+                pagination: '.swiper-pagination2',
+            })
+            $("#divcontent img").bind('click',function(){
+                var imgBox = $("#divcontent").find("img");
+                var i = $(imgBox).index(this);
+                $(".big_img .swiper-wrapper").html("")
+                for(var j = 0 ,c = imgBox.length; j < c ;j++){
+                    $(".big_img .swiper-wrapper").append('<div class="swiper-slide"><div class="cell"><img src="' + imgBox.eq(j).attr("src") + '" / ></div></div>');
+                }
+                mySwiper.updateSlidesSize();
+                mySwiper.updatePagination();
+                $(".big_img").css({
+                    "z-index": 1001,
+                    "opacity": "1"
+                });
+                mySwiper.slideTo(i, 0, false);
+                return false;
+                var url=$(this).attr('src');;
+                app.showbigimage=true;
+                app.imageurl=url;
+            })
+            $(".big_img").on("click",
+                function() {
+                    $(this).css({
+                        "z-index": "-1",
+                        "opacity": "0"
+                    });
+
+                });
+        /*调起大图 E*/
+        })
+    </script>
+</div>
+</body>
+</html>

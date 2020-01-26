@@ -1,14 +1,13 @@
 package warmer.star.blog.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import warmer.star.blog.dto.CategorySubmitItem;
 import warmer.star.blog.mapper.CategoryMapper;
 import warmer.star.blog.model.Category;
 import warmer.star.blog.service.CategoryService;
+
+import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -27,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public boolean saveCategory(CategorySubmitItem submitItem) {
+	public Integer saveCategory(CategorySubmitItem submitItem) {
 		return categoryMapper.saveCategory(submitItem);
 	}
 
@@ -44,6 +43,11 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category getById(int cateId) {
 		return categoryMapper.getById(cateId);
+	}
+
+	@Override
+	public boolean updateCategoryCode(int id, String code) {
+		return categoryMapper.updateCategoryCode(id,code);
 	}
 
 }

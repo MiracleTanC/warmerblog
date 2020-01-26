@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import warmer.star.blog.dao.KGraphRepository;
 import warmer.star.blog.dto.GraphQuery;
-import warmer.star.blog.model.QAEntityItem;
+import warmer.star.blog.dto.QAEntityItem;
 import warmer.star.blog.service.KGGraphService;
 import warmer.star.blog.util.GraphPageRecord;
 

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="partial/layoutAdmin">
+<head>
+    <title>角色管理</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+        .e-card{
+            height: calc(100vh - 0px);
+            margin:5px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" style="padding:0 30px ;height: calc(100vh - 0px);">
+    <el-row>
+        <el-col :span="16">
+            <el-card class="box-card e-card">
+                <div slot="header" class="clearfix">
+                    <span>角色列表</span>
+                    <el-button size="mini" v-loading="loading" style="float: right"  type="primary" @click="newRole">添加角色</el-button>
+                </div>
+                <el-table :data="rolelist" style="width: 100%">
+                    <el-table-column
+                            prop="rolename"
+                            label="角色名称"
+                            width="100">
+                    </el-table-column>
+                    <el-table-column
+                            prop="rolecode"
+                            label="角色编码"
+                            width="150">
+                    </el-table-column>
+                    <el-table-column
+                            prop="comment"
+                            label="描述">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" align="center" >
+                        <template slot-scope="scope">
+                            <el-button type="primary" @click="editRole(scope.row)" size="mini">编辑</el-button>
+                            <el-button type="primary" @click="editMenu(scope.row)" size="mini">分配菜单</el-button>
+                            <el-button type="primary" @click="editAuth(scope.row)" size="mini">分配权限</el-button>
+                            <el-button type="danger" @click="removeRole(scope.row)" size="mini">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-card>
+        </el-col>
+        <el-col v-if="opeateCode=='auth'" :span="8">
+            <el-card class="box-card e-card">
+                <div slot="header" class="clearfix">
+                    <span>权限分配</span>
+                    <span style="float: right" v-if="roleItem.id>0">
+                        <template v-if="operateActiveName=='permission'">
+                            <el-button size="mini" v-loading="loading"  type="primary" @click="addAuth">{{defaultAction}}</el-button>
+                            <el-button size="mini" v-loading="loading" type="primary" @click="cancelAuth">取消</el-button>
+                        </template>
+                        <template v-else>
+                            <el-button size="mini" v-loading="loading"  type="primary" @click="addRoleMenu">{{defaultAction}}</el-button>
+                            <el-button size="mini" v-loading="loading" type="primary" @click="cancelRoleMenu">取消</el-button>
+                        </template>
+                    </span>
+                </div>
+                <div>
+                    <el-tabs v-model="operateActiveName"  type="card">
+                        <el-tab-pane label="菜单分配" name="menu">
+                            <div style="margin-bottom: 20px">
+                                <el-button size="mini" @click="menuCheckAll">全选</el-button>
+                                <el-button size="mini" @click="menuClearAll">清空</el-button>
+                                <el-button size="mini" @click="menuCollapseAll(true)">展开</el-button>
+                                <el-button size="mini" @click="menuCollapseAll(false)">收起</el-button>
+                            </div>
+                            <div class="tree-con" style="max-height:500px;overflow-y: scroll;">
+                                <el-tree ref="mymenutree" node-key="id"
+                                         :data="menudata"
+                                         @check="menuNodeClick"
+                                         :check-on-click-node="true"
+                                         :props="treeData"
+                                         show-checkbox
+                                         :default-expanded-keys="roleSelectMenu"
+                                         :default-checked-keys="roleSelectMenu"
+                                         class="e-tree">
+                                </el-tree>
+                            </div>
+                        </el-tab-pane>
+                        <el-tab-pane label="资源分配" name="permission">
+                            <div style="margin-bottom: 20px">
+                                <el-button size="mini" @click="permissionCheckAll">全选</el-button>
+                                <el-button size="mini" @click="permissionClearAll">清空</el-button>
+                                <el-button size="mini" @click="permissionCollapseAll(true)">展开</el-button>
+                                <el-button size="mini" @click="permissionCollapseAll(false)">收起</el-button>
+                            </div>
+                            <div class="tree-con" style="max-height:500px;overflow-y: scroll;">
+                                <el-tree ref="mypermissiontree" node-key="id"
+                                         :data="permissiondata"
+                                         @check="permissionNodeClick"
+                                         :check-on-click-node="true"
+                                         :props="treeData"
+                                         show-checkbox
+                                         :default-expanded-keys="ownmenudata"
+                                         :default-checked-keys="ownauthdata"
+                                         class="e-tree">
+                                </el-tree>
+                            </div>
+                        </el-tab-pane>
+                    </el-tabs>
+
+                </div>
+
+            </el-card>
+        </el-col>
+        <el-col v-else :span="8">
+            <el-card  class="box-card e-card">
+                <div slot="header" class="clearfix">
+                    <span>编辑角色</span>
+                </div>
+                <el-form label-width="120px">
+                    <el-form-item label="角色名称">
+                        <el-input placeholder="请输入新名称" v-model="roleItem.rolename" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="角色编码">
+                        <el-input placeholder="请输入新名称" v-model="roleItem.rolecode" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="描述">
+                        <el-input type="textarea" class="article-textarea" :rows="1" placeholder="请输入 描述"
+                                  v-model="roleItem.comment" required :maxlength="100" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button size="mini" v-loading="loading" style="margin-left:10px" type="primary"
+                                   @click="addRole">{{defaultAction}}
+                        </el-button>
+                        <el-button size="mini" @click="clearForm">清空</el-button>
+                    </el-form-item>
+
+                </el-form>
+            </el-card>
+        </el-col>
+    </el-row>
+</div>
+<div layout:fragment="jscontent">
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                loading: false,
+                roleItem: {
+                    id: 0,
+                    rolecode: '',
+                    rolename: '',
+                    comment: '',
+                    createuser: ''
+                },
+                permissiondata: [],
+                menudata: [],
+                rolelist: [],
+                defaultAction: '保存',
+                opeateCode: 'auth',
+                treeData: {
+                    label: 'name'
+                },
+                operateActiveName:'menu',
+                selectpermissiondata: [],
+                selectmenudata: [],
+                ownmenudata:[],
+                ownauthdata:[],
+                roleSelectMenu:[]
+            },
+            created() {
+                this.getAllRole();
+                this.getpermissionlist();
+                this.getmenulist();
+            },
+            methods: {
+                getAllRole() {
+                    var _this = this;
+                    $.ajax({
+                        data: {},
+                        type: "POST",
+                        url: '/role/getrolelist',
+                        traditional: true,
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.rolelist = result.data;
+                            }
+                        }
+                    })
+                },
+                removeRole(role) {
+                    app.$confirm('确定要[删除]该条记录吗?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.ajax({
+                            data: {roleId: role.id},
+                            type: "POST",
+                            url: '/role/deleterole',
+                            traditional: true,
+                            success: function (result) {
+                                app.roleItem.id=0;
+                                app.getAllRole();
+                                app.$message({
+                                    showClose: true,
+                                    message: result.msg,
+                                    type: 'success'
+                                });
+                            },
+                            error: function (data) {
+                                app.roleItem.id=0;
+                            }
+                        });
+                    }).catch(() => {
+                        app.roleItem.id=0;
+                        app.$message({
+                            type: 'info',
+                            message: '取消操作'
+                        });
+                    });
+                },
+                clearForm() {
+                    this.defaultAction = '添加';
+                    this.roleItem = {
+                        id: 0,
+                        rolecode: '',
+                        rolename: '',
+                        comment: '',
+                        createuser: ''
+                    };
+                },
+                addRole() {
+                    $.ajax({
+                        data: this.roleItem,
+                        type: "POST",
+                        url: '/role/saverole',
+                        traditional: true,
+                        success: function (result) {
+                            if (result.code == 0) {
+                                app.getAllRole();
+                                app.clearForm();
+                                app.$message({
+                                    showClose: true,
+                                    message: result.msg,
+                                    type: 'success'
+                                });
+                            } else {
+                                app.$message({
+                                    showClose: true,
+                                    message: result.msg,
+                                    type: 'error'
+                                });
+                            }
+                        },
+                        error: function (data) {
+
+                        }
+                    });
+
+                },
+                newRole() {
+                    this.opeateCode = "role";
+                    this.defaultAction = '保存';
+                },
+                editRole(row) {
+                    this.opeateCode = "role";
+                    this.defaultAction = '保存';
+                    this.roleItem = {
+                        id: row.id,
+                        rolecode: row.rolecode,
+                        rolename: row.rolename,
+                        comment: row.comment,
+                        createuser: row.createuser
+                    };
+                },
+                editAuth(row) {
+                    this.opeateCode = "auth";
+                    this.operateActiveName = "permission";
+                    this.roleItem.id=row.id;
+                    this.getroleauth();
+                    this.permissionCollapseAll(false);//收起节点
+                },
+                editMenu(row){
+                    this.opeateCode = "auth";
+                    this.operateActiveName = "menu";
+                    this.roleItem.id=row.id;
+                    this.getrolemenu();
+                    this.menuCollapseAll(false);//收起节点
+                },
+                cancelAuth(){
+                    this.roleItem.id=0;
+                    this.permissionClearAll()
+                },
+                cancelRoleMenu(){
+                    this.roleItem.id=0;
+                    this.menuClearAll()
+                },
+                getpermissionlist() {
+                    var _this = this;
+                    var param = {parentId: 0};
+                    $.ajax({
+                        data: param,
+                        type: "POST",
+                        url: "/role/getpermissionlist",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.permissiondata = result.data;
+                                _this.parentId = 0;
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                },
+                getmenulist() {
+                    var _this = this;
+                    var param = {parentId: 0};
+                    $.ajax({
+                        data: param,
+                        type: "POST",
+                        url: "/menu/getmenulist",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.menudata = result.data;
+                                _this.parentId = 0;
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                },
+                distinct(a) {
+                    let arr = a;
+                    let result = []
+                    let obj = {}
+                    for (let i of arr) {
+                        if (!obj[i]) {
+                            result.push(i)
+                            obj[i] = 1
+                        }
+                    }
+                    return result
+                },
+                addAuth() {
+                    $.ajax({
+                        data: JSON.stringify(this.selectpermissiondata),
+                        type: "POST",
+                        url: '/role/saveauth',
+                        dataType:"json",
+                        contentType:"application/json",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                app.$message({
+                                    showClose: true,
+                                    message: result.msg,
+                                    type: 'success'
+                                });
+                            }
+                        },
+                        error: function (data) {
+
+                        }
+                    });
+                },
+                addRoleMenu(){
+                    $.ajax({
+                        data: JSON.stringify(this.selectmenudata),
+                        type: "POST",
+                        url: '/role/saverolemenu',
+                        dataType:"json",
+                        contentType:"application/json",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                app.$message({
+                                    showClose: true,
+                                    message: result.msg,
+                                    type: 'success'
+                                });
+                            }
+                        },
+                        error: function (data) {
+
+                        }
+                    });
+                },
+                permissionCheckAll(){
+                    if(this.$refs.mypermissiontree){
+                        this.$refs.mypermissiontree.setCheckedNodes(this.permissiondata);
+                        this.selectpermissiondata = [];
+                        var tree = this.$refs.mypermissiontree;
+                        var nodes = tree.store.getCheckedNodes();
+                        let permissionArray = nodes.filter(item => item.isoperate==1).map(item => {
+                            return item.id;
+                        });
+                        permissionArray=this.distinct(permissionArray);
+                        for (var i = 0; i < permissionArray.length; i++) {
+                            var pStr = permissionArray[i];
+                            var permissionid=pStr.split("#")[1];
+                            this.selectpermissiondata.push({roleid:this.roleItem.id,permissionid: permissionid})
+                        }
+                        this.permissionCollapseAll(false);//收起节点
+                    }
+                },
+                permissionClearAll(){
+                    if(this.$refs.mypermissiontree){
+                        this.$refs.mypermissiontree.setCheckedKeys([]);
+                        this.permissionCollapseAll(false);//收起节点
+                        this.selectpermissiondata=[];
+                    }
+                },
+                permissionCollapseAll(status){
+                    if(this.$refs.mypermissiontree){
+                        for(var i=0;i<this.$refs.mypermissiontree.store._getAllNodes().length;i++){
+                            this.$refs.mypermissiontree.store._getAllNodes()[i].expanded=status;
+                        }
+                    }
+                },
+                permissionNodeClick() {
+                    if(this.$refs.mypermissiontree){
+                        this.selectpermissiondata = [];
+                        var tree = this.$refs.mypermissiontree;
+                        var nodes = tree.store.getCheckedNodes();
+                        let permissionArray = nodes.filter(item => item.isoperate==1).map(item => {
+                            return item.id;
+                        });
+                        permissionArray=this.distinct(permissionArray);
+                        for (var i = 0; i < permissionArray.length; i++) {
+                            var pStr = permissionArray[i];
+                            var permissionid=pStr.split("#")[1];
+                            this.selectpermissiondata.push({roleid:this.roleItem.id,permissionid: permissionid})
+                        }
+                    }
+                },
+                menuCheckAll(){
+                    if(this.$refs.mymenutree){
+                        this.$refs.mymenutree.setCheckedNodes(this.menudata);
+                        this.selectmenudata = [];
+                        var tree = this.$refs.mymenutree;
+                        var nodes = tree.store.getCheckedNodes();
+                        for (var i = 0; i < nodes.length; i++) {
+                            var menuid=nodes[i].id;
+                            this.selectmenudata.push({roleid:this.roleItem.id,menuid: menuid})
+                        }
+                        this.menuCollapseAll(false);//收起节点
+                    }
+                },
+                menuClearAll(){
+                    if(this.$refs.mymenutree){
+                        this.$refs.mymenutree.setCheckedKeys([]);
+                        this.menuCollapseAll(false);//收起节点
+                        this.selectpermissiondata=[];
+                    }
+                },
+                menuCollapseAll(status){
+                    if(this.$refs.mymenutree){
+                        for(var i=0;i<this.$refs.mymenutree.store._getAllNodes().length;i++){
+                            this.$refs.mymenutree.store._getAllNodes()[i].expanded=status;
+                        }
+                    }
+                },
+                menuNodeClick() {
+                    if(this.$refs.mymenutree){
+                        this.selectmenudata = [];
+                        var tree = this.$refs.mymenutree;
+                        var nodes = tree.store.getCheckedNodes();
+                        for (var i = 0; i < nodes.length; i++) {
+                            var menuid=nodes[i].id;
+                            this.selectmenudata.push({roleid:this.roleItem.id,menuid: menuid})
+                        }
+                    }
+                },
+                getroleauth() {
+                    var _this = this;
+                    var param = {roleid: _this.roleItem.id};
+                    $.ajax({
+                        data: param,
+                        type: "POST",
+                        url: "/role/getroleauth",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.ownmenudata = result.data.ownMenu;
+                                _this.ownauthdata = result.data.ownAuth;
+                                var tree = _this.$refs.mypermissiontree;
+                                tree.store.setCheckedKeys(_this.ownauthdata);
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                },
+                getrolemenu() {
+                    var _this = this;
+                    var param = {roleid: _this.roleItem.id};
+                    $.ajax({
+                        data: param,
+                        type: "POST",
+                        url: "/role/getrolemenu",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.roleSelectMenu = result.data.selectMenu;
+                                var tree = _this.$refs.mymenutree;
+                                tree.store.setCheckedKeys(_this.roleSelectMenu);
+                            }
+                        },
+                        error: function (data) {
+                        }
+                    });
+                },
+            }
+        })
+    </script>
+</div>
+</body>
+</html>

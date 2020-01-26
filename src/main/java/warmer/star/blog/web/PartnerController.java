@@ -1,22 +1,22 @@
 package warmer.star.blog.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import warmer.star.blog.model.Partner;
 import warmer.star.blog.service.PartnerService;
 import warmer.star.blog.util.R;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class PartnerController extends BaseController {
 	@Autowired
 	private PartnerService partnerService;
-
+	@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
 	@RequestMapping("/partner")
 	public String index() {
 		return "partner/index";

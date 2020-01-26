@@ -23,4 +23,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
-src/main/resources/application-tc.yml
+*.yml
+*.yml
+*.yml
+src/main/resources/application.yml

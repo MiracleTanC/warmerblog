@@ -15,12 +15,14 @@ public interface ArticleService {
     List<ArticleItem> getRecommendArticleList();
     List<ArticleItem> getTopReadArticleList();
     List<Map<String,Object>> getRelvantArticle(Integer articleId,String tagIds);
+    List<Integer> getNoAbstractArticleId();
     ArticleItem getById(int articleId);
     ArticleDetail getContentById(int articleId);
     int saveArticle(ArticleSubmitItem submitItem);
     void saveContent(ArticleDetail submitItem);
     void saveImage(List<ArticleFile> fileList);
     boolean updateArticle(ArticleSubmitItem submitItem);
+    void updateAbstractById(int articleId,String abstractContent);
     boolean deleteArticle(int articleId);
     boolean deleteImage(int articleId);
     boolean deleteContent(int articleId);

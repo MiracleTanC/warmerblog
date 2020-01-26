@@ -12,6 +12,7 @@ import warmer.star.blog.service.UserService;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Service
 @Transactional
@@ -31,10 +32,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getUserList() {
+        return userMapper.getUserList();
+    }
+    @Override
+    public  void saveUser(User user){
+        userMapper.addUser(user);
+    }
+    @Override
     public UserInfo getUserInfo(String username) {
         return userMapper.getUserInfo(username);
     }
-
+    @Override
+    public UserInfo getUserInfoById(Integer userId) {
+        return userMapper.getUserById(userId);
+    }
     @Override
     public void updateAvatar(String url, String username) {
         userMapper.updateAvatar(url,username);
@@ -49,7 +61,10 @@ public class UserServiceImpl implements UserService {
     public void updateUserInfo(UserInfo userInfo) {
         userMapper.updateUserInfo(userInfo);
     }
-
+    @Override
+    public void addUserInfo(UserInfo userInfo) {
+        userMapper.addUserInfo(userInfo);
+    }
     @Override
     public User getCurrentUser() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

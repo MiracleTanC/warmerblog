@@ -13,7 +13,8 @@ import java.util.List;
 public class ArticleItem implements Serializable {
 	private Integer serialNumber;
 	private Integer id;
-    private Integer categoryId; //分类id 
+    private Integer categoryId; //分类id
+	private String categoryCode;
     private String title;   //标题
     private String abstractContent; //摘要内容
     private String publishTime; //显示时间
@@ -261,6 +262,11 @@ public class ArticleItem implements Serializable {
 		this.editorType = editorType;
 	}
 
+	public String getCategoryCode() {
+		return categoryCode;
+	}
 
-   
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
+	}
 }

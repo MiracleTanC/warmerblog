@@ -48,17 +48,25 @@
         from category 
        order by sort asc 
     </select>
-    <insert id="saveCategory">
+    <insert id="saveCategory" parameterType="warmer.star.blog.model.Category" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()  as id
+        </selectKey>
 		  insert into category (CategoryName,CategoryCode,parentId,sort,createon,updateon)
 		  values (#{name},#{code},#{parentId},#{sort},#{createon},#{updateon})
 	</insert>
+
 	<update id="updateCategory">
 	  update category set
 	    CategoryName = #{name},
-	    CategoryCode = #{code},
 	    parentId = #{parentId},
 	    sort = #{sort},
 	    updateOn = #{updateon}
+	  where id = #{id}
+	</update>
+    <update id="updateCategoryCode">
+	  update category set
+	    CategoryCode = #{code},`Level`=LENGTH(CategoryCode)/4
 	  where id = #{id}
 	</update>
 	<delete id="deleteCategoryById">

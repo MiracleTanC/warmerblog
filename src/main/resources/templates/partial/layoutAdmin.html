@@ -10,12 +10,14 @@
 	<!-- default header name is X-CSRF-TOKEN spring security 避免ajax请求403-->
 	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 	<title>首页</title>
-	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <!-- import css -->
-    <link href="https://cdn.bootcss.com/element-ui/2.4.0/theme-chalk/index.css" rel="stylesheet">
+    <!--<link href="https://cdn.bootcss.com/element-ui/2.4.0/theme-chalk/index.css" rel="stylesheet">-->
+    <link href="https://cdn.bootcss.com/element-ui/2.10.1/theme-chalk/index.css" rel="stylesheet">
     <link th:href="@{/css/element-style.css}" rel="stylesheet">
 	<style type="text/css">
 	[v-cloak] {
@@ -27,17 +29,28 @@
 	.app-container{
 	  margin:20px;
 	}
+        .sd{
+            display: inline !important;
+        }
 	</style>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js"></script>
+    <script src="https://cdn.bootcss.com/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+    <script th:src="@{/js/iconfont.js}"></script>
 </head>
 
-<body class="fixed-sidebar full-height-layout white-bg ">
+<body class=" full-height-layout white-bg ">
 	<div id="wrapper">
             <!-- 侧边栏导航 -->
             <div id="navBar" th:include="partial/sidebar::sidebar"></div>
+            <!-- 头部工具栏 -->
+            <div id="headerAdmin" th:include="partial/headerAdmin::headerAdmin"></div>
             <!--右侧部分开始-->
             <div id="page-wrapper" class="gray-bg dashbard-1">
-                <!-- 头部工具栏 -->
-                <div th:include="partial/headerAdmin::headerAdmin"></div>
                 <div class="row J_mainContent" >
                     <!-- 正文内容 -->
                     <div id="app" style="min-height: 100%;background-color:#fff">
@@ -48,15 +61,8 @@
             <!--右侧部分结束-->
         </div>
 	<!-- 全局js -->
-    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
-	<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>  
-    <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
-    <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js"></script>
-    <script src="https://cdn.bootcss.com/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>
-    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
-    <script th:src="@{/js/iconfont.js}"></script>
-    <script th:src="@{/js/sidebarAdmin.js}"></script>
+
+    <!--<script th:src="@{/js/sidebarAdmin.js}"></script>-->
     <script type="text/javascript">
         var contextRoot = "[[@{/}]]";
     	var token = $("meta[name='_csrf']").attr("content");
@@ -69,65 +75,59 @@
 		});
     </script>
     <script th:inline="javascript" type="text/javascript">
-	  new Vue({
+	  var appsidebar=new Vue({
 	    el: '#navBar',
 	    data:{
 	    	currentUrl:[[${#request.getRequestURI()}]],
-	    	menuList:[
-                {
-                    title:'工作台',icon:'el-icon-setting',linkUrl:'/home',active:false,childrens:[]
-                },
-	    		{
-	    			title:'系统管理',icon:'el-icon-setting',linkUrl:'javascript:void(0);',active:false,childrens:[
-	    				{title:'菜单管理',icon:'',linkUrl:'#',active:false,childrens:[]},
-	    				{title:'资源管理',icon:'',linkUrl:'#',active:false,childrens:[]}
-	    			]
-	    		},
-	    		{
-	    			title:'博客管理',icon:'el-icon-document',linkUrl:'javascript:void(0);',active:false,childrens:[
-	    				{title:'文章管理',icon:'',linkUrl:'/article',active:false,childrens:[]},
-	    				{title:'分类管理',icon:'',linkUrl:'/category',active:false,childrens:[]},
-	    				{title:'标签管理',icon:'',linkUrl:'/tag',active:false,childrens:[]},
-	    				{title:'轮播图',icon:'',linkUrl:'/banner',active:false,childrens:[]},
-	    				{title:'友情链接',icon:'',linkUrl:'/partner',active:false,childrens:[]},
-	    				{title:'评论管理',icon:'',linkUrl:'javascript:void(0);',active:false,childrens:[]},
-	    			]
-	    		},
-	    		{
-	    			title:'任务计划',icon:'fa fa-envelope',linkUrl:'javascript:void(0);',active:false,childrens:[
-	    				{title:'定时任务',icon:'',linkUrl:'#',active:false,childrens:[]},
-	    				{title:'项目计划',icon:'',linkUrl:'#',active:false,childrens:[]}
-	    			]
-	    		},
-	    		{
-	    			title:'用户管理',icon:'glyphicon glyphicon-user',linkUrl:'javascript:void(0);',active:false,childrens:[
-	    				{title:'个人信息',icon:'',linkUrl:'/user',active:false,childrens:[]},
-	    			]
-	    		},
-                {
-                    title:'音乐管理',icon:'glyphicon glyphicon-user',linkUrl:'javascript:void(0);',active:false,childrens:[
-                        {title:'我的音乐',icon:'',linkUrl:'/music',active:false,childrens:[]},
-                    ]
-                }
-	    	]
+	    	menuList:[],
+            userCode:[[${session.SPRING_SECURITY_CONTEXT.authentication.principal.userCode}]],
+            isShowSideBar:true,
 	      },
 	      created(){
-	    	  this.initActiveItem();
-	      },
+              var key=this.userCode+"_menus";
+              this.menuList = JSON.parse(sessionStorage.getItem(key));
+              if(!this.menuList||this.menuList.length==0){
+                  this.getMenuList();
+              }else{
+                  this.initMenu();
+              }
+               var key=this.userCode+"_ishowSideBar";
+               var cacheState = JSON.parse(sessionStorage.getItem(key));
+               if(cacheState!=null){
+                   this.isShowSideBar=cacheState;
+                   if(this.isShowSideBar){//解决收起侧边栏后，右侧空白的问题
+                       $("#page-wrapper").css('margin',"0 0 0 180px");
+                   }else{
+                       $("#page-wrapper").css('margin',"0 0 0 70px");
+                   }
+               }
+          },
+          watch:{
+
+          },
 	      methods: {
-	          initActiveItem() {
-	            var _this=this;
-	            _this.menuList.forEach(function (item) {
-	            	for(var i=0;i<item.childrens.length;i++){
-	            		if(item.childrens[i].linkUrl==_this.currentUrl){
-	            			item.active=true;
-	            			item.childrens[i].active=true;
-	            			return;
-	            		}
-	            		if(item.active) return;
-	            	}
-	            })	
-	          },
+              initMenu(){
+	                var _this=this;
+                    _this.menuList = _this.menuList.map(item => {
+                        return {
+                            ...item,
+                            active: false
+                        };
+                    });
+                    var operurl=_this.currentUrl.split("/")[1];
+                    _this.menuList.forEach(function (item) {
+                        if(item.children){
+                            for(var i=0;i<item.children.length;i++){
+                                if(item.children[i].url==_this.currentUrl||item.children[i].url.indexOf(operurl)>-1){
+                                    item.active=true;
+                                    item.children[i].active=true;
+                                    return;
+                                }
+                                if(item.active) return;
+                            }
+                        }
+                    })
+                },
 	          collapseClick(item){
 	        	  //其他节点都折叠
 	        	  this.menuList.forEach(function (it) {
@@ -135,8 +135,36 @@
 		            })	
 		            //操作当前节点
 		          item.active=!item.active;
-	          }
-	        }
+	          },
+              getMenuList(){
+                  var _this=this;
+                  $.ajax({
+                      data: {parentId:0},
+                      type: "POST",
+                      async:false,
+                      url: '/menu/getmenulist',
+                      success: function (result) {
+                          if(result.code==0){
+                              _this.menuList=result.data;
+                              var key=_this.userCode+"_menus";
+                              sessionStorage.setItem(key, JSON.stringify(_this.menuList));
+                              _this.initMenu();
+                          }
+                      }
+                  })
+              },
+              switchSideBar(){
+                  if(!this.isShowSideBar){
+                      $("#page-wrapper").css('margin',"0 0 0 180px");
+                  }else{
+                      $("#page-wrapper").css('margin',"0 0 0 70px");
+                  }
+                  this.isShowSideBar=!this.isShowSideBar;
+                  var key=this.userCode+"_ishowSideBar";
+                  sessionStorage.setItem(key, JSON.stringify(this.isShowSideBar));
+              },
+	        },
+
 	    })
     </script>
 	<!-- js内容 -->

@@ -5,6 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
 public class SpringUtils implements ApplicationContextAware{
 	private static ApplicationContext applicationContext = null;
@@ -25,7 +27,14 @@ public class SpringUtils implements ApplicationContextAware{
     public static Object getBean(String name) {
         return getApplicationContext().getBean(name);
     }
-
+    public static void getAllBeans() {
+        String[] beans = applicationContext.getBeanDefinitionNames();
+        Arrays.sort(beans);
+        for (String bean : beans)
+        {
+            System.out.println(bean + " of Type :: " + applicationContext.getBean(bean).getClass());
+        }
+    }
     // 通过class获取Bean.
     public static <T> T getBean(Class<T> clazz) {
         return getApplicationContext().getBean(clazz);

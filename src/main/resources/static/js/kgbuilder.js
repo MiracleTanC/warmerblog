@@ -48,7 +48,7 @@
         jsonshow:false,
         propactiveName: 'propedit',
         contentactiveName: 'propimage',
-        uploadimageurl: contextRoot + "kg/qiniu/upload",
+        uploadimageurl: contextRoot + "qiniu/upload",
         uploadimageparam: {},
         nodeimagelist: [],
         netimageurl: '',
@@ -549,7 +549,9 @@
             this.svg.attr("width", width);
             this.svg.attr("height", height);
             this.simulation = d3.forceSimulation()
-                .force("link", d3.forceLink().distance(400).id(function (d) {
+                .force("link", d3.forceLink().distance(function(d){
+                    return Math.floor(Math.random() * (700 - 200)) + 200;
+                }).id(function (d) {
                     return d.uuid
                 }))
                 .force("charge", d3.forceManyBody().strength(-400))
@@ -597,7 +599,7 @@
             });
             //为每一个节点定制按钮组
             _this.addnodebutton();
-           if(links!=null&&links.length>0){
+           if(links.length>0){
                _.each(links, function(link) {
                    var same = _.where(links, {
                        'source': link.source,
@@ -639,9 +641,9 @@
             var linkEnter = _this.drawlink(link);
             link = linkEnter.merge(link);
             // 更新连线文字
-           _this.linktextGroup.selectAll("text").data(links, function (d) {
+            _this.linktextGroup.selectAll("text").data(links, function (d) {
                 return d.uuid;
-            }).exit().remove();
+            }).exit().remove();//移除多余的text dom
             var linktext = _this.linktextGroup.selectAll("text >textPath").data(links, function (d) {
                 return d.uuid;
             });
@@ -660,7 +662,7 @@
             nodebutton = nodebuttonEnter.merge(nodebutton);
             // 更新节点
             var node = _this.nodeGroup.selectAll("circle").data(nodes, function (d) {
-                return d
+                return d.uuid;
             });
             node.exit().remove();
             var nodeEnter = _this.drawnode(node);
@@ -874,7 +876,7 @@
             var arrow_path = "M0,-5L10,0L0,5";// 定义箭头形状
             arrowMarker.append("path").attr("d", arrow_path).attr("fill", "#fce6d4");
         },
-        addnodebutton() {
+        addnodebutton(r) {
             //先删除所有为节点自定义的按钮组
             d3.selectAll("svg >defs").remove();
             var nodes = this.graph.nodes;
@@ -952,7 +954,7 @@
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    //alert(errorThrown)
+                    console.log(errorThrown)
                 }
             });
         },
@@ -1147,6 +1149,8 @@
             });
             linkEnter.on("mouseenter", function (d) {
                 d3.select(this).style("stroke-width", "6").attr("stroke", "#ff9e9e").attr("marker-end", "url(#arrow)");
+                _this.nodedetail=d.lk;
+                d3.select('#nodedetail').style('display', 'block');
             });
             linkEnter.on("mouseleave", function (d) {
                 d3.select(this).style("stroke-width", "1").attr("stroke", "#fce6d4").attr("marker-end", "url(#arrow)");
@@ -1193,7 +1197,7 @@
                 $.ajax({
                     data: data,
                     type: "POST",
-                    url: contextRoot + "deletenode",
+                    url: contextRoot + "kg/deletenode",
                     success: function (result) {
                         if (result.code == 200) {
                             _this.svg.selectAll(out_buttongroup_id).remove();
@@ -1603,7 +1607,7 @@ $(function () {
         event.preventDefault();
     });
     $(".graphcontainer").bind("click", function (event) {
-    	if (event.target.tagName!="circle") {
+    	if (event.target.tagName!="circle"&&event.target.tagName!="link") {
         	d3.select('#nodedetail').style('display', 'none');
         }
         if (!(event.target.id === "jsoncontainer" || $(event.target).parents("#jsoncontainer").length > 0)) {

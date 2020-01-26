@@ -17,19 +17,23 @@
 				        </ul>
 				      </li>
 				      </template>
+                  <li id="controlSearch" class="nav_menu_li">
+                      <a id="switchicon" class="navmla2 nav_menu_li_a2">
+                          <i class="fa fa-times" aria-hidden="true"></i>
+                      </a>
+                  </li>
 		      </ul>
 		      <!--search begin-->
-				  <!--<div class="search-wrapper">
-					  <button class="search-icon" @click="searchToggle($event)"><span></span></button>
-					<div class="input-holder">
-						<input type="text" v-model="searchkeyword" @keyup.enter.native="searchResult" class="search-input" placeholder="想搜点什么呢..." />
-					</div>
-					<span class="close" @click="searchToggle($event)"></span>
-					<div class="result-container"></div>
-				  </div>-->
-				<div class="search-wrapper">
-					<span class="search-icon" icon="el-icon-search"></span>
-				</div>
+                <div id="topsearch" class="topsearch" style="visibility: visible; opacity: 1;">
+                    <div class="intopsearch">
+                        <div class="mainsearch">
+                            <form id="search" method="post" action="https://whb.me/" role="search">
+                                <input type="text" id="s" name="s" class="text" placeholder="ENTER KEYWORDS...">
+                                <button type="submit" class="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 			  <!--search end-->
 		    </nav>
 		  </div>

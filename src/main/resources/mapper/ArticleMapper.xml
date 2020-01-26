@@ -7,6 +7,7 @@
     <resultMap id="article" type="warmer.star.blog.dto.ArticleItem">
         <id column="id" property="id" jdbcType="INTEGER"></id>
         <id column="categoryId" property="categoryId" jdbcType="INTEGER"></id>
+		<result column="categoryCode" property="categoryCode" jdbcType="VARCHAR"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="author" property="author" jdbcType="VARCHAR"/>
@@ -27,7 +28,7 @@
     <resultMap id="category" type="warmer.star.blog.model.Category">
          <id column="id" property="id" jdbcType="INTEGER"></id>
         <result column="categoryName" property="categoryName" jdbcType="VARCHAR"/>
-        <result column="categoryCode" property="categoryCode" jdbcType="VARCHAR"/>
+        <result column="categoryCode_c" property="categoryCode_c" jdbcType="VARCHAR"/>
         <result column="fullName" property="fullName" jdbcType="VARCHAR"/>
         <result column="parentId" property="parentId" jdbcType="INTEGER"/>
         <result column="isParent" property="isParent" jdbcType="INTEGER"/>
@@ -54,13 +55,13 @@
 		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
 	</resultMap>
     <sql id="Base_Column_List">
-		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.openComment,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.viewCount,a.showStyle
+		a.id,a.categoryId,a.categoryCode,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.openComment,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.viewCount,a.showStyle
 	</sql>
 	<sql id="Abstract_Column_List">
-		a.id,a.categoryId,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.viewCount,a.showStyle
+		a.id,a.categoryId,a.categoryCode,c.categoryName,c.fullName,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.viewCount,a.showStyle
 	</sql>
 	<sql id="article_Column_List">
-		a.id,a.categoryId,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.viewCount,a.showStyle
+		a.id,a.categoryId,a.categoryCode,a.title,a.abstractContent,a.publishTime,a.articleTags,a.articleType,a.editorType,a.isRecommend,a.status,a.author,a.createTime,a.updateTime,a.viewCount,a.showStyle
 	</sql>
 	<sql id="Where_Clause" >
 	    <where >
@@ -71,6 +72,13 @@
 	      	<if test="categoryId != null and categoryId != ''">
            		and a.categoryId = #{categoryId,jdbcType=INTEGER}
         	</if>
+			<if test="categoryCodes != null and categoryCodes.size()>0">
+				and(
+				<foreach collection="categoryCodes" item="item" index="index"  separator="OR">
+					a.categoryCode LIKE CONCAT(#{item},'%')
+				</foreach>
+				)
+			</if>
 			<if test="tag!= null and tag!= ''">
 				and find_in_set(#{tag},a.articleTags)
 			</if>
@@ -88,7 +96,7 @@
     <select id="getArticleList" resultMap="article">
 	select
 	<include refid="Abstract_Column_List" />
-	from article a left join category c on a.categoryId=c.id
+	from article a left join category c on a.categoryCode=c.CategoryCode
 	<include refid="Where_Clause" />
 	<choose>
 		<when test="sort ==0" >
@@ -111,6 +119,9 @@
 	<select id="getImageById" resultMap="articleFile">
 		select articleId,coverImage,createTime,updateTime  from articlefile where articleId=#{articleId}
 	</select>
+	<select id="getNoAbstractArticleId" resultType="int">
+		select id  from article where abstractContent='' or abstractContent is null
+	</select>
     <select id="getById" resultMap="article">
         select 
         <include refid="Base_Column_List" />
@@ -121,7 +132,7 @@
         select 
         <include refid="article_Column_List" />
         from article a 
-        where a.status !=-1 and a.isRecommend= 1 order by a.updateTime desc  limit 3
+        where a.status !=-1 and a.isRecommend= 1 order by a.updateTime desc  limit 5
     </select>
     <select id="getTopReadArticleList" resultMap="article">
         select 
@@ -133,8 +144,8 @@
 		 <selectKey resultType="int" order="AFTER" keyProperty="id">
 			 SELECT LAST_INSERT_ID()  as id
 		 </selectKey>
-		  insert into article (title,abstractContent,categoryId,author,publishTime,articleTags,openComment,articleType,editorType,isRecommend,status,showStyle,createTime,updateTime)
-		  values (#{title},#{abstractContent},#{categoryId},#{author},#{publishTime},#{articleTags},#{openComment},#{articleType},#{editorType},#{isRecommend},#{status},#{showStyle},#{createTime},#{updateTime})
+		  insert into article (title,abstractContent,categoryId,categoryCode,author,publishTime,articleTags,openComment,articleType,editorType,isRecommend,status,showStyle,createTime,updateTime)
+		  values (#{title},#{abstractContent},#{categoryId},#{categoryCode},#{author},#{publishTime},#{articleTags},#{openComment},#{articleType},#{editorType},#{isRecommend},#{status},#{showStyle},#{createTime},#{updateTime})
 	</insert>
 	<insert id="saveContent">
 		  insert into articledetail (articleId,content,createTime,updateTime)
@@ -151,48 +162,27 @@
 		  update article
 		  <set>
 		      articleTags=#{articleTags},
-			  <if test="title!= null and title !=''">
-			      	title = #{title},
-			  </if>
-			  <if test="abstractContent!= null and abstractContent !=''">
-		  			abstractContent=#{abstractContent},
-			  </if>
-			   <if test="categoryId!= null and categoryId !='' ">
-		  			categoryId=#{categoryId},
-			  </if>
-			  <if test="showStyle!= null and showStyle !='' or 0 == showStyle">
-		  			showStyle=#{showStyle},
-			  </if>
-			  <if test="articleType!= null and articleType !='' or 0 == articleType">
-		  			articleType=#{articleType},
-			  </if>
-			  <if test="editorType!= null and editorType !=''">
-		  			editorType=#{editorType},
-			  </if>
-			  <if test="author!= null and author !=''">
-			  		author=#{author},
-			  </if>
-			  <if test="publishTime!= null and publishTime !=''">
-			  		 publishTime=#{publishTime},
-			  </if>
-			  
-				<if test="openComment!= null and openComment !='' or 0 == openComment">
-			  		openComment=#{openComment},
-			  </if>
-			  <if test="isRecommend!= null and isRecommend !='' or 0 == isRecommend">
-			  		isRecommend=#{isRecommend},
-			  </if>
-			  <if test="status!= null and status !='' or 0 == status ">
-			  		 status=#{status},
-			  </if>
-			  <if test="updateTime!= null">
-			  		updateTime=#{updateTime},
-			  </if>  
+			  title = #{title},
+			  abstractContent=#{abstractContent},
+			  categoryId=#{categoryId},
+			  categoryCode=#{categoryCode},
+			  showStyle=#{showStyle},
+			  articleType=#{articleType},
+			  editorType=#{editorType},
+			  author=#{author},
+			  publishTime=#{publishTime},
+			  openComment=#{openComment},
+			  isRecommend=#{isRecommend},
+			  status=#{status},
+			  updateTime=#{updateTime}
 		  </set>
 			where id = #{id}
 	</update>
 	<update id="deleteArticle">
 		  update article set  status=-1,updateTime=NOW() where id = #{articleId}
+	</update>
+	<update id="updateAbstractById">
+		  update article set  abstractContent=#{abstractContent},updateTime=NOW() where id = #{articleId}
 	</update>
 	<delete id="deleteContent">
 		delete from articledetail  where articleId = #{articleId}

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<html>
+	<head>
+		<title>暖暖动听 | ERROR</title>
+		<meta name="keywords" content="暖暖动听" />
+		<link rel="stylesheet" href="/error/css/404.css">
+		<script src="/js/jquery.min.js"></script>
+		<script src="/error/js/scriptalizer.js" type="text/javascript"></script>
+		<script type="text/javascript">
+            $(function(){
+                $('#parallax').jparallax({});
+            });
+		</script>
+	</head>
+	<body>
+	<div id="content" class="narrowcolumn">
+		<div id="parallax">
+			<div class="error1">
+				<img src="/error/images/wand.jpg" alt="Mauer" />
+				<span class="errorinfo">
+					<h3>ooOh...页面找不到了</h3>
+					<p><span>页面自动<a id="href" href="/">跳转</a></span><span>等待<b id="wait">6</b>秒</span></p>
+				<script type="text/javascript">                            (function() {
+                    var wait = document.getElementById('wait'), href = document.getElementById('href').href;
+                    var interval = setInterval(function() {
+                        var time = --wait.innerHTML;
+                        if (time <= 0) {
+
+                            clearInterval(interval);
+                            location.href = "/";
+                        }
+                        ;
+                    }, 1000);
+                })();
+				</script>
+				</span>
+			</div>
+			<div class="error2">
+				<img src="/error/images/licht.png" alt="Licht" />
+			</div>
+			<div class="error3">
+				<img src="/error/images/halo1.png" alt="Halo1" />
+			</div>
+			<div class="error4">
+				<img src="/error/images/halo2.png" alt="Halo2" />
+			</div>
+			<div class="error5">
+				<img src="/error/images/batman-404.png" alt="Batcave 404" />
+			</div>
+		</div>
+		<div class="footer-banner" style="width:728px; margin:0 auto">
+
+		</div>
+	</div>
+	</body>
+</html>
+

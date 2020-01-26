@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import warmer.star.blog.dao.KGraphRepository;
 import warmer.star.blog.dto.GraphQuery;
-import warmer.star.blog.model.QAEntityItem;
+import warmer.star.blog.dto.QAEntityItem;
 import warmer.star.blog.util.GraphPageRecord;
 import warmer.star.blog.util.Neo4jUtil;
 import warmer.star.blog.util.StringUtil;

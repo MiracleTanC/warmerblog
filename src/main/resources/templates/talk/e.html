@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="partial/layout">
+<head>
+    <title>tag</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/emoji/css/emoji.css}">
+    <style>
+
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            background: #C5CAE9;
+            width: 5px;
+            height: 95%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            width: 100%;
+            margin-bottom: 70px;
+        }
+
+        .timeline-item::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        .timeline-img {
+            width: 30px;
+            height: 30px;
+            background: #3F51B5;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            margin-top: 25px;
+            margin-left: -15px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            float: right;
+            padding: 40px 30px 10px 30px;
+        }
+
+        .timeline-card {
+            padding: 0 !important;
+        }
+
+        .timeline-content {
+            position: relative;
+            width: 45%;
+            padding: 10px 30px;
+            border-radius: 4px;
+            background: #f5f5f5;
+            box-shadow: 0 20px 25px -15px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline-content::after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            width: 0;
+            height: 0;
+            top: 30px;
+            right: -15px;
+            border-width: 10px 0 10px 15px;
+            border-color: transparent transparent transparent #f5f5f5;
+        }
+
+        .timeline-item .timeline-img-header {
+            background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)), url(https://picsum.photos/1000/800/?random) center center no-repeat;
+            background-size: cover;
+        }
+
+        .timeline-img-header {
+            height: 200px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content .date {
+            right: auto;
+            left: 0;
+        }
+
+        .date {
+            background: #FF4081;
+            display: inline-block;
+            color: #FFFFFF;
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .timeline-card p {
+            padding: 0 20px;
+        }
+
+
+
+        .timeline-card a {
+            margin-left: 20px;
+        }
+        section {
+            padding: 100px 0;
+        }
+        .container p {
+            margin: 0 0 10px;
+        }
+        .container a {
+            background: #3F51B5;
+            color: #FFFFFF;
+            padding: 8px 20px;
+            text-transform: uppercase;
+            font-size: 14px;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            display: inline-block;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.6);
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                width: 750px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                width: 1170px;
+            }
+        }
+
+        .container {
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+            display: table;
+            content: " ";
+        }
+
+        .bpimlist {
+            width: 100%;
+            overflow: hidden;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .bpimlist li { float: left; width: 32.7%; height: 145px; overflow: hidden; }
+        .bpimlist li img {
+            margin: 2px;
+            max-width: 145px;
+            -webkit-transition: all 0.6s ease;
+            -moz-transition: all 0.6s ease;
+            -o-transition: all 0.6s ease;
+            -ms-transition: all 0.6s ease;
+            transition: all 0.6s ease;
+        }
+
+        .singleimg {
+            width: 100% !important;
+        }
+
+        .singleimg img {
+            width: 100%;
+            min-height: 300px !important;
+            max-height: 400px !important;
+            -webkit-transition: all 0.6s ease;
+            -moz-transition: all 0.6s ease;
+            -o-transition: all 0.6s ease;
+            -ms-transition: all 0.6s ease;
+            transition: all 0.6s ease;
+        }
+
+        img {
+            border: 0;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="main" style="padding:0 30px">
+    <section class="timeline">
+        <div class="container">
+            <div v-for="log in elogs" class="timeline-item">
+                <div class="timeline-img"></div>
+                <div class="timeline-content js--fadeInLeft">
+                    <div class="date">{{log.createTime}}</div>
+                    <p v-html="log.vcontent" style="margin-top: 30px;"></p>
+                    <ul class="bpimlist">
+                        <li v-for="m in log.eLogFiles" :class="log!=null&&log.eLogFiles.length==1 ? 'singleimg' : ''">
+                            <img :src="m.fileurl" class="pic"/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div layout:fragment="js">
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.emoticons.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+            window.sr = ScrollReveal();
+
+            if ($(window).width() < 768) {
+                if ($('.timeline-content').hasClass('js--fadeInLeft')) {
+                    $('.timeline-content').removeClass('js--fadeInLeft').addClass('js--fadeInRight');
+                }
+                sr.reveal('.js--fadeInRight', {
+                    origin: 'right',
+                    distance: '300px',
+                    easing: 'ease-in-out',
+                    duration: 800,
+                });
+            } else {
+                sr.reveal('.js--fadeInLeft', {
+                    origin: 'left',
+                    distance: '300px',
+                    easing: 'ease-in-out',
+                    duration: 800,
+                });
+                sr.reveal('.js--fadeInRight', {
+                    origin: 'right',
+                    distance: '300px',
+                    easing: 'ease-in-out',
+                    duration: 800,
+                });
+
+            }
+        })
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                em: null,
+                loading: false,
+                elogs: [],
+                content: '',
+                page:{
+                    pageIndex:1,
+                    pageSize:5
+                },
+                emojiItems:[],
+                emojiimageList:['angry', 'anguished', "astonished", "disappointed",
+                    "blush", "bowtie", "zan", "cold_sweat", "confounded", "confused",
+                    "cry", "crying_cat_face",
+                    "relieved", "satisfied", "point_up_2",
+                    "relaxed", "scream", "scream_cat", "see_no_evil",
+                    "dizzy_face", "expressionless", "fearful",
+                    "flushed", "frowning", "full_moon_with_face",
+                    "grin", "grinning", "heart_eyes", "heart_eyes_cat",
+                    "hushed", "innocent", "joy", "joy_cat",
+                    "kissing", "kissing_cat", "kissing_heart",
+                    "neutral_face", "open_mouth", "pensive", "persevere",
+                    "rage", "pouting_cat", "sleeping", "sleepy", "smile",
+                    "kissing_smiling_eyes", "laughing", "mask", "smile_cat", "smiling_imp", "smirk",
+                    "smiley", "smirk_cat", "sob", "stuck_out_tongue", "v", "weary", "wink", "worried", "yum",
+                    "sweat_smile", "sweat", "triumph", "unamused",
+                    "heart", "heavy_exclamation_mark",
+                    "stuck_out_tongue_closed_eyes", "stuck_out_tongue_winking_eye", "sun_with_face",
+                    "sunglasses", "tired_face",
+                    "pill", "point_up", "point_down",
+                    "point_left", "point_right", "poop", "pray", "raised_hands",
+                    "tada","balloon", "bicyclist", "beer",
+                    "bomb", "bouquet", "broken_heart", "clap", "crown", "fire", "ghost", "gift", "gift_heart"],
+            },
+            created() {
+                var _this=this;
+                _this.emojiimageList.forEach(function(m){
+                    var tag='<span class="emoji emoji_'+m+'"></span>';
+                    _this.emojiItems.push(tag);
+                })
+            },
+            mounted() {
+                this.getData();
+            },
+            methods: {
+                contentformat(str){
+                    var list = str.match(/\[*\w*\]/g);
+                    var filter = /[\[\]]/g;
+                    if(list){
+                        for(var i=0;i<list.length;i++){
+                            var item=list[i];
+                            var title= item.replace(filter,'');
+                            var tag='<span class="emoji emoji_'+title+'"></span>';
+                            if(this.checkExist(tag)){
+                                str=str.replace(item,tag);
+                            }
+                        }
+                    }
+                    return str;
+                },
+                checkExist(item){
+                    return this.emojiItems.indexOf(item)>-1;
+                },
+                getData() {
+                    var _this = this;
+                    var data={};
+                    data.pageIndex=_this.page.pageIndex;
+                    data.pageSize=_this.page.pageSize;
+                    $.ajax({
+                        url: "/talk/geteloglist",
+                        type: "post",
+                        data: data,
+                        success: function (res) {
+                            if (res.code == 0&&res.data.rows.length>0) {
+                                res.data.rows.forEach(function (item) {
+                                    item.vcontent=_this.contentformat(item.content);
+                                })
+                                _this.elogs=_this.elogs.concat(res.data.rows)
+                            }
+                        },
+                        error: function (res) {
+                            _this.$message.error(res.message);
+                        }
+                    });
+                }
+            }
+        })
+    </script>
+</div>
+</body>
+</html>

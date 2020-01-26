@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <title>scrollReveal.js</title>
+    <meta charset="utf-8">
+    <style>
+        body{
+            background: black;
+        }
+        .container {
+            margin: 0 auto;
+            width: 70%;
+            height: 100%;
+            left: 15%;
+            right: 15%;
+            position: absolute
+        }
+
+    </style>
+    <script src="/js/js2wordcloud/js2wordcloud.js"></script>
+</head>
+
+<body>
+<!--/*外层最大容器*/-->
+<div id="container" class="container">
+
+</div>
+<script type="text/javascript">
+    var words = []
+    for (var i = 0; i < 1000; i++) {
+        words.push(['蛤蛤', 10 + Math.random() * 100])
+    }
+    for (var i = 0; i < 1000; i++) {
+        words.push(['记者', 10 + Math.random() * 50])
+    }
+    var option = {
+        tooltip: {
+            show: true,
+            formatter: function(item) {
+                return item[0] + ': 跑得比较快' + item[1] + 'km/h<br>' + '词云图'
+            }
+        },
+        list: words,
+        color: 'red',
+        backgroundColor: 'yello',
+        imageShape: '/images/failytail.jpg',
+        maxFontSize:8,
+        minFontSize:4,
+        ellipticity: 1
+    }
+    var wc = new Js2WordCloud(document.getElementById('container'))
+    /*wc.showLoading({
+        backgroundColor: 'rgba(255, 69, 0, 0.1)',
+        text: '正在加载报道...',
+        effect: 'spin'
+    })*/
+    wc.setOption(option)
+    setTimeout(function() {
+        //wc.hideLoading()
+        //wc.setOption(option)
+    }, 2000)
+</script>
+</body>
+</html>

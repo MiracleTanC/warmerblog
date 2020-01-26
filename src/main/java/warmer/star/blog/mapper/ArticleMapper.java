@@ -2,6 +2,7 @@ package warmer.star.blog.mapper;
 
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import warmer.star.blog.dto.ArticleItem;
 import warmer.star.blog.dto.ArticleQueryItem;
 import warmer.star.blog.dto.ArticleSubmitItem;
@@ -10,6 +11,7 @@ import warmer.star.blog.model.ArticleFile;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface ArticleMapper {
     List<ArticleItem> getArticleList(ArticleQueryItem queryItem);
     List<ArticleItem> getRecommendArticleList();
@@ -18,10 +20,12 @@ public interface ArticleMapper {
     List<ArticleFile> getImageById(@Param("articleId") int articleId);
     ArticleDetail getContentById(@Param("articleId") int articleId);
     ArticleItem getById(@Param("articleId") int articleId);
+    List<Integer> getNoAbstractArticleId();
     int saveArticle(ArticleSubmitItem submitItem);
     void saveContent(ArticleDetail submitItem);
     void saveImage(List<ArticleFile> fileList);
     boolean updateArticle(ArticleSubmitItem submitItem);
+    void updateAbstractById(@Param("articleId") int articleId,@Param("abstractContent") String abstractContent);
     boolean deleteArticle(@Param("articleId") int articleId);
     boolean deleteImage(@Param("articleId") int articleId);
     boolean deleteContent(@Param("articleId") int articleId);

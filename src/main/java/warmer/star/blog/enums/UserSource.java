@@ -4,7 +4,8 @@ public enum UserSource {
     facebook("Facebook", 0),
     github("Github", 1),
     qq("QQ", 2),
-    wechat("微信", 3);
+    wechat("微信", 3),
+    gitee("码云", 4);
 
     private final  String name;
 
@@ -22,7 +23,7 @@ public enum UserSource {
         this.name = name;
         this.value = value;
     }
-    public static UserSource GetAnswerStyle(Integer value) {
+    public static UserSource GetUserSource(Integer value) {
         switch (value) {
             case 0:
                 return UserSource.facebook;

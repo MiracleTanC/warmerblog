@@ -1,5 +1,5 @@
  @charset "gb2312";
-.picsbox { width: 100%; overflow: hidden; position: relative; margin-top: 56px;}
+.picsbox { width: 100%; overflow: hidden; position: relative; }
 /*banner*/
 .banner { width: 66%; overflow: hidden; float: left }
 .fader { position: relative; width: 100%; padding-top: 60%; font-family: "futura", arial; overflow: hidden; }
@@ -31,9 +31,9 @@
 .blogs .blogpic { float: left; width: 30%; max-height: 170px; margin-right: 20px; display: block; overflow: hidden; }
 .blogs .blogpic img { width: 100%; height: auto; -webkit-transition: all 0.6s ease; -moz-transition: all 0.6s ease; -o-transition: all 0.6s ease; transition: all 0.6s ease; margin-bottom: 10px }
 .blogs .blogpic :hover img { transform: scale(1.1) }
-.blogs .blogtitle { margin: 0 0 10px 0; font-size: 20px; overflow: hidden; }
+.blogs .blogtitle { margin: 0 0 10px 0; font-size: 15px; overflow: hidden; }
 .blogs .blogtitle a:hover { color: #337ab7; }
-.blogs .blogtext { font-size: 14px; color: #566573; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 3; margin-top: 20px }
+.blogs .blogtext { font-size: 12px; color: #566573; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 5; margin-top: 10px }
 .bloginfo { overflow: hidden; margin-top: 30px }
 .bloginfo ul li { float: left; font-size: 12px; padding: 0 0 0 20px; margin: 0 15px 0 0; color: #748594; line-height: 1.5; display: inline-block; }
 .bloginfo ul li a { color: #748594; }
@@ -56,12 +56,16 @@
 .bigpic:hover img { opacity: 0.8 }
 /*sidebar*/
 .sidebar { width: 32%; overflow: hidden; float: right }
-.sidebar div { padding: 20px 25px; margin-bottom: 2px; background: #FFF; -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); }
+.sidebar div {  background: #FFF; }
  .sidebardetail { width: 18%; overflow: hidden; float: right ;margin-right: 20px;}
  .sidebardetail div { padding: 20px 25px; margin-bottom: 2px; background: #FFF; -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); }
-.hometitle { font-size: 18px; color: #282828; font-weight: 600; margin: 0; text-transform: uppercase; padding-bottom: 15px; margin-bottom: 25px; position: relative; }
+.hometitle { font-size: 18px; color: #282828; font-weight: 600; margin: 0; text-transform: uppercase; padding-bottom: 10px; margin-bottom: 10px; position: relative; }
 .hometitle:after { content: ""; background-color: #282828; left: 0; width: 50px; height: 2px; bottom: 0; position: absolute; -webkit-transition: 0.5s; -moz-transition: 0.5s; -ms-transition: 0.5s; -o-transition: 0.5s; transition: 0.5s; }
-.sidebar div:hover ::after { width: 70px; }
+.sidecloumn div{padding: 0px;box-shadow:unset}
+.sidecloumn div:hover ::after { width: 70px; }
+.cate ,.tuijian,.links,.cloud,.guanzhu{
+    padding: 20px 25px; /*margin-bottom: 2px;*/-webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1); box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+}
 /*//////////////sidebar//////////////////*/
 /* zhuanti */
 .zhuanti { overflow: hidden }
@@ -83,9 +87,9 @@
 .tjpic:hover img { transform: scale(1.1) }
 /*sidenews*/
 .sidenews { }
-.sidenews li { margin: 0 0 20px 0; overflow: hidden }
+.sidenews li {display: block;margin-bottom: 7px;justify-content: space-between;overflow: hidden;text-overflow: ellipsis;white-space: nowrap; overflow: hidden }
 .sidenews li p { line-height: 24px; color: #888; font-size: 15px; overflow: hidden; text-overflow: ellipsis; -webkit-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 2; }
-.sidenews li a { color: #48494d; }
+.sidenews li a { color: #48494d; font-size: 12px;width: 80%;}
 .sidenews li a:hover { color: #00A7EB; }
 .sidenews i { width: 100px; height: 75px; overflow: hidden; display: block; border: #efefef 1px solid; float: left; margin-right: 10px }
 .sidenews img { height: 100%; max-height: 75px; margin: auto; -moz-transition: all .5s ease; -webkit-transition: all .5s ease; -ms-transition: all .5s ease; -o-transition: all .5s ease; transition: all .5s ease; transition: all 0.5s; }
@@ -140,6 +144,12 @@
 .guanzhu .wxgzh span { background: #199872; }
 .guanzhu a span { color: #FFF }
 .guanzhu ul li:hover span { width: 120px; }
+.qqgroup{
+    padding: 0px !important ;margin: 0 auto;display: block; clear: both;
+}
+ .qqgroup a{
+     float: left;width: 30%;
+ }
 /*gd*/
 .gd { width: 300px; top: 100px; z-index: 999; position: fixed; _position: absolute; _top:expression(documentElement.scrollTop + 0 + "px");
 _margin-top: 100px; }
@@ -206,7 +216,7 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
 .tags { margin: 30px 0; }
 .infosbox .news_con { line-height: 1.8; font-size: 16px; text-align: justify; }
 .infosbox .news_con p { margin-bottom: 25x }
-.infosbox .news_con img { max-width: 650px; height: auto; }
+.infosbox .news_con img {  height: auto; }
 .infosbox .share { padding: 20px; }
 .nextinfo { line-height: 24px; width: 100%; background: #FFF; border-radius: 10px; overflow: hidden; margin: 20px 0 }
 .nextinfo p { padding: 4px 10px; border-radius: 5px; }
@@ -229,9 +239,9 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
 .el-carousel img { width: 100% ;overflow: hidden;}
 .ad img { width: 100% }
 .hotmessage{
-    height: 68px;
+   /* height: 68px;*/
     z-index: 10;
-    background: #000;
+    /*background: #000;*/
     opacity: .9;
 }
  .hotmessage .item {
@@ -241,7 +251,7 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      font-size: 18px;
      -webkit-box-sizing: border-box;
      box-sizing: border-box;
-     padding: 20px;
+     padding: 5px;
  }
 .leftbox { width: 70%; float: left; overflow: hidden; }
 .rightbox { width: 28%; float: right; overflow: hidden; }
@@ -320,13 +330,14 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      line-height: 180%;
      position: fixed;
      left: 20px;
-     top: 140px;
+     /*top: 140px;*/
+     top:315px;
      border-radius:5px;
  }
  .BlogAnchor p {
      font-size: 18px;
      color: #15a230;
-     margin: 0 0 0.3rem 0;
+     /*margin: 0 0 0.3rem 0;*/
      text-align: right;
  }
  .BlogAnchor .AnchorContent {
@@ -334,7 +345,7 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      overflow: auto;
  }
  .BlogAnchor li{
-     text-indent: 0.5rem;
+     text-indent: 0.1rem;
      font-size: 14px;
      list-style: none;
  }
@@ -342,27 +353,27 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      padding: 3px;
  }
  .BlogAnchor li .item_h1{
-     margin-left: 0rem;
+     margin-left: 0;
  }
  .BlogAnchor li .item_h2{
-     margin-left: 2rem;
-     font-size: 0.8rem;
+     margin-left: 20px;
+     font-size: 14px;
  }
  .BlogAnchor li .item_h3{
-     margin-left: 3rem;
-     font-size: 0.8rem;
+     margin-left: 30px;
+     font-size: 14px;
  }
  .BlogAnchor li .item_h4{
-     margin-left: 4rem;
-     font-size: 0.8rem;
+     margin-left: 40px;
+     font-size: 14px;
  }
  .BlogAnchor li .item_h5{
-     margin-left: 5rem;
-     font-size: 0.8rem;
+     margin-left: 50px;
+     font-size: 14px;
  }
  .BlogAnchor li .item_h6{
-     margin-left: 2rem;
-     font-size: 0.8rem;
+     margin-left: 60px;
+     font-size: 14px;
  }
 
 
@@ -401,9 +412,7 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      background: #156498;
      border-radius: 50%;
  }
- .editormd-html-preview, .editormd-preview-container{
-     width: 96% !important;
- }
+
  /*datatransfer*/
  .tyue-checkbox {
      vertical-align: middle;
@@ -909,5 +918,10 @@ h1.t_nav { border-bottom: #bfbfbf 1px solid; font-size: 14px; font-weight: norma
      border: 1px solid #d9d9d9;
      background-color: #f3f3f3;
  }
+ .el-tabs__item {
+     padding: 0 15px !important;
+     height: 25px !important;
+     line-height: 25px !important;
+ }
 
-
+ /*.el-tabs--card>.el-tabs__header .el-tabs__nav {width: 100% !important;}*/

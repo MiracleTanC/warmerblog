@@ -11,7 +11,8 @@ import warmer.star.blog.interceptor.LoggerInterceptor;
 public class MyInterceptorConfig extends WebMvcConfigurationSupport {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/**").excludePathPatterns("/static/");//有多个拦截器继续add进去
+		registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/**").excludePathPatterns("/static/**");//有多个拦截器继续add进去
+
 		super.addInterceptors(registry);
 	}
 	//在spring2.0+的版本中，只要用户自定义了拦截器，则静态资源会被拦截。但是在spring1.0+的版本中，是不会拦截静态资源的。

@@ -1,236 +1,319 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	layout:decorator="partial/layoutAdmin">
-  <head>
-    <title>partner</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style type="text/css">
-    .el-Partner{
-        padding: 0 10px;
-    height: 32px;
-    line-height: 30px;
-    font-size: 12px;
-    color: #fff;
-    border-radius: 4px;
-    box-sizing: border-box;
-    border: 1px solid rgba(64, 158, 255, .2);
-    }
-    .el-Partner .el-icon-close{
-    color: #fff;
-    }
-    .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-    </style>
-  </head>
-  <body>
-  <div layout:fragment="content" style="padding:0 30px">
-      		<el-row>
-			  <el-col :span="24">
-				  <el-card style="min-height:520px" class="box-card" >
-					  <div slot="header" class="clearfix">
-					    <span>个人信息</span>
-					  </div>
-					  <el-form label-width="120px">
-						  <el-form-item label="用户名">
-						     <el-input placeholder="请输入用户名" v-model="userItem.username" :disabled="true"> </el-input>
-						  </el-form-item>
-						  <el-form-item label="昵称">
-						      <el-input placeholder="请输入新昵称" v-model="userItem.nickname"  clearable> </el-input>
-						  </el-form-item>
-						  <el-form-item label="手机号">
-						      <el-input placeholder="请输入手机号" v-model="userItem.phone"  clearable> </el-input>
-						  </el-form-item>
-						  <el-form-item label="邮箱">
-						      <el-input placeholder="请输入邮箱" v-model="userItem.email"  clearable> </el-input>
-						  </el-form-item>
-						  <el-form-item label="QQ">
-						      <el-input placeholder="请输入QQ" v-model="userItem.qq"  clearable> </el-input>
-						  </el-form-item>
-						  <el-form-item label="微信">
-						      <el-input placeholder="请输入微信" v-model="userItem.wechat"  clearable> </el-input>
-						  </el-form-item>
-						  <el-form-item label="地址">
-						      <el-input placeholder="请输入地址" v-model="userItem.address"  clearable> </el-input>
-						  </el-form-item>
-						   
-							<el-form-item label="头像">
-								    <el-upload
-									  class="avatar-uploader"
-									  :headers="headers"
-									  action="/qiniu/upload"
-									  :show-file-list="false"
-									  :on-success="uploadAvatar"
-									  :before-upload="validAvatar">
-									  <img v-if="userItem.avatar" :src="userItem.avatar" class="avatar">
-									  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-									</el-upload>
-							</el-form-item>
-							<el-form-item label="微信二维码">
-								    <el-upload
-									  class="avatar-uploader"
-									  :headers="headers"
-									  action="/qiniu/upload"
-									  :show-file-list="false"
-									  :on-success="uploadQr"
-									  :before-upload="validQr">
-									  <img v-if="userItem.wechatQrCode" :src="userItem.wechatQrCode" class="avatar">
-									  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-									</el-upload>
-							</el-form-item>
-							<el-form-item label="自我介绍">
-						      <el-input type="textarea" class="article-textarea" :rows="1"   placeholder="请输入 自我介绍" v-model="userItem.signature" required  :maxlength="100" clearable> </el-input>
-						   </el-form-item>
-						   <el-form-item label="工作经历">
-						      <el-input type="textarea" class="article-textarea" :rows="1"   placeholder="请输入 自我介绍" v-model="userItem.workExperience" required  :maxlength="100" clearable> </el-input>
-						   </el-form-item>
-						    <el-form-item>
-							    <el-button v-loading="loading" style="margin-left:10px" type="primary" @click="updateUser" >{{defaultAction}} </el-button> 
-							  </el-form-item>
-						  
-					  </el-form>
-				  </el-card>
-			  </el-col>
-			</el-row>
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="partial/layoutAdmin">
+
+<head>
+	<title>用户管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="app-container calendar-list-container">
+		<div class="filter-container">
+			<el-input @keyup.enter.native="handleFilter" style="width: 200px;"
+					  class="filter-item" placeholder="请输入名称" v-model="listQuery.name">
+			</el-input>
+			<el-button class="filter-item" type="primary" icon="el-icon-search"@click="handleFilter">搜索</el-button>
+			<el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">新增</el-button>
 		</div>
-		<div layout:fragment="jscontent">
-		<script th:inline="javascript" type="text/javascript">
-		var initUserModel=function(){
-			var userModel=[[${userModel}]];
-			if(userModel!=null){
-				this.userItem.id=userModel.id;
-				this.userItem.userId=userModel.userId;
-				this.userItem.username=userModel.username;
-				this.userItem.avatar=userModel.avatar;
-				this.userItem.nickname=userModel.nickname;
-				this.userItem.phone=userModel.phone;
-				this.userItem.email=userModel.email;
-				this.userItem.signature=userModel.signature;
-				this.userItem.address=userModel.address;
-				this.userItem.wechatQrCode=userModel.wechatQrCode;
-				this.userItem.qq=userModel.qq;
-				this.userItem.wechat=userModel.wechat;
-				this.userItem.workExperience=userModel.workExperience;
-			}
-			
-		}
-		 var app = new Vue({
-	         el: '#app',
-	         data:{
-	        	 loading:false,
-	        	 defaultAction:'更新',
-	        	 userItem:{
-	        		 id:0,
-	        		 userId:0,
-	        		 username:'',
-	        		 avatar:'',
-	        		 nickname:'',
-	        		 phone:'',
-	        		 email:'',
-	        		 signature:'',
-	        		 address:'',
-	        		 wechatQrCode:'',
-	        		 qq:'',
-	        		 wechat:'',
-	        		 workExperience: ''
-	        	 },
-	        	 headers:{}
-	         },
-	         mounted() {
-	       		 var token = $("meta[name='_csrf']").attr("content");
-	    		 var header = $("meta[name='_csrf_header']").attr("content");
-	    		 var str= '{ "'+header+'": "'+token+'"}'; 
-	    		 this.headers = eval('(' + str + ')');
-	         },
-	         created() {
-	        	 this.initUserModel();
-	         },
-	         methods: {
-	        	  initUserModel:initUserModel,
-	        	  uploadAvatar(res, file) {
-	    	    	  if(res.success==1){
-	    	    		  this.userItem.avatar=res.results[0].url
-	    				}else{
-	    					this.$message.error(res.msg);
-	    				}
-	    	        },
-	    	        validAvatar(file) {
-	    	          const isLt2M = file.size / 1024 / 1024 < 2;
-	    	          if (file.type !== 'image/jpeg'&&file.type !== 'image/jpg'&&file.type !== 'image/gif'&&file.type !== 'image/png') {
-	    	            this.$message.error('上传头像图片只能是 JPG/gif/png 格式!');
-	    	          }
-	    	          if (!isLt2M) {
-	    	            this.$message.error('上传头像图片大小不能超过 2MB!');
-	    	          }
-	    	          return isLt2M;
-	    	        },
-	    	        uploadQr(res, file) {
-		    	    	  if(res.success==1){
-		    	    		  this.userItem.wechatQrCode=res.results[0].url
-		    				}else{
-		    					this.$message.error(res.msg);
-		    				}
-		    	        },
-		    	        validQr(file) {
-		    	          const isLt2M = file.size / 1024 / 1024 < 2;
-		    	          if (file.type !== 'image/jpeg'&&file.type !== 'image/jpg'&&file.type !== 'image/gif'&&file.type !== 'image/png') {
-		    	            this.$message.error('二维码图片只能是 JPG/gif/png 格式!');
-		    	          }
-		    	          if (!isLt2M) {
-		    	            this.$message.error('二维码图片大小不能超过 2MB!');
-		    	          }
-		    	          return isLt2M;
-		    	        },
-		   	      updateUser(){
-    	        	var _this=this;
-    	        	$.ajax({
-    			        data: _this.userItem,
-    			        type: "POST",
-    			        url: '/user/saveUserInfo',
-    			        traditional:true, 
-    			        success: function (result) {
-    						if(result.code==0){
-    							_this.$message({
-    			   			          showClose: true,
-    			   			          message: result.msg,
-    			   			          type: 'success'
-    		   			        	});
-    						}else{
-    							_this.$message.error(result.msg);
-    						}
-    			        },
-    			        error: function (data) {
-    			        	_this.$message({
-    		   			          showClose: true,
-    		   			          message: error,
-    		   			          type: 'error'
-    		   			        });
-    			        }
-    			    });
-	   	      	}
-	         }})
-		</script>
+
+		<el-table height="678" :key='tableKey' :data="list"
+				  v-loading="listLoading" element-loading-text="给我一点时间" border fit
+				  highlight-current-row style="width: 100%">
+			<el-table-column align="center" label="序号" width="120">
+				<template slot-scope="scope"><span>{{serianumformat(scope)}}</span></template>
+			</el-table-column>
+			<el-table-column min-width="150px" label="账号">
+				<template slot-scope="scope">
+					<span class="link-type">{{scope.row.username}}</span>
+				</template>
+			</el-table-column>
+			<el-table-column min-width="150px" label="昵称">
+				<template slot-scope="scope">
+					<span class="link-type">{{scope.row.userItem?scope.row.userItem.nickname:''}}</span>
+				</template>
+			</el-table-column>
+			<el-table-column width="150px" align="center" label="手机号">
+				<template slot-scope="scope">
+					<el-tag>{{scope.row.userItem?scope.row.userItem.phone:''}}</el-tag>
+				</template>
+			</el-table-column>
+			<el-table-column width="110px" align="center" label="头像">
+				<template slot-scope="scope"><span>{{scope.row.userItem?scope.row.userItem.avatar:''}}</span>
+				</template>
+			</el-table-column>
+			<el-table-column class-name="status-col" label="注册时间" width="100">
+				<template slot-scope="scope"><span>{{scope.row.createTime}}</span>
+				</template>
+			</el-table-column>
+			<el-table-column align="center" label="操作" width="230" class-name="small-padding fixed-width">
+				<template slot-scope="scope">
+					<el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑 </el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+
+		<div class="pagination-container">
+			<el-pagination background @size-change="handleSizeChange"
+						   class="txtCenter" @current-change="handleCurrentChange"
+						   :current-page="listQuery.pageIndex" :page-sizes="[10,20,30, 50]"
+						   :page-size="listQuery.pageSize"
+						   layout="total, sizes, prev, pager, next, jumper" :total="total">
+			</el-pagination>
 		</div>
-  </body>
+		<!-- 弹窗, 新增 / 修改 -->
+		<el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+			<el-form :rules="rules" :model="temp" label-position="left" label-width="140px" style='width: 400px; margin-left:50px;'>
+				<el-tabs v-model="activeName" type="card">
+					<el-tab-pane label="账号信息" name="account">
+						<el-form-item label="账号" prop="username">
+							<el-input v-model="temp.username" clearable placeholder="账号"></el-input>
+						</el-form-item>
+						<el-form-item label="角色" prop="roles">
+							<el-select v-model="temp.roles" multiple placeholder="请选择角色">
+								<el-option
+										v-for="item in roleList"
+										:key="item.id"
+										:label="item.rolename"
+										:value="item.id">
+								</el-option>
+							</el-select>
+						</el-form-item>
+					</el-tab-pane>
+					<el-tab-pane label="个人信息" name="basic">
+						<el-form-item label="昵称" prop="nickname">
+							<el-input  v-model="temp.userItem.nickname" clearable placeholder="昵称"></el-input>
+						</el-form-item>
+						<el-form-item label="头像" prop="avatar" clearable placeholder="上传头像">
+							<el-input v-model="temp.userItem.avatar"></el-input>
+						</el-form-item>
+						<el-form-item label="手机" prop="phone" clearable placeholder="手机">
+							<el-input v-model="temp.userItem.phone"></el-input>
+						</el-form-item>
+						<el-form-item label="邮箱" prop="email" clearable placeholder="邮箱">
+							<el-input v-model="temp.userItem.email"></el-input>
+						</el-form-item>
+						<el-form-item label="微信" prop="wechat" clearable placeholder="微信">
+							<el-input v-model="temp.userItem.wechat"></el-input>
+						</el-form-item>
+						<el-form-item label="QQ" prop="qq" clearable placeholder="QQ">
+							<el-input v-model="temp.userItem.qq"></el-input>
+						</el-form-item>
+					</el-tab-pane>
+				</el-tabs>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="resetData">取消</el-button>
+				<el-button type="primary" @click="addOrUpdate">保存</el-button>
+			</div>
+		</el-dialog>
+	</div>
+</div>
+<div layout:fragment="jscontent">
+	<script type="text/javascript">
+        var getList = function () {
+            var _this=this;
+            var param=_this.listQuery;
+            $.ajax({
+                type: "POST",
+                url: "/user/getuserlist",
+                data: JSON.stringify(param),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        _this.list = result.data.rows;
+                        _this.total = result.data.totalCount;
+                        _this.listLoading = false;
+                    }
+                }
+            });
+        }
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                tableKey: 0,
+                list: null,
+                total: null,
+                listLoading: true,
+                listQuery: {
+                    pageIndex: 1,
+                    pageSize: 10,
+                    name: '',
+                    sort: '1'
+                },
+                activeName:'account',
+                dialogFormVisible: false,
+                dialogStatus: '',
+                textMap: {
+                    update: '编辑',
+                    create: '添加'
+                },
+                dialogPvVisible: false,
+                rules: {
+                    username: [{ required: true, message: '账号 是必须的', trigger: 'blur' }]
+                },
+				roleList:[],
+                temp: {
+                    id: 0,
+                    username:'',
+					roles:[],
+                    userItem:{
+                        nickname: '',
+                        phone: '',
+                        email:'',
+                        qq:'',
+                        wechat:'',
+                        avatar:'',
+                    }
+                },
+                downloadLoading: false
+            },
+            created() {
+                this.getList();
+                this.getAllRole();
+            },
+            methods: {
+                getAllRole() {
+                    var _this = this;
+                    $.ajax({
+                        data: {},
+                        type: "POST",
+                        url: '/role/getrolelist',
+                        traditional: true,
+                        success: function (result) {
+                            if (result.code == 0) {
+                                _this.roleList = result.data;
+                            }
+                        }
+                    })
+                },
+                resetData(){
+					this.temp={
+                        id: 0,
+                        username:'',
+                        roles:[],
+                        userItem:{
+                            nickname: '',
+                            phone: '',
+                            email:'',
+                            qq:'',
+                            wechat:'',
+                            avatar:'',
+						}
+                    };
+                    this.dialogFormVisible = false;
+				},
+                addOrUpdate(){
+                    $.ajax({
+                        type: "POST",
+                        url: '/user/saveUser',
+                        data: JSON.stringify(this.temp),
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function (result) {
+                            if (result.code == 0) {
+                                app.resetData();
+                                app.dialogFormVisible = false;
+                                app.getList();
+                                app.$message({
+                                    showClose: true,
+                                    message: result.msg,
+                                    type: 'success'
+                                });
+                            } else {
+                                app.$message({
+                                    showClose: true,
+                                    message: result.msg,
+                                    type: 'error'
+                                });
+                            }
+                        },
+                        error: function (data) {
+
+                        }
+                    });
+				},
+                handleCreate() {
+                    this.resetData();
+                    this.dialogFormVisible = true;
+                },
+                handleEdit(row) {
+                    this.dialogFormVisible = true;
+                    var selectRoles=row.userRoles.filter(n=>n.userid==row.id).map(n=>{return n.roleid});
+                    this.temp={
+                        id: row.id,
+                        username:row.username,
+                        roles:selectRoles,
+                        userItem:{
+                            nickname: row.userItem?row.userItem.nickname:'',
+                            phone: row.userItem?row.userItem.phone:'',
+                            email:row.userItem?row.userItem.email:'',
+                            qq:row.userItem?row.userItem.qq:'',
+                            wechat:row.userItem?row.userItem.wechat:'',
+                            avatar:row.userItem?row.userItem.avatar:'',
+                        }
+                    };
+                },
+                serianumformat(row){
+                    var num=(this.listQuery.pageIndex-1)*this.listQuery.pageSize+row.$index+1;
+                    return num;
+				},
+                chooseeditor(command) {
+                    this.linktoEdit(command.editorType, command.articleId);
+                },
+                linktoEdit(t, articleId) {
+                    window.location.href = "/article/edit/" + t + "/" + articleId;
+                },
+                getList: getList,
+                handleFilter() {
+                    this.listQuery.pageIndex = 1
+                    this.getList()
+                },
+                handleSizeChange(val) {
+                    this.listQuery.pageSize = val
+                    this.getList()
+                },
+                handleCurrentChange(val) {
+                    this.listQuery.pageIndex = val
+                    this.getList()
+                },
+                deleteArticle(rowId) {
+                    app.$confirm('确定要[删除]该条记录吗?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.ajax({
+                            data: {articleId: rowId},
+                            type: "POST",
+                            url: '/article/deleteArticle',
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    app.getList();
+                                    app.$message({
+                                        message: result.msg,
+                                        type: 'success'
+                                    })
+                                } else {
+                                    app.$message.error(result.msg);
+                                }
+                            },
+                            error: function (data) {
+                            }
+                        });
+                    }).catch(() => {
+                    })
+                },
+                handleDownload() {
+                    this.downloadLoading = true;
+                }
+            }
+        });
+	</script>
+</div>
+</body>
+
 </html>

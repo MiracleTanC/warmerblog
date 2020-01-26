@@ -1,20 +1,21 @@
 package warmer.star.blog.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import warmer.star.blog.dto.CategorySubmitItem;
 import warmer.star.blog.model.Category;
 import warmer.star.blog.service.CategoryService;
 import warmer.star.blog.util.DateTimeHelper;
 import warmer.star.blog.util.R;
+import warmer.star.blog.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -22,7 +23,7 @@ public class CategoryController extends BaseController {
 
 	@Autowired
 	private CategoryService categoryService;
-
+	@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
 	@RequestMapping("/category")
 	public String index() {
 		return "category/index";
@@ -41,7 +42,7 @@ public class CategoryController extends BaseController {
 		for (Category cate : categoryList) {
 			HashMap<String, Object> cateModel = new HashMap<String, Object>();
 			cateModel.put("id", cate.getId().toString());
-			cateModel.put("code", cate.getcategoryCode());
+			cateModel.put("code", cate.getCategoryCode());
 			cateModel.put("name", cate.getCategoryName());
 			maps.add(cateModel);
 		}
@@ -56,11 +57,11 @@ public class CategoryController extends BaseController {
 		for (Category cate : categoryList) {
 			HashMap<String, Object> cateModel = new HashMap<String, Object>();
 			cateModel.put("id", cate.getId().toString());
-			cateModel.put("code", cate.getcategoryCode());
+			cateModel.put("code", cate.getCategoryCode());
 			cateModel.put("name", cate.getCategoryName());
 			cateModel.put("sort", cate.getSort());
 			cateModel.put("level", cate.getLevel().toString());
-			cateModel.put("isLeaf", cate.isParent == 0);
+			cateModel.put("isLeaf", cate.getIsParent() == 0);
 			cateModel.put("children", new ArrayList<HashMap<String, Object>>());
 			maps.add(cateModel);
 		}
@@ -76,22 +77,25 @@ public class CategoryController extends BaseController {
 	}
 	private List<HashMap<String, Object>> getTree(int parentId,List<Category> nodelList) {
 		List<HashMap<String, Object>> maps=new ArrayList<HashMap<String, Object>>();
-		Iterator<Category> treeList=nodelList.stream().filter(m->m.parentId==parentId).iterator();
+		Iterator<Category> treeList=nodelList.stream().filter(m->m.getParentId()==parentId).iterator();
 		 while (treeList.hasNext()) {  
 			 Category cate = (Category) treeList.next();  
 			 HashMap<String, Object> cateModel = new HashMap<String, Object>();
 				cateModel.put("id", cate.getId().toString());
-				cateModel.put("code", cate.getcategoryCode());
+				cateModel.put("code", cate.getCategoryCode());
+				//cateModel.put("value", cate.getcategoryCode());
 				cateModel.put("name", cate.getCategoryName());
+			 	cateModel.put("label", cate.getCategoryName());
 				cateModel.put("sort", cate.getSort());
 				cateModel.put("level", cate.getLevel().toString());
-				cateModel.put("isLeaf", cate.getIsParent() == 0);
+
 				cateModel.put("parentId", cate.getParentId().toString());
 				List<HashMap<String, Object>> childrenList=getTree( cate.getId(),nodelList);
 				if(!childrenList.isEmpty())
 				{
 					cateModel.put("children",childrenList);
 				}
+			 	cateModel.put("isLeaf", childrenList.isEmpty()?true:false);
 				maps.add(cateModel);
          }  
 		return maps;
@@ -100,13 +104,19 @@ public class CategoryController extends BaseController {
 	@ResponseBody
 	public R saveCate(CategorySubmitItem submitItem) {
 		boolean result=false;
+		Integer cateId=0;
 		try {
-			if(submitItem.getId()==0)
-			{
+			if(submitItem.getId()==0){
 				submitItem.setStatus(1);
 				submitItem.setCreateon(DateTimeHelper.GetDateTimeNow());
 				submitItem.setUpdateon(DateTimeHelper.GetDateTimeNow());
-				result=categoryService.saveCategory(submitItem);
+				categoryService.saveCategory(submitItem);
+				cateId=submitItem.getId();
+				String code = String.format("%04d", cateId);
+				if(StringUtil.isNotBlank(submitItem.getParentcode())){
+					code=submitItem.getParentcode()+code;
+				}
+				result=categoryService.updateCategoryCode(cateId,code);
 			}else {
 				submitItem.setUpdateon(DateTimeHelper.GetDateTimeNow());
 				result=categoryService.updateCategory(submitItem);
