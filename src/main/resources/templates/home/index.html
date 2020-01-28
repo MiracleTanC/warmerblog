@@ -149,7 +149,7 @@
                 _this.$nextTick(function () {
                     _this.initScrollRevealOption();
                     // 注册scroll事件并监听
-                    window.addEventListener('scroll', ()=> {
+                    document.addEventListener('scroll', function(){
                         var scrollTop = document.documentElement.scrollTop;
                         _this.scrollTop=scrollTop;
                         if(scrollTop + window.innerHeight >= document.body.clientHeight) {
@@ -159,7 +159,18 @@
                                 }
                             }
                         }
-                    },true);
+                    });
+                    document.addEventListener("touchend", function() {
+                        var scrollTop = document.documentElement.scrollTop;
+                        _this.scrollTop=scrollTop;
+                        if(scrollTop + window.innerHeight+20 >= document.body.clientHeight) {
+                            if(!_this.scrollDisable) {
+                                if(_this.showMore){
+                                    _this.initData();
+                                }
+                            }
+                        }
+                    });
                 })
                 _this.initTyped();
             },

@@ -676,10 +676,11 @@ a {
 }
 
 .audio_icon {
-        background: #282828 none repeat scroll 0 0;
-        border: 1px solid #ffffff;
+        /*background: #282828 none repeat scroll 0 0;*/
+        /*border: 1px solid #ffffff*/;
         border-radius: 100%;
-        top: 14px;
+        top: 9px;
+	    padding: 5px;
         color: #ffffff;
         position: fixed;
         right: 30px;
@@ -687,15 +688,15 @@ a {
         width: 30px;
         height: 30px;
         z-index: 101;
-        background-image: url('../images/music/icon_music.png');
+        /*background-image: url('../images/music/icon_music.png');*/
         background-size: contain;
     }
 
     .rotate {
-        -webkit-animation: rotating 1.2s linear infinite;
-        -moz-animation: rotating 1.2s linear infinite;
-        -o-animation: rotating 1.2s linear infinite;
-        animation: rotating 1.2s linear infinite;
+        -webkit-animation: rotating 3.5s linear infinite;
+        -moz-animation: rotating 3.5s linear infinite;
+        -o-animation: rotating 3.5s linear infinite;
+        animation: rotating 3.5s linear infinite;
     }
 .line-limit-length {
 	overflow: hidden;

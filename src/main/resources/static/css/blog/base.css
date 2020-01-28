@@ -143,7 +143,27 @@ button.submit {
 /*cd-top*/
 .cd-top { display: inline-block; height: 40px; width: 40px; position: fixed; bottom: 40px; right: 0px;   overflow: hidden; text-indent: 100%; white-space: nowrap; background: rgba(0, 0, 0, 0) url(/images/backtop.png) no-repeat center ; visibility: hidden; opacity: 0; -webkit-transition: all 0.3s; -moz-transition: all 0.3s; transition: all 0.3s; }
 .cd-top.cd-is-visible {  visibility: visible; opacity: 1; }
-.cd-github { display: inline-block; height: 40px; width: 40px; position: fixed; top: 180px; right: 0px;   overflow: hidden; text-indent: 100%; white-space: nowrap; background: rgba(0, 0, 0, 0) url(/images/github.png) no-repeat center ; -webkit-transition: all 0.3s; -moz-transition: all 0.3s; transition: all 0.3s; }
+.github{
+    position: fixed;
+    right: 0;
+    z-index: 999999;
+    /*animation: mygithub 3s infinite ease-in-out;
+    -webkit-animation-duration:3s;
+    animation-fill-mode:backwards*/
+}
+/*@keyframes mygithub
+{
+    0%   {right:0px; top:315px;opacity:1;transform:rotate(9deg)}
+    50%  {right:20px; top:280px;opacity:0.5;transform:rotate(9deg)}
+    100% {right:0px; top:215px;opacity:1;transform:rotate(9deg)}
+}
+@-webkit-keyframes mygithub
+{
+    0%   {right:0px; top:315px;}
+    50%  {right:0px; top:280px;}
+    100% {right:0px; top:215px;}
+}*/
+.cd-github { display: inline-block; z-index:99;height: 40px; width: 40px; position: fixed; top: 218px; right: 0px;   overflow: hidden; text-indent: 100%; white-space: nowrap; background: rgba(0, 0, 0, 0) url(/images/github.png) no-repeat center ; -webkit-transition: all 0.3s; -moz-transition: all 0.3s; transition: all 0.3s; }
 .quick_comment{
     position: fixed;display: inline-block;
     height: 40px;

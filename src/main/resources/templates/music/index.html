@@ -195,7 +195,7 @@
  		        },
  		validFileUpload(file){
  		   const issync = true;
-	         const isLt5M = file.size / 1024 / 1024 < 5;
+	         const isLt5M = file.size / 1024 / 1024 < 15;
 	         if (!isLt5M) {
 	           this.$message.error('上传文件大小不能超过 5MB!');
 	         }
