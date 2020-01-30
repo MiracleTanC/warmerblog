@@ -65,6 +65,13 @@ Vue.component('warmer-musicplayer-view', {
                     _this.isload=true
                 }
             }, false);
+            //微信浏览器
+            document.addEventListener("WeixinJSBridgeReady", function(e){
+                if(_this.musicAudio.paused){
+                    _this.musicAudio.play()
+                    _this.isload=true
+                }
+            }, false);
         },
         initMusic(){
             var _this=this;
