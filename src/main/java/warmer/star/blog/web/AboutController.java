@@ -22,4 +22,12 @@ public class AboutController extends BaseController {
 		model.addAttribute("userModel", userInfo);
 		return "about/index";
 	}
+	@RequestMapping(value = "/one", method = RequestMethod.GET)
+	public String one(Model model) {
+		return "about/one";
+	}
+	@RequestMapping(value = "/two", method = RequestMethod.GET)
+	public String two(Model model) {
+		return "about/two";
+	}
 }

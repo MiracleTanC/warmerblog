@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>关于我</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- Add your keywords and description here for SEO. -->
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link href="https://libs.cdnjs.net/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.css">
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://libs.cdnjs.net/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://libs.cdnjs.net/vue/2.6.11/vue.min.js"></script>
+    <script src="https://libs.cdnjs.net/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script><!--音乐播放器组件-->
+    <!--<script src="https://unpkg.com/swiper/js/swiper.min.js"></script>-->
+    <script src="https://cdn.bootcss.com/Swiper/4.5.1/js/swiper.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script th:inline="javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
+    <link th:href="@{/css/me/one.css}" rel="stylesheet"/>
+    <style type="text/css">
+        #app{
+            width: 100%;
+            height: 100%;
+            position: relative;
+            margin: 0px !important;
+            z-index: 1;
+            background: #0a001f;
+        }
+        #aplayer{
+            z-index: 0;
+        }
+        .aplayer .aplayer-body {
+            left: -88px !important;
+        }
+    </style>
+</head>
+<body >
+<div id="app">
+<div v-show="loading" class="loading-overlay">
+    <img src="images/loading.svg">
+</div>
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <div  v-for="(m,index) in slideItems" :class="'swiper-slide slide-'+(index+1)">
+            <div  v-show="index==currentIndex" :class="'item-image animated '+m.imgStyle" >
+                <img src="/images/github-1.png">
+            </div>
+            <p v-show="index==currentIndex" :class="'item-text animated '+m.textStyle">I'm a coder {{index}}!</p>
+        </div>
+    </div>
+</div>
+
+<button class="up-arrow" v-show="upArrowStaus">
+    <i class="icon-angle-double-up"></i>
+</button>
+
+<button :class="[musicAnimationStatus ? 'music-animation' : '', 'btn-music']" @click="switchMusic">
+    <i class="icon-note"></i>
+</button>
+<div id="aplayer"></div>
+<script type="text/javascript">
+    var startx, starty;
+    //获得角度
+    function getAngle(angx, angy) {
+        return Math.atan2(angy, angx) * 180 / Math.PI;
+    };
+    //根据起点终点返回方向 1向上 2向下 3向左 4向右 0未滑动
+    function getDirection(startx, starty, endx, endy) {
+        var angx = endx - startx;
+        var angy = endy - starty;
+        var result = 0;
+
+        //如果滑动距离太短
+        if (Math.abs(angx) < 2 && Math.abs(angy) < 2) {
+            return result;
+        }
+
+        var angle = getAngle(angx, angy);
+        if (angle >= -135 && angle <= -45) {
+            result = 1;
+        } else if (angle > 45 && angle < 135) {
+            result = 2;
+        } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+            result = 3;
+        } else if (angle >= -45 && angle <= 45) {
+            result = 4;
+        }
+
+        return result;
+    }
+    var app = new Vue({
+        el: '#app',
+        data: {
+            loading:false,
+            currentIndex: 0,
+            upArrowStaus:true,
+            isload:false,
+            swiperObj:null,
+            musicAudio:null,
+            slideItems:[
+                {
+                    imgStyle:'slideInLeft',
+                    textStyle:'slideInRight'
+                },
+                {
+                    imgStyle:'bounceInDown',
+                    textStyle:'bounceInUp'
+                },
+                {
+                    imgStyle:'flipInX',
+                    textStyle:'flipInY'
+                }
+            ],
+            musicAnimationStatus:true,
+            musicList:[
+                {
+                    name: '暖暖',
+                    artist: '梁静茹',
+                    url: 'http://file.miaoleyan.com/nndt/SU8Wxyi9s7VLtJlNsQl3a3Bw0Gm53Qm0',
+                    cover: '',
+                }
+            ]
+        },
+        mounted() {
+            this.initMusic();
+            this.initSwiper();
+        },
+        created() {
+
+        },
+        methods: {
+            switchMusic(){
+                if(this.musicAudio&&this.musicAudio.paused){
+                    this.musicAudio.play()
+                    this.isload=true;
+                    this.musicAnimationStatus=true;
+                }else{
+                    this.musicAudio.pause()
+                    this.musicAnimationStatus=false;
+                }
+            },
+            initMusic() {
+                var _this=this;
+                _this.musicAudio = new APlayer({
+                    container: document.getElementById('aplayer'),
+                    theme: 'red',
+                    fixed: true,
+                    loop:'all',
+                    order:'list',
+                    listFolded: true,
+                    listMaxHeight: 90,
+                    lrcType: 0,
+                    audio: []
+                });
+                _this.musicAudio.list.add(_this.musicList);
+                _this.musicAudio.toggle()//自动播放
+                document.addEventListener('scroll', function (e) {
+                    if(_this.musicAudio.paused){
+                        _this.musicAudio.play()
+                        _this.isload=true
+                    }
+                }, true);
+                //手指离开屏幕
+                document.addEventListener("touchend", function(e) {
+                    var endx, endy;
+                    endx = e.changedTouches[0].pageX;
+                    endy = e.changedTouches[0].pageY;
+                    var direction = getDirection(startx, starty, endx, endy);
+                    if(direction&&direction>-1&&_this.musicAudio.paused){
+                        _this.musicAudio.play()
+                        _this.isload=true
+                    }
+                }, false);
+                //微信浏览器
+                document.addEventListener("WeixinJSBridgeReady", function(e){
+                    if(_this.musicAudio.paused){
+                        _this.musicAudio.play()
+                        _this.isload=true
+                    }
+                }, false);
+            },
+            initSwiper() {
+                var _this=this;
+                // init Swiper
+                _this.swiperObj= new Swiper('.swiper-container', {
+                    mousewheelControl: true,
+                    effect: 'fade',    // slide, fade, coverflow or flip
+                    speed: 400,
+                    direction: 'vertical',
+                    fade: {
+                        crossFade: false
+                    },
+                    on: {
+                        touchStart: function(){
+                            var swiper=this;
+                            _this.currentIndex=swiper.activeIndex;
+                            if (!_this.isload && _this.musicAudio.paused) {
+                                _this.isload=true;//首次播放
+                                _this.musicAudio.play();
+                            }
+                        },
+                        transitionStart: function(){
+                            var swiper=this;
+                            _this.loading=true;
+                            _this.currentIndex=swiper.activeIndex;
+                            if (swiper.activeIndex === swiper.slides.length - 1) {
+                                _this.upArrowStaus=false;
+                            } else {
+                                _this.upArrowStaus=true;
+                            }
+                            _this.loading=false;
+                        },
+                        transitionEnd: function () {
+                            var swiper=this;
+                            _this.currentIndex=swiper.activeIndex;
+                        },
+                    },
+                    coverflow: {
+                        rotate: 100,
+                        stretch: 0,
+                        depth: 300,
+                        modifier: 1,
+                        slideShadows: false
+                    },
+                    flip: {
+                        limitRotation: true,
+                        slideShadows: false
+                    }
+                });
+            }
+        }
+    })
+
+</script>
+</div>
+</body>
+</html>

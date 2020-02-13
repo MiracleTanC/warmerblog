@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" lang="zh">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>关于我</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<!-- Add your keywords and description here for SEO. -->
+<meta name="keywords" content="">
+<meta name="description" content="">
+	<link href="https://libs.cdnjs.net/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.css">
+	<script src="https://libs.cdnjs.net/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://libs.cdnjs.net/modernizr/2.8.3/modernizr.min.js"></script>
+	<script src="https://unpkg.com/swiper/js/swiper.min.js"> </script>
+	<!--[if lt IE 9]>
+		<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<link th:href="@{/css/me/one.css}" rel="stylesheet" />
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+<div class="loading-overlay">
+	<img src="images/loading.svg">
+</div>
+<div class="swiper-container">
+	<div class="swiper-wrapper">
+		<div class="swiper-slide slide-1">
+			<div class="item-image animated" data-ani-name="slideInLeft" data-ani-duration="1s" data-ani-delay="0s">
+				<img src="/images/github-1.png">
+			</div>
+			<p class="item-text animated" data-ani-name="slideInRight" data-ani-duration="1s" data-ani-delay="0.3s">I'm a coder!</p>
+		</div>
+		<div class="swiper-slide slide-2">
+			<div class="item-image animated" data-ani-name="bounceInDown" data-ani-duration="1s" data-ani-delay="0s">
+				<img src="/images/github-2.png">
+			</div>
+			<p class="item-text animated" data-ani-name="bounceInUp" data-ani-duration="1s" data-ani-delay="0.3s">I'm a frontend developer!</p>
+		</div>
+		<div class="swiper-slide slide-3">
+			<div class="item-image animated" data-ani-name="flipInX" data-ani-duration="1s" data-ani-delay="0s">
+				<img src="/images/github-3.png">
+			</div>
+			<p class="item-text animated" data-ani-name="flipInY" data-ani-duration="1s" data-ani-delay="0.3s">I'm a javascript newbie!</p>
+		</div>
+	</div>
+</div>
+
+<button class="up-arrow">
+	<i class="icon-angle-double-up"></i>
+</button>
+
+<button class="btn-music">
+	<i class="icon-note"></i>
+</button>
+
+<audio loop>
+	<source src="http://file.miaoleyan.com/nndt/SU8Wxyi9s7VLtJlNsQl3a3Bw0Gm53Qm0">
+</audio>
+
+<script type="text/javascript">
+    function initAnimationItems() {
+        $('.animated').each(function () {
+            var aniDuration, aniDelay;
+            $(this).attr('data-origin-class', $(this).attr('class'));
+            aniDuration = $(this).data('ani-duration');
+            aniDelay = $(this).data('ani-delay');
+            $(this).css({
+                'visibility': 'hidden',
+                'animation-duration': aniDuration,
+                '-webkit-animation-duration': aniDuration,
+                'animation-delay': aniDelay,
+                '-webkit-animation-delay': aniDelay
+            });
+        });
+    }
+
+    function playAnimation(swiper) {
+        clearAnimation();
+        var aniItems = swiper.slides[swiper.activeIndex].querySelectorAll('.animated');
+
+        $(aniItems).each(function () {
+            var aniName;
+            $(this).css({ 'visibility': 'visible' });
+            aniName = $(this).data('ani-name');
+            $(this).addClass(aniName);
+        });
+    }
+
+    function clearAnimation() {
+        $('.animated').each(function () {
+            $(this).css({ 'visibility': 'hidden' });
+            $(this).attr('class', $(this).data('origin-class'));
+        });
+    }
+    $(document).ready(function () {
+        var bgMusic = $('audio').get(0);
+        var $btnMusic = $('.btn-music');
+        var $upArrow = $('.up-arrow');
+
+        // background music control
+        $btnMusic.click(function () {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                $(this).removeClass('paused');
+            } else {
+                bgMusic.pause();
+                $(this).addClass('paused');
+            }
+        });
+
+        // init Swiper
+        new Swiper('.swiper-container', {
+            mousewheelControl: true,
+            effect: 'coverflow',    // slide, fade, coverflow or flip
+            speed: 400,
+            direction: 'vertical',
+            fade: {
+                crossFade: false
+            },
+            coverflow: {
+                rotate: 100,
+                stretch: 0,
+                depth: 300,
+                modifier: 1,
+                slideShadows: false     // do disable shadows for better performance
+            },
+            flip: {
+                limitRotation: true,
+                slideShadows: false     // do disable shadows for better performance
+            },
+            onInit: function (swiper) {
+                initAnimationItems();  // get items ready for animations
+                playAnimation(swiper); // play animations of the first slide
+            },
+            onTransitionStart: function (swiper) {     // on the last slide, hide .btn-swipe
+                console.log("onTransitionStart");
+                if (swiper.activeIndex === swiper.slides.length - 1) {
+                    $upArrow.hide();
+                } else {
+                    $upArrow.show();
+                }
+            },
+            onTransitionEnd: function (swiper) {       // play animations of the current slide
+                console.log("onTransitionEnd");
+                playAnimation(swiper);
+            },
+            onTouchStart: function (swiper, event) {    // mobile devices don't allow audios to play automatically, it has to be triggered by a user event(click / touch).
+                console.log("onTouchStart");
+                if (!$btnMusic.hasClass('paused') && bgMusic.paused) {
+                    bgMusic.play();
+                }
+            }
+        });
+
+        // hide loading animation since everything is ready
+        $('.loading-overlay').slideUp();
+    });
+
+</script>
+</body>
+</html>
