@@ -154,7 +154,7 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
-			<version>6.3.0</version>
+			<version>6.8.13</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.elasticsearch.client/transport -->
 		<dependency>
