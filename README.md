@@ -5,6 +5,7 @@ Welcome to the warmerblog wiki!
 * 后台:http://www.miaoleyan.com/admin
 * 用户名:sa 密码:123456
 * 演示站的服务器配置有点渣,暂时不开启Elasticsearch功能,若使用请在配置内开启
+* 前后端分离版本：https://github.com/MiracleTanC/Dream-it-possible
 ## 使用
 1. 下载代码后请先配置数据库链接等配置项,在application.yml中
 2. 安装redis,elasticsearch,rabbitMQ,如果不需要则注释相应代码,自行修改,后续提供文档
